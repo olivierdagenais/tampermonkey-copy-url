@@ -1,0 +1,3 @@
+#!/bin/sh
+
+docker run -it --rm --name node16 -v "$PWD":/usr/src/app -w /usr/src/app node:16 $@

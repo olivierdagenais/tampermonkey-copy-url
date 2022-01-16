@@ -10,6 +10,10 @@ A Tampermonkey userscript to copy nice-looking URLs to the clipboard.
 4. Generate userscript with `npm run build`.
 5. Import generated userscript to Tampermonkey by local file URI.
 
+### Using the [Node.js container](https://github.com/nodejs/docker-node/blob/main/README.md)
+
+To avoid having to install anything (except the Docker Engine CLI!), just prefix any `node` or `npm` command with `./docker_node`.  For example: `./docker_node npm install`
+
 ### Debug
 
 Allow Tampermonkey's access to local file URIs ([Tampermonkey FAQs](https://tampermonkey.net/faq.php?ext=dhdg#Q204)) and import built userscript's file URL.
