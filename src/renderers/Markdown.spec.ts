@@ -4,13 +4,13 @@ import { Link } from "../Link";
 import { Markdown } from "./Markdown";
 
 test('should render a simple link', () => {
-    let cut : Markdown = new Markdown();
-    let link : Link = {
+    const cut : Markdown = new Markdown();
+    const link : Link = {
         text: "example",
         destination: "https://www.example.com",
     };
 
-    let actual : Clipboard = cut.render(link);
+    const actual : Clipboard = cut.render(link);
 
     assert.equal(actual.data, "[example](https://www.example.com)");
 })

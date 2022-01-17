@@ -4,13 +4,13 @@ import { Link } from "../Link";
 import { Textile } from "./Textile";
 
 test('should render a simple link', () => {
-    let cut : Textile = new Textile();
-    let link : Link = {
+    const cut : Textile = new Textile();
+    const link : Link = {
         text: "example",
         destination: "https://www.example.com",
     };
 
-    let actual : Clipboard = cut.render(link);
+    const actual : Clipboard = cut.render(link);
 
     assert.equal(actual.data, '[example|https://www.example.com]');
 })
