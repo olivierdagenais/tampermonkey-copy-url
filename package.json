@@ -1,7 +1,7 @@
 {
-  "name": "userscript-typescript-template",
+  "name": "tampermonkey-copy-url",
   "version": "1.0.0",
-  "description": "Template repo using Webpack and TypeScript to build your userscript for Tampermonkey and more extensions.",
+  "description": "A Tampermonkey userscript to copy nice-looking URLs to the clipboard.",
   "main": "userscript/index.user.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pboymt/userscript-typescript-template.git"
+    "url": "git+https://github.com/olivierdagenais/tampermonkey-copy-url.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Olivier Dagenais",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pboymt/userscript-typescript-template/issues"
+    "url": "https://github.com/olivierdagenais/tampermonkey-copy-url/issues"
   },
-  "homepage": "https://github.com/pboymt/userscript-typescript-template#readme",
+  "homepage": "https://github.com/olivierdagenais/tampermonkey-copy-url",
   "devDependencies": {
     "@types/node": "^16.11.10",
     "@types/webpack": "^5.28.0",
@@ -29,14 +29,18 @@
   },
   "userscript": {
     "require-template": "https://cdn.jsdelivr.net/npm/${dependencyName}@${dependencyVersion}",
-    "namespace": "http://tampermonkey.net/",
+    "namespace": "https://olivierdagenais.github.io/",
     "license": "https://opensource.org/licenses/MIT",
     "match": [
-      "https://github.com*"
+      "https://github.com/*"
     ],
     "connect": [],
-    "require": [],
-    "grant": [],
+    "require": [
+      "https://code.jquery.com/jquery-3.2.1.min.js"
+    ],
+    "grant": [
+      "GM_setClipboard"
+    ],
     "exclude": [],
     "resources": []
   }
