@@ -27,22 +27,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const Html_1 = __webpack_require__(1);
-const Markdown_1 = __webpack_require__(2);
-const Textile_1 = __webpack_require__(3);
+const Default_1 = __webpack_require__(1);
+const GitHub_1 = __webpack_require__(2);
+const Html_1 = __webpack_require__(3);
+const Markdown_1 = __webpack_require__(4);
+const Textile_1 = __webpack_require__(5);
 const renderers = [
     new Html_1.Html(),
     new Markdown_1.Markdown(),
     new Textile_1.Textile(),
 ];
+// parsers will be attempted in the order defined here
+const parsers = [
+    new GitHub_1.GitHub(),
+    // always keep this one LAST in this list!
+    new Default_1.Default(),
+];
 function handleKeydown(e) {
     if (e.ctrlKey && e.key == "o") {
         e.preventDefault();
         console.log('asking the parsers...');
-        const link = {
-            destination: 'https://github.com/olivierdagenais/tampermonkey-copy-url',
-            text: 'olivierdagenais/tampermonkey-copy-url',
+        const document = window.document;
+        const url = window.location.href;
+        var link = {
+            text: url,
+            destination: url,
         };
+        for (let i = 0; i < parsers.length; i++) {
+            const parser = parsers[i];
+            var candidate = parser.parseLink(document, url);
+            if (candidate) {
+                link = candidate;
+                break;
+            }
+        }
         var clipboard;
         if (e.shiftKey) {
             console.log('rendering HTML...');
@@ -69,6 +87,54 @@ main();
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Default = void 0;
+class Default {
+    parseLink(doc, url) {
+        var _a;
+        const titleElement = doc.querySelector("html head title");
+        const result = {
+            text: (_a = titleElement === null || titleElement === void 0 ? void 0 : titleElement.innerHTML) !== null && _a !== void 0 ? _a : url,
+            destination: url,
+        };
+        return result;
+    }
+}
+exports.Default = Default;
+
+
+/***/ }),
+/* 2 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.GitHub = void 0;
+class GitHub {
+    parseLink(doc, url) {
+        if (url.startsWith("https://github.com/")) {
+            const titleElement = doc.querySelector("html head title");
+            // TODO: implement special handling for PRs, issues, source code
+            if (titleElement) {
+                const result = {
+                    // TODO: we'll want to escape that HTML into text!
+                    text: titleElement.innerHTML,
+                    destination: url,
+                };
+                return result;
+            }
+        }
+        return null;
+    }
+}
+exports.GitHub = GitHub;
+
+
+/***/ }),
+/* 3 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Html = void 0;
 class Html {
     render(link) {
@@ -83,7 +149,7 @@ exports.Html = Html;
 
 
 /***/ }),
-/* 2 */
+/* 4 */
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -102,7 +168,7 @@ exports.Markdown = Markdown;
 
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ ((__unused_webpack_module, exports) => {
 
 
