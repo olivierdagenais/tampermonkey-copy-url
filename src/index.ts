@@ -1,3 +1,4 @@
+// Keep this list sorted!
 import { Clipboard } from "./Clipboard";
 import { Html } from "./renderers/Html";
 import { Link } from "./Link";
