@@ -6,7 +6,7 @@ export class Html implements Renderer {
     render(link: Link): Clipboard {
         let result : Clipboard = {
             data: `<a href="${link.destination}">${link.text}</a>`,
-            typeInfo: "text"
+            typeInfo: "html",
         };
         return result;
     }

@@ -139,7 +139,7 @@ class Html {
     render(link) {
         let result = {
             data: `<a href="${link.destination}">${link.text}</a>`,
-            typeInfo: "text"
+            typeInfo: "html",
         };
         return result;
     }
