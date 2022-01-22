@@ -6,7 +6,6 @@
 // @author Olivier Dagenais
 // @homepage https://github.com/olivierdagenais/tampermonkey-copy-url
 // @match https://github.com/*
-// @require https://code.jquery.com/jquery-3.2.1.min.js
 // @grant GM_setClipboard
 // ==/UserScript==
 
