@@ -5,7 +5,7 @@
 // @description A Tampermonkey userscript to copy nice-looking URLs to the clipboard.
 // @author Olivier Dagenais
 // @homepage https://github.com/olivierdagenais/tampermonkey-copy-url
-// @match https://github.com/*
+// @match *
 // @grant GM_setClipboard
 // ==/UserScript==
 
