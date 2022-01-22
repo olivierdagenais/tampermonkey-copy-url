@@ -41,7 +41,7 @@ function handleKeydown(this: Window, e: KeyboardEvent) {
             }
         }
         var clipboard: Clipboard;
-        if (e.shiftKey) {
+        if (!e.altKey) {
             console.log('rendering HTML...');
             clipboard = renderers[0].render(link);
         }
