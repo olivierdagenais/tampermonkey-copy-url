@@ -1,3 +1,5 @@
 #!/bin/sh
 
-docker run -it --rm --name node16 -v "$PWD":/usr/src/app -w /usr/src/app node:16 $@
+MY_ID=$(id -u)
+
+docker run --user $MY_ID -it --rm --name node16 -v "$PWD":/usr/src/app -w /usr/src/app node:16 $@
