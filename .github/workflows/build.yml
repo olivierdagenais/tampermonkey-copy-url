@@ -1,9 +1,6 @@
 name: Test, package
 
-on:
-  push:
-    # TODO: if we can skip parts for some branches, it would be nice to run tests on PRs
-    branches: [ main ]
+on: {}
 
 jobs:
   build:
@@ -25,8 +22,4 @@ jobs:
       run: npm test
     
     - name: Package to Javascript bundle
-      # TODO: poke version number first!
       run: npm run build
-
-    # TODO: create tag based on determined version number
-    # TODO: "deploy" by committing the output to a "released" branch and pushing it
