@@ -36,7 +36,7 @@ esac
 
 echo "Performing release..."
 git add package-lock.json package.json
-CURRENT_VERSION=$(jq -r '.version' package.json)
+CURRENT_VERSION=$(node -pe "require('./package.json').version")
 npm install
 npm test
 npm run build
