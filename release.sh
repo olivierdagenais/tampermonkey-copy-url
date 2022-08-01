@@ -36,7 +36,7 @@ esac
 
 echo "Performing release..."
 git add package-lock.json package.json
-CURRENT_VERSION=$(./docker_node node -pe "require('./package.json').version")
+CURRENT_VERSION=$(./docker_node node -pe "require('./package.json').version" | tr -d '[:space:]')
 ./docker_node npm install
 ./docker_node npm test
 ./docker_node npm run build
