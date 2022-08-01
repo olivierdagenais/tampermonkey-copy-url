@@ -17,7 +17,7 @@ case "$ACTION" in
         git checkout -b release/${BRANCH_VERSION} main
 
         echo "Setting version to ${BRANCH_VERSION}.0..."
-        npm --no-git-tag-version version ${BRANCH_VERSION}.0
+        ./docker_node npm --no-git-tag-version version ${BRANCH_VERSION}.0
         ;;
 
     createPatch)
@@ -25,7 +25,7 @@ case "$ACTION" in
         git checkout release/${BRANCH_VERSION}
 
         echo "Incrementing PATCH portion of ${BRANCH_VERSION}..."
-        npm --no-git-tag-version version patch
+        ./docker_node npm --no-git-tag-version version patch
         ;;
 
     *)
@@ -36,10 +36,10 @@ esac
 
 echo "Performing release..."
 git add package-lock.json package.json
-CURRENT_VERSION=$(node -pe "require('./package.json').version")
-npm install
-npm test
-npm run build
+CURRENT_VERSION=$(./docker_node node -pe "require('./package.json').version")
+./docker_node npm install
+./docker_node npm test
+./docker_node npm run build
 git add userscript/index.user.js -f
 git commit -m "release ${CURRENT_VERSION}"
 git tag v${CURRENT_VERSION}
