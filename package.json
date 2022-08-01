@@ -38,7 +38,7 @@
     "namespace": "https://olivierdagenais.github.io/",
     "license": "https://opensource.org/licenses/MIT",
     "match": [
-      "*"
+      "*://*/*"
     ],
     "connect": [],
     "require": [
