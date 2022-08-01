@@ -12,7 +12,7 @@ TAG=${1:?TAG argument is required}
 
 echo "Merging release ${TAG} into live branch..."
 git checkout -B tmp ${TAG}
-git merge -s ours live
+git merge -s ours origin/live
 git checkout live
 git merge tmp
 git branch -D tmp
