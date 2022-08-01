@@ -1,6 +1,6 @@
 {
   "name": "tampermonkey-copy-url",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A Tampermonkey userscript to copy nice-looking URLs to the clipboard.",
   "main": "userscript/index.user.js",
   "scripts": {
@@ -41,8 +41,7 @@
       "*"
     ],
     "connect": [],
-    "require": [
-    ],
+    "require": [],
     "grant": [
       "GM_setClipboard"
     ],
