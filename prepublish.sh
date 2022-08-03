@@ -16,3 +16,7 @@ git merge -s ours origin/live
 git checkout live
 git merge tmp
 git branch -D tmp
+./docker_node npm install
+./docker_node npm run setUrls "live"
+git add package-lock.json package.json
+git commit -m "set URLs for live branch"
