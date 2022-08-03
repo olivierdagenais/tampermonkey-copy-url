@@ -5,6 +5,7 @@
   "main": "userscript/index.user.js",
   "scripts": {
     "test": "jest",
+    "setUrls": "node setUrls.js",
     "build": "webpack"
   },
   "repository": {
