@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name tampermonkey-copy-url
-// @version 1.2.0
+// @version 1.2.1
 // @namespace https://olivierdagenais.github.io/
 // @description A Tampermonkey userscript to copy nice-looking URLs to the clipboard.
 // @author Olivier Dagenais
