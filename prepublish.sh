@@ -20,4 +20,7 @@ git branch -D tmp
 ./docker_node npm install
 ./docker_node npm run setUrls "live"
 git add package-lock.json package.json
+./docker_node npm test
+./docker_node npm run build
+git add userscript/index.user.js -f
 git commit -m "set URLs for live branch"
