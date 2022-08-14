@@ -22,6 +22,6 @@ Allow Tampermonkey's access to local file URIs ([Tampermonkey FAQs](https://tamp
 1. The `release.sh` script has 2 actions:
     1. `createBranch` for when we're ready to prepare a release for a new minor or major version, by branching off of the contents of `main`: `bash release.sh createBranch "1.2"`
     2. `createPatch` for when we want to prepare a release for a new patch version (after adding fixes to the release branch); we just need to provide tha MAJOR.MINOR portions and the PATCH portion will be automatically incremented: `bash release.sh createPatch "1.2"`
-2. Next we push the branch and its release tag: `git push origin release/1.2 --follow-tags`
+2. Next we push the branch and its release tag: `git push origin release/1.2 --tags`
 3. Optionally, we can update the `live` branch with a release: `bash prepublish.sh v1.2.0`
 4. Finally, we push the `live` branch: `git push origin live`
