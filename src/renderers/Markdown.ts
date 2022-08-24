@@ -5,8 +5,8 @@ import { Renderer } from "../Renderer";
 export class Markdown implements Renderer {
     render(link: Link): Clipboard {
         let result : Clipboard = {
-            data: `[${link.text}](${link.destination})`,
-            typeInfo: "text"
+            text: `[${link.text}](${link.destination})`,
+            html: null,
         };
         return result;
     }

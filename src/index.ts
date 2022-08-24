@@ -49,7 +49,36 @@ function handleKeydown(this: Window, e: KeyboardEvent) {
             console.log('rendering Textile...');
             clipboard = renderers[2].render(link);
         }
-        GM_setClipboard(clipboard.data, clipboard.typeInfo);
+        var clipboardItemVersions : {[id:string]: Blob;} = {};
+        clipboardItemVersions["text/plain"] = new Blob(
+            [
+                clipboard.text
+            ],
+            {
+                type: "text/plain",
+            },
+        );
+
+        if (clipboard.html !== null) {
+            clipboardItemVersions["text/html"] = new Blob(
+                [
+                    clipboard.html
+                ],
+                {
+                    type: "text/html",
+                },
+            );
+        }
+        const clipboardItem = new ClipboardItem(clipboardItemVersions);
+        const data = [clipboardItem];
+        navigator.clipboard.write(data).then(
+            () => {
+                console.log("Success")
+            },
+            (e) => {
+                console.log(`Failure: ${e}`)
+            }
+        );
     }
 }
 

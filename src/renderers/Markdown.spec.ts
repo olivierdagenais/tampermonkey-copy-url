@@ -12,5 +12,5 @@ test('should render a simple link', () => {
 
     const actual : Clipboard = cut.render(link);
 
-    assert.equal(actual.data, "[example](https://www.example.com)");
+    assert.equal(actual.text, "[example](https://www.example.com)");
 })
