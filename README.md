@@ -2,6 +2,26 @@
 
 A Tampermonkey userscript to copy nice-looking URLs to the clipboard.
 
+## Installation
+
+1. First, you need to install the Tampermonkey extension for your browser, which can be found at: <https://www.tampermonkey.net/>
+1. If you are using Firefox, follow the one-time configuration in the sub-section below.
+1. You have to decide whether you want to always track the latest version (known as the `live` branch) or one of the release branches (which start with `release/`).  Go to <https://github.com/olivierdagenais/tampermonkey-copy-url/branches> and make your choice.
+1. Navigate to the `userscript/index.user.js` file.
+1. Activate the **Raw** link.  Tampermonkley should detect that a UserScript is there and prompt you to install it.
+1. Tampermonkey will check for updates and prompt you to upgrade when a new version is released.
+
+### Firefox one-time configuration
+
+Since version 87, Firefox's Clipboard API is disabled by default and will result in an error like:
+
+> Uncaught ReferenceError: ClipboardItem is not defined
+
+Clipboard support can be enabled by following these steps:
+
+1. Open a new tab and navigate to about:config
+2. Find the `dom.events.asyncClipboard.clipboardItem` item and set it to **true**.
+
 ## Development
 
 1. Install dependencies with `npm install` or `npm ci`.
