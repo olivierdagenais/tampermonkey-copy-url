@@ -8,8 +8,7 @@ export class GitHub implements Parser {
             // TODO: implement special handling for PRs, issues, source code
             if (titleElement) {
                 const result : Link = {
-                    // TODO: we'll want to escape that HTML into text!
-                    text: titleElement.innerHTML,
+                    text: titleElement.textContent ?? url,
                     destination: url,
                 };
                 return result;
