@@ -4,6 +4,15 @@ import { Link } from "../Link";
 import { Parser } from "../Parser";
 import { GitHub } from "./GitHub";
 
+function testParseLink(html: string, url: string) : Link | null {
+    const dom : JSDOM = new JSDOM(html);
+    const document : Document = dom.window.document;
+    const cut : Parser = new GitHub();
+
+    const actual : Link | null = cut.parseLink(document, url);
+    return actual;
+}
+
 test('should parse a simple GitHub repository link', () => {
     const html = `
 <html>
@@ -20,11 +29,8 @@ test('should parse a simple GitHub repository link', () => {
         <div aria-live="polite" class="sr-only"></div>
     </body>
 </html>`;
-    const dom : JSDOM = new JSDOM(html);
-    const document : Document = dom.window.document;
-    const cut : Parser = new GitHub();
 
-    const actual : Link | null = cut.parseLink(document, "https://github.com/jsdom/jsdom");
+    const actual = testParseLink(html, "https://github.com/jsdom/jsdom");
 
     assert.notEqual(actual, null);
     assert.equal(actual?.destination, "https://github.com/jsdom/jsdom");
@@ -38,11 +44,8 @@ test('should parse a simple GitHub pull request page', () => {
         <title>feat: Improve the clipboard capabilities by olivierdagenais · Pull Request #4 · olivierdagenais/tampermonkey-copy-url</title>
     </head>
 </html>`;
-    const dom : JSDOM = new JSDOM(html);
-    const document : Document = dom.window.document;
-    const cut : Parser = new GitHub();
 
-    const actual : Link | null = cut.parseLink(document, "https://github.com/olivierdagenais/tampermonkey-copy-url/pull/4");
+    const actual = testParseLink(html, "https://github.com/olivierdagenais/tampermonkey-copy-url/pull/4");
 
     assert.notEqual(actual, null);
     assert.equal(actual?.destination, "https://github.com/olivierdagenais/tampermonkey-copy-url/pull/4");
