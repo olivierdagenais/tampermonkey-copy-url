@@ -30,3 +30,21 @@ test('should parse a simple GitHub repository link', () => {
     assert.equal(actual?.destination, "https://github.com/jsdom/jsdom");
     assert.equal(actual?.text, "jsdom/jsdom: A JavaScript implementation of various web standards, for use with Node.js");
 })
+
+test('should parse a simple GitHub pull request page', () => {
+    const html = `
+<html>
+    <head>
+        <title>feat: Improve the clipboard capabilities by olivierdagenais · Pull Request #4 · olivierdagenais/tampermonkey-copy-url</title>
+    </head>
+</html>`;
+    const dom : JSDOM = new JSDOM(html);
+    const document : Document = dom.window.document;
+    const cut : Parser = new GitHub();
+
+    const actual : Link | null = cut.parseLink(document, "https://github.com/olivierdagenais/tampermonkey-copy-url/pull/4");
+
+    assert.notEqual(actual, null);
+    assert.equal(actual?.destination, "https://github.com/olivierdagenais/tampermonkey-copy-url/pull/4");
+    assert.equal(actual?.text, "olivierdagenais/tampermonkey-copy-url#4: feat: Improve the clipboard capabilities by olivierdagenais");
+})
