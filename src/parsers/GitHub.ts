@@ -8,13 +8,13 @@ export class GitHub implements Parser {
             // TODO: implement special handling for PRs, issues, source code
             if (titleElement) {
                 var titleString = titleElement.textContent ?? url;
-                const prOrIssueUrlRegex = /https:\/\/github.com\/(?<userOrOrg>[^/]+)\/(?<repo>[^/]+)\/(?:.+)\/(?<id>\d+)/;
-                const prOrIssueUrlMatch = url.match(prOrIssueUrlRegex);
-                if (prOrIssueUrlMatch) {
-                    const prOrIssueTitleRegex = /(?<title>.+) · (?:.+) #(?<id>\d+) · (?<userOrOrg>[^/]+)\/(?<repo>.+)/;
-                    const prOrIssueTitleMatch = titleString.match(prOrIssueTitleRegex);
-                    if (prOrIssueTitleMatch && prOrIssueTitleMatch.groups) {
-                        const groups = prOrIssueTitleMatch.groups;
+                const numberedUrlRegex = /https:\/\/github.com\/(?<userOrOrg>[^/]+)\/(?<repo>[^/]+)\/(?:.+)\/(?<id>\d+)/;
+                const numberedUrlMatch = url.match(numberedUrlRegex);
+                if (numberedUrlMatch) {
+                    const numberedTitleRegex = /(?<title>.+) · (?:.+) #(?<id>\d+) · (?<userOrOrg>[^/]+)\/(?<repo>.+)/;
+                    const numberedTitleMatch = titleString.match(numberedTitleRegex);
+                    if (numberedTitleMatch && numberedTitleMatch.groups) {
+                        const groups = numberedTitleMatch.groups;
                         titleString = `${groups.userOrOrg}/${groups.repo}#${groups.id}: ${groups.title}`;
                     }
                     const result : Link = {
