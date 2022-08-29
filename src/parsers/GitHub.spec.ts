@@ -51,3 +51,18 @@ test('should parse a simple GitHub pull request page', () => {
     assert.equal(actual?.destination, "https://github.com/olivierdagenais/tampermonkey-copy-url/pull/4");
     assert.equal(actual?.text, "olivierdagenais/tampermonkey-copy-url#4: feat: Improve the clipboard capabilities by olivierdagenais");
 })
+
+test('should parse a GitHub pull request page with a deep link', () => {
+    const html = `
+<html>
+    <head>
+        <title>feat: Improve the clipboard capabilities by olivierdagenais · Pull Request #4 · olivierdagenais/tampermonkey-copy-url</title>
+    </head>
+</html>`;
+
+    const actual = testParseLink(html, "https://github.com/olivierdagenais/tampermonkey-copy-url/pull/4/commits/98f37a494d7611668adf410163133167b827e721#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5R14");
+
+    assert.notEqual(actual, null);
+    assert.equal(actual?.destination, "https://github.com/olivierdagenais/tampermonkey-copy-url/pull/4/commits/98f37a494d7611668adf410163133167b827e721#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5R14");
+    assert.equal(actual?.text, "olivierdagenais/tampermonkey-copy-url#4: feat: Improve the clipboard capabilities by olivierdagenais");
+})
