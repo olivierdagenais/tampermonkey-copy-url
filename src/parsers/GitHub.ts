@@ -8,7 +8,7 @@ export class GitHub implements Parser {
             // TODO: implement special handling for PRs, issues, source code
             if (titleElement) {
                 var titleString = titleElement.textContent ?? url;
-                const prOrIssueUrlRegex = /https:\/\/github.com\/(?<userOrOrg>[^/]+)\/(?<repo>[^/]+)\/(?:pull|issues)\/(?<id>\d+)/;
+                const prOrIssueUrlRegex = /https:\/\/github.com\/(?<userOrOrg>[^/]+)\/(?<repo>[^/]+)\/(?:.+)\/(?<id>\d+)/;
                 const prOrIssueUrlMatch = url.match(prOrIssueUrlRegex);
                 if (prOrIssueUrlMatch) {
                     const prOrIssueTitleRegex = /(?<title>.+) · (?:.+) #(?<id>\d+) · (?<userOrOrg>[^/]+)\/(?<repo>.+)/;
