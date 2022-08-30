@@ -8,14 +8,30 @@ export class GitHub implements Parser {
             // TODO: implement special handling for PRs, issues, source code
             if (titleElement) {
                 var titleString = titleElement.textContent ?? url;
-                const numberedUrlRegex = /https:\/\/github.com\/(?<userOrOrg>[^/]+)\/(?<repo>[^/]+)\/(?:.+)\/(?<id>\d+)/;
-                const numberedUrlMatch = url.match(numberedUrlRegex);
-                if (numberedUrlMatch) {
-                    const numberedTitleRegex = /(?<title>.+) · (?:.+) #(?<id>\d+) · (?<userOrOrg>[^/]+)\/(?<repo>.+)/;
-                    const numberedTitleMatch = titleString.match(numberedTitleRegex);
-                    if (numberedTitleMatch && numberedTitleMatch.groups) {
-                        const groups = numberedTitleMatch.groups;
-                        titleString = `${groups.userOrOrg}/${groups.repo}#${groups.id}: ${groups.title}`;
+                const blobUrlRegex = /https:\/\/github.com\/(?<userOrOrg>[^/]+)\/(?<repo>[^/]+)\/blob\/(?<refSpecAndPath>.+)/;
+                const blobUrlMatch = url.match(blobUrlRegex);
+                if (blobUrlMatch && blobUrlMatch.groups) {
+                    const blobUrlGroups = blobUrlMatch.groups;
+                    const refSpecAndPath = blobUrlGroups.refSpecAndPath;
+                    const blobTitleRegex = /[^/]+\/(?<fileName>.+) at (?<refSpec>.+) · (?<userOrOrg>[^/]+)\/(?<repo>.+)/;
+                    const blobTitleMatch = titleString.match(blobTitleRegex);
+                    if (blobTitleMatch && blobTitleMatch.groups) {
+                        const blobTitleGroups = blobTitleMatch.groups;
+                        const refSpec = blobTitleGroups.refSpec;
+                        const path = refSpecAndPath.substring(refSpec.length + 1 /* the slash */);
+                        titleString = `${path} at ${refSpec} in ${blobUrlGroups.userOrOrg}/${blobUrlGroups.repo}`;
+                    }
+                }
+                else {
+                    const numberedUrlRegex = /https:\/\/github.com\/(?<userOrOrg>[^/]+)\/(?<repo>[^/]+)\/(?:.+)\/(?<id>\d+)/;
+                    const numberedUrlMatch = url.match(numberedUrlRegex);
+                    if (numberedUrlMatch) {
+                        const numberedTitleRegex = /(?<title>.+) · (?:.+) #(?<id>\d+) · (?<userOrOrg>[^/]+)\/(?<repo>.+)/;
+                        const numberedTitleMatch = titleString.match(numberedTitleRegex);
+                        if (numberedTitleMatch && numberedTitleMatch.groups) {
+                            const groups = numberedTitleMatch.groups;
+                            titleString = `${groups.userOrOrg}/${groups.repo}#${groups.id}: ${groups.title}`;
+                        }
                     }
                 }
                 const result : Link = {

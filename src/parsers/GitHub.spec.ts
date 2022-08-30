@@ -96,3 +96,18 @@ test('should parse a GitHub issue page', () => {
     assert.equal(actual?.destination, "https://github.com/jenkinsci/stapler/issues/219");
     assert.equal(actual?.text, "jenkinsci/stapler#219: Nondeterministic output of processors");
 })
+
+test('should parse a GitHub source code link page', () => {
+    const html = `
+<html>
+    <head>
+        <title>tampermonkey-copy-url/index.ts at main · olivierdagenais/tampermonkey-copy-url</title>
+    </head>
+</html>`;
+
+    const actual = testParseLink(html, "https://github.com/olivierdagenais/tampermonkey-copy-url/blob/main/src/index.ts");
+
+    assert.notEqual(actual, null);
+    assert.equal(actual?.destination, "https://github.com/olivierdagenais/tampermonkey-copy-url/blob/main/src/index.ts");
+    assert.equal(actual?.text, "src/index.ts at main in olivierdagenais/tampermonkey-copy-url")
+})
