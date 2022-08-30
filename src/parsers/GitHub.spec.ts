@@ -81,3 +81,18 @@ test('should parse a GitHub discussion page', () => {
     assert.equal(actual?.destination, "https://github.com/microsoft/WSL/discussions/6128");
     assert.equal(actual?.text, "microsoft/WSL#6128: How to execute WSL commands from a windows batch file?");
 })
+
+test('should parse a GitHub issue page', () => {
+    const html = `
+<html>
+    <head>
+        <title>Nondeterministic output of processors · Issue #219 · jenkinsci/stapler</title>
+    </head>
+</html>`;
+
+    const actual = testParseLink(html, "https://github.com/jenkinsci/stapler/issues/219");
+
+    assert.notEqual(actual, null);
+    assert.equal(actual?.destination, "https://github.com/jenkinsci/stapler/issues/219");
+    assert.equal(actual?.text, "jenkinsci/stapler#219: Nondeterministic output of processors");
+})
