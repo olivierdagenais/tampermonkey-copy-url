@@ -111,3 +111,18 @@ test('should parse a GitHub source code link page', () => {
     assert.equal(actual?.destination, "https://github.com/olivierdagenais/tampermonkey-copy-url/blob/main/src/index.ts");
     assert.equal(actual?.text, "src/index.ts at main in olivierdagenais/tampermonkey-copy-url")
 })
+
+test('should parse a GitHub source code link page with refSpec containing a slash', () => {
+    const html = `
+<html>
+    <head>
+        <title>tampermonkey-copy-url/index.ts at release/1.1 · olivierdagenais/tampermonkey-copy-url</title>
+    </head>
+</html>`;
+
+    const actual = testParseLink(html, "https://github.com/olivierdagenais/tampermonkey-copy-url/blob/release/1.1/src/index.ts");
+
+    assert.notEqual(actual, null);
+    assert.equal(actual?.destination, "https://github.com/olivierdagenais/tampermonkey-copy-url/blob/release/1.1/src/index.ts");
+    assert.equal(actual?.text, "src/index.ts at release/1.1 in olivierdagenais/tampermonkey-copy-url")
+})
