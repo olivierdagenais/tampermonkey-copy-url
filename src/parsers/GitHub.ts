@@ -17,11 +17,6 @@ export class GitHub implements Parser {
                         const groups = numberedTitleMatch.groups;
                         titleString = `${groups.userOrOrg}/${groups.repo}#${groups.id}: ${groups.title}`;
                     }
-                    const result : Link = {
-                        text: titleString,
-                        destination: url,
-                    };
-                    return result;
                 }
                 const result : Link = {
                     text: titleString,
