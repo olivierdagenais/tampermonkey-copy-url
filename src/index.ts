@@ -22,6 +22,8 @@ const parsers : Parser[] = [
     new Default(),
 ];
 
+var statusPopup : HTMLDivElement | null;
+
 function handleKeydown(this: Window, e: KeyboardEvent) {
     if (e.ctrlKey && e.key == "o") {
         e.preventDefault();
@@ -69,16 +71,56 @@ function handleKeydown(this: Window, e: KeyboardEvent) {
                 },
             );
         }
+
+        if (statusPopup == null) {
+            statusPopup = document.createElement("div");
+            const styleAttribute = document.createAttribute("style");
+            styleAttribute.value = `
+                position: absolute;
+                top:0;
+                right: 0;
+                z-index: 1000;
+                background-color: white;
+                padding: 5px;
+                display: none;
+            `;
+            statusPopup.attributes.setNamedItem(styleAttribute);
+            document.body.appendChild(statusPopup);
+        }
         const clipboardItem = new ClipboardItem(clipboardItemVersions);
         const data = [clipboardItem];
         navigator.clipboard.write(data).then(
             () => {
-                console.log("Success")
+                const successHtml = `Success!`;
+                if (statusPopup!= null){
+                    statusPopup.innerHTML = successHtml;
+                }
+                else {
+                    console.log(successHtml);
+                }
             },
             (e) => {
-                console.log(`Failure: ${e}`)
+                const failureHtml = `Failure: ${e}`;
+                if (statusPopup!= null){
+                    statusPopup.innerHTML = failureHtml;
+                }
+                else {
+                    console.log(failureHtml);
+                }
             }
         );
+        if (statusPopup != null) {
+            // TODO: fade in?
+            statusPopup.style.display = "block";
+            this.window.setTimeout(hideStatusPopup, 5000 /*ms*/);
+        }
+    }
+}
+
+function hideStatusPopup() {
+    if (statusPopup != null) {
+        // TODO: fade out?
+        statusPopup.style.display = "none";
     }
 }
 
