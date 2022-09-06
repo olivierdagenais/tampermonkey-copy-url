@@ -81,6 +81,7 @@ function handleKeydown(this: Window, e: KeyboardEvent) {
                 top:0;
                 right: 0;
                 z-index: 1000;
+                color: black;
                 background-color: white;
                 padding: 5px;
                 display: none;
