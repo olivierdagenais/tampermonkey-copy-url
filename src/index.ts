@@ -106,7 +106,8 @@ function handleKeydown(this: Window, e: KeyboardEvent) {
                 }
             },
             (e) => {
-                const failureHtml = `${status}<br />Failure: ${e}`;
+                const failureHtml = `${status}<br />`
+                    + `<span style="color:darkred">Failure: ${e}</span>`;
                 if (statusPopup!= null){
                     statusPopup.innerHTML = failureHtml;
                 }
