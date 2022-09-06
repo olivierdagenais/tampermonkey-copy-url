@@ -34,23 +34,24 @@ function handleKeydown(this: Window, e: KeyboardEvent) {
             text: url,
             destination: url,
         };
+        var selectedParser : Parser = parsers[parsers.length - 1];
         for (let i = 0; i < parsers.length; i++) {
             const parser = parsers[i];
+            selectedParser = parser;
             var candidate : Link | null = parser.parseLink(document, url);
             if (candidate) {
                 link = candidate;
                 break;
             }
         }
-        var clipboard: Clipboard;
+        var selectedRenderer : Renderer = renderers[0];
         if (!e.altKey) {
-            console.log('rendering HTML...');
-            clipboard = renderers[0].render(link);
+            selectedRenderer = renderers[0];
         }
         else {
-            console.log('rendering Textile...');
-            clipboard = renderers[2].render(link);
+            selectedRenderer = renderers[2];
         }
+        const clipboard: Clipboard = selectedRenderer.render(link);
         var clipboardItemVersions : {[id:string]: Blob;} = {};
         clipboardItemVersions["text/plain"] = new Blob(
             [
@@ -88,10 +89,14 @@ function handleKeydown(this: Window, e: KeyboardEvent) {
             document.body.appendChild(statusPopup);
         }
         const clipboardItem = new ClipboardItem(clipboardItemVersions);
+        const status = `Parsed using ${selectedParser.constructor['name']}:`
+            + `<br />Destination: ${link.destination}`
+            + `<br />Text: ${link.text}`
+            + `<br />Rendered with ${selectedRenderer.constructor['name']}.`;
         const data = [clipboardItem];
         navigator.clipboard.write(data).then(
             () => {
-                const successHtml = `Success!`;
+                const successHtml = `${status}<br />Success!`;
                 if (statusPopup!= null){
                     statusPopup.innerHTML = successHtml;
                 }
@@ -100,7 +105,7 @@ function handleKeydown(this: Window, e: KeyboardEvent) {
                 }
             },
             (e) => {
-                const failureHtml = `Failure: ${e}`;
+                const failureHtml = `${status}<br />Failure: ${e}`;
                 if (statusPopup!= null){
                     statusPopup.innerHTML = failureHtml;
                 }
