@@ -77,7 +77,7 @@ function handleKeydown(this: Window, e: KeyboardEvent) {
             statusPopup = document.createElement("div");
             const styleAttribute = document.createAttribute("style");
             styleAttribute.value = `
-                position: absolute;
+                position: fixed;
                 top:0;
                 right: 0;
                 z-index: 65535;
