@@ -98,30 +98,25 @@ function handleKeydown(this: Window, e: KeyboardEvent) {
         navigator.clipboard.write(data).then(
             () => {
                 const successHtml = `${status}<br />Success!`;
-                if (statusPopup!= null){
-                    statusPopup.innerHTML = successHtml;
-                }
-                else {
-                    console.log(successHtml);
-                }
+                showStatusPopup(successHtml);
             },
             (e) => {
                 const failureHtml = `${status}<br />`
                     + `<span style="color:darkred">Failure: ${e}</span>`;
-                if (statusPopup!= null){
-                    statusPopup.innerHTML = failureHtml;
-                }
-                else {
-                    console.log(failureHtml);
-                }
+                showStatusPopup(failureHtml);
             }
         );
-        if (statusPopup != null) {
-            // TODO: fade in?
-            statusPopup.style.display = "block";
-            this.window.setTimeout(hideStatusPopup, 5000 /*ms*/);
-        }
     }
+}
+
+function showStatusPopup(innerHTML: string) {
+    if (statusPopup != null) {
+        // TODO: fade in?
+        statusPopup.innerHTML = innerHTML;
+        statusPopup.style.display = "block";
+        window.setTimeout(hideStatusPopup, 5000 /*ms*/);
+    }
+    console.log(innerHTML);
 }
 
 function hideStatusPopup() {
