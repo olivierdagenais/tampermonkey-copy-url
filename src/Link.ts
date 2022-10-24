@@ -2,4 +2,4 @@
 export type Link = {
     text: string;
     destination: string;
-}
+};

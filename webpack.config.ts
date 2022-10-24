@@ -3,7 +3,7 @@ import { Configuration, BannerPlugin } from "webpack";
 import { generateHeader } from "./plugins/userscript.plugin";
 
 const config: Configuration = {
-    mode: 'none',
+    mode: "none",
     entry: "./src/index.ts",
     output: {
         path: path.resolve(__dirname, "userscript"),
@@ -27,8 +27,8 @@ const config: Configuration = {
             banner: generateHeader(),
             raw: true,
             entryOnly: true,
-        })
-    ]
+        }),
+    ],
 };
 
 export default config;

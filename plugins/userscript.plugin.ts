@@ -1,10 +1,10 @@
-import p from '../package.json';
+import p from "../package.json";
 
 /**
  * Userscript's all headers.
  */
 interface UserScriptOptions {
-    'require-template': string;
+    "require-template": string;
     name: string;
     namespace: string;
     description: string;
@@ -28,7 +28,7 @@ interface UserScriptOptions {
     require: string[];
     resources: string[];
     connect: string[];
-    'run-at': string;
+    "run-at": string;
     grant: string[];
     antifeature: string[];
     noframes: boolean;
@@ -53,33 +53,34 @@ const userscript = packageJson.userscript as Partial<UserScriptOptions>;
 
 /**
  * Generate a userscript's headers from "package.json" file.
- * 
+ *
  * @returns {string} Return userscript's header.
  */
 export function generateHeader() {
-
     // The regular expression used to remove the dependency version string prefix.
     const dependencyVersionRegExp = /^[\^~]/;
     // Userscript's header.
-    const headers = ['// ==UserScript=='];
+    const headers = ["// ==UserScript=="];
 
     /**
-     * Add userscript header's name. 
+     * Add userscript header's name.
      * If the name is not set, the package name is used. If neither is set, an error is thrown.
      */
     if (packageJson.name || userscript.name) {
         headers.push(`// @name ${userscript.name ?? packageJson.name}`);
     } else {
-        throw new Error('No name specified in package.json');
+        throw new Error("No name specified in package.json");
     }
     /**
-     * Add userscript header's version. 
+     * Add userscript header's version.
      * If the version is not set, the package version is used. If neither is set, an error is thrown.
      */
     if (packageJson.version || userscript.version) {
-        headers.push(`// @version ${userscript.version ?? packageJson.version}`);
+        headers.push(
+            `// @version ${userscript.version ?? packageJson.version}`
+        );
     } else {
-        throw new Error('No version specified in package.json');
+        throw new Error("No version specified in package.json");
     }
     // Add userscript header's namespace.
     if (userscript.namespace) {
@@ -87,7 +88,11 @@ export function generateHeader() {
     }
     // Add userscript header's description.
     if (packageJson.description || userscript.description) {
-        headers.push(`// @description ${userscript.description ?? packageJson.description}`);
+        headers.push(
+            `// @description ${
+                userscript.description ?? packageJson.description
+            }`
+        );
     }
     // Add userscript header's author.
     if (packageJson.author || userscript.author) {
@@ -95,7 +100,9 @@ export function generateHeader() {
     }
     // Add userscript header's homepage, homepageURL, website or source.
     if (packageJson.homepage || userscript.homepage) {
-        headers.push(`// @homepage ${userscript.homepage ?? packageJson['homepage']}`);
+        headers.push(
+            `// @homepage ${userscript.homepage ?? packageJson["homepage"]}`
+        );
     } else if (userscript.homepageURL) {
         headers.push(`// @homepageURL ${userscript.homepageURL}`);
     } else if (userscript.website) {
@@ -149,20 +156,24 @@ export function generateHeader() {
     }
     /**
      * Add userscript header's requires.
-     * The package name and version will be obtained from the "dependencies" field, 
+     * The package name and version will be obtained from the "dependencies" field,
      * and the jsdelivr link will be generated automatically.
-     * You can also set the string template with the parameters "{dependencyName}" and "{dependencyVersion}" 
+     * You can also set the string template with the parameters "{dependencyName}" and "{dependencyVersion}"
      * in the "require-template" field of the "userscript" object in the "package.json" file.
      */
     if (packageJson.dependencies) {
-        const urlTemplate = userscript['require-template'] ?? 'https://cdn.jsdelivr.net/npm/{dependencyName}@{dependencyVersion}';
+        const urlTemplate =
+            userscript["require-template"] ??
+            "https://cdn.jsdelivr.net/npm/{dependencyName}@{dependencyVersion}";
         const requireTemplate = `// @require ${urlTemplate}`;
         for (const dependencyName in packageJson.dependencies) {
-            const dependencyVersion = packageJson.dependencies[dependencyName].replace(dependencyVersionRegExp, '');
+            const dependencyVersion = packageJson.dependencies[
+                dependencyName
+            ].replace(dependencyVersionRegExp, "");
             headers.push(
                 requireTemplate
-                    .replace('{dependencyName}', dependencyName)
-                    .replace('{dependencyVersion}', dependencyVersion)
+                    .replace("{dependencyName}", dependencyName)
+                    .replace("{dependencyVersion}", dependencyVersion)
             );
         }
     }
@@ -185,8 +196,8 @@ export function generateHeader() {
         }
     }
     // Add userscript header's run-at.
-    if (userscript['run-at']) {
-        headers.push(`// @run-at ${userscript['run-at']}`);
+    if (userscript["run-at"]) {
+        headers.push(`// @run-at ${userscript["run-at"]}`);
     }
     // Add userscript header's grants.
     if (userscript.grant && userscript.grant instanceof Array) {
@@ -202,13 +213,13 @@ export function generateHeader() {
     }
     // Add userscript header's noframes.
     if (userscript.noframes) {
-        headers.push('// @noframes');
+        headers.push("// @noframes");
     }
     // Add userscript header's nocompat.
     if (userscript.nocompat) {
         headers.push(`// @nocompat ${userscript.nocompat}`);
     }
     // Userscript header's ending.
-    headers.push('// ==/UserScript==\n')
-    return headers.join('\n');
+    headers.push("// ==/UserScript==\n");
+    return headers.join("\n");
 }

@@ -4,16 +4,16 @@ import { Link } from "../Link";
 import { Parser } from "../Parser";
 import { GitHub } from "./GitHub";
 
-function testParseLink(html: string, url: string) : Link | null {
-    const dom : JSDOM = new JSDOM(html);
-    const document : Document = dom.window.document;
-    const cut : Parser = new GitHub();
+function testParseLink(html: string, url: string): Link | null {
+    const dom: JSDOM = new JSDOM(html);
+    const document: Document = dom.window.document;
+    const cut: Parser = new GitHub();
 
-    const actual : Link | null = cut.parseLink(document, url);
+    const actual: Link | null = cut.parseLink(document, url);
     return actual;
 }
 
-test('should parse a simple GitHub repository link', () => {
+test("should parse a simple GitHub repository link", () => {
     const html = `
 <html>
     <head>
@@ -34,10 +34,13 @@ test('should parse a simple GitHub repository link', () => {
 
     assert.notEqual(actual, null);
     assert.equal(actual?.destination, "https://github.com/jsdom/jsdom");
-    assert.equal(actual?.text, "jsdom/jsdom: A JavaScript implementation of various web standards, for use with Node.js");
-})
+    assert.equal(
+        actual?.text,
+        "jsdom/jsdom: A JavaScript implementation of various web standards, for use with Node.js"
+    );
+});
 
-test('should parse a simple GitHub pull request page', () => {
+test("should parse a simple GitHub pull request page", () => {
     const html = `
 <html>
     <head>
@@ -45,14 +48,23 @@ test('should parse a simple GitHub pull request page', () => {
     </head>
 </html>`;
 
-    const actual = testParseLink(html, "https://github.com/olivierdagenais/tampermonkey-copy-url/pull/4");
+    const actual = testParseLink(
+        html,
+        "https://github.com/olivierdagenais/tampermonkey-copy-url/pull/4"
+    );
 
     assert.notEqual(actual, null);
-    assert.equal(actual?.destination, "https://github.com/olivierdagenais/tampermonkey-copy-url/pull/4");
-    assert.equal(actual?.text, "olivierdagenais/tampermonkey-copy-url#4: feat: Improve the clipboard capabilities by olivierdagenais");
-})
+    assert.equal(
+        actual?.destination,
+        "https://github.com/olivierdagenais/tampermonkey-copy-url/pull/4"
+    );
+    assert.equal(
+        actual?.text,
+        "olivierdagenais/tampermonkey-copy-url#4: feat: Improve the clipboard capabilities by olivierdagenais"
+    );
+});
 
-test('should parse a GitHub pull request page with a deep link', () => {
+test("should parse a GitHub pull request page with a deep link", () => {
     const html = `
 <html>
     <head>
@@ -60,14 +72,23 @@ test('should parse a GitHub pull request page with a deep link', () => {
     </head>
 </html>`;
 
-    const actual = testParseLink(html, "https://github.com/olivierdagenais/tampermonkey-copy-url/pull/4/commits/98f37a494d7611668adf410163133167b827e721#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5R14");
+    const actual = testParseLink(
+        html,
+        "https://github.com/olivierdagenais/tampermonkey-copy-url/pull/4/commits/98f37a494d7611668adf410163133167b827e721#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5R14"
+    );
 
     assert.notEqual(actual, null);
-    assert.equal(actual?.destination, "https://github.com/olivierdagenais/tampermonkey-copy-url/pull/4/commits/98f37a494d7611668adf410163133167b827e721#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5R14");
-    assert.equal(actual?.text, "olivierdagenais/tampermonkey-copy-url#4: feat: Improve the clipboard capabilities by olivierdagenais");
-})
+    assert.equal(
+        actual?.destination,
+        "https://github.com/olivierdagenais/tampermonkey-copy-url/pull/4/commits/98f37a494d7611668adf410163133167b827e721#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5R14"
+    );
+    assert.equal(
+        actual?.text,
+        "olivierdagenais/tampermonkey-copy-url#4: feat: Improve the clipboard capabilities by olivierdagenais"
+    );
+});
 
-test('should parse a GitHub discussion page', () => {
+test("should parse a GitHub discussion page", () => {
     const html = `
 <html>
     <head>
@@ -75,14 +96,23 @@ test('should parse a GitHub discussion page', () => {
     </head>
 </html>`;
 
-    const actual = testParseLink(html, "https://github.com/microsoft/WSL/discussions/6128");
+    const actual = testParseLink(
+        html,
+        "https://github.com/microsoft/WSL/discussions/6128"
+    );
 
     assert.notEqual(actual, null);
-    assert.equal(actual?.destination, "https://github.com/microsoft/WSL/discussions/6128");
-    assert.equal(actual?.text, "microsoft/WSL#6128: How to execute WSL commands from a windows batch file?");
-})
+    assert.equal(
+        actual?.destination,
+        "https://github.com/microsoft/WSL/discussions/6128"
+    );
+    assert.equal(
+        actual?.text,
+        "microsoft/WSL#6128: How to execute WSL commands from a windows batch file?"
+    );
+});
 
-test('should parse a GitHub issue page', () => {
+test("should parse a GitHub issue page", () => {
     const html = `
 <html>
     <head>
@@ -90,14 +120,23 @@ test('should parse a GitHub issue page', () => {
     </head>
 </html>`;
 
-    const actual = testParseLink(html, "https://github.com/jenkinsci/stapler/issues/219");
+    const actual = testParseLink(
+        html,
+        "https://github.com/jenkinsci/stapler/issues/219"
+    );
 
     assert.notEqual(actual, null);
-    assert.equal(actual?.destination, "https://github.com/jenkinsci/stapler/issues/219");
-    assert.equal(actual?.text, "jenkinsci/stapler#219: Nondeterministic output of processors");
-})
+    assert.equal(
+        actual?.destination,
+        "https://github.com/jenkinsci/stapler/issues/219"
+    );
+    assert.equal(
+        actual?.text,
+        "jenkinsci/stapler#219: Nondeterministic output of processors"
+    );
+});
 
-test('should parse a GitHub source code link page', () => {
+test("should parse a GitHub source code link page", () => {
     const html = `
 <html>
     <head>
@@ -105,14 +144,23 @@ test('should parse a GitHub source code link page', () => {
     </head>
 </html>`;
 
-    const actual = testParseLink(html, "https://github.com/olivierdagenais/tampermonkey-copy-url/blob/main/src/index.ts");
+    const actual = testParseLink(
+        html,
+        "https://github.com/olivierdagenais/tampermonkey-copy-url/blob/main/src/index.ts"
+    );
 
     assert.notEqual(actual, null);
-    assert.equal(actual?.destination, "https://github.com/olivierdagenais/tampermonkey-copy-url/blob/main/src/index.ts");
-    assert.equal(actual?.text, "src/index.ts at main in olivierdagenais/tampermonkey-copy-url")
-})
+    assert.equal(
+        actual?.destination,
+        "https://github.com/olivierdagenais/tampermonkey-copy-url/blob/main/src/index.ts"
+    );
+    assert.equal(
+        actual?.text,
+        "src/index.ts at main in olivierdagenais/tampermonkey-copy-url"
+    );
+});
 
-test('should parse a GitHub source code link page with refSpec containing a slash', () => {
+test("should parse a GitHub source code link page with refSpec containing a slash", () => {
     const html = `
 <html>
     <head>
@@ -120,9 +168,18 @@ test('should parse a GitHub source code link page with refSpec containing a slas
     </head>
 </html>`;
 
-    const actual = testParseLink(html, "https://github.com/olivierdagenais/tampermonkey-copy-url/blob/release/1.1/src/index.ts");
+    const actual = testParseLink(
+        html,
+        "https://github.com/olivierdagenais/tampermonkey-copy-url/blob/release/1.1/src/index.ts"
+    );
 
     assert.notEqual(actual, null);
-    assert.equal(actual?.destination, "https://github.com/olivierdagenais/tampermonkey-copy-url/blob/release/1.1/src/index.ts");
-    assert.equal(actual?.text, "src/index.ts at release/1.1 in olivierdagenais/tampermonkey-copy-url")
-})
+    assert.equal(
+        actual?.destination,
+        "https://github.com/olivierdagenais/tampermonkey-copy-url/blob/release/1.1/src/index.ts"
+    );
+    assert.equal(
+        actual?.text,
+        "src/index.ts at release/1.1 in olivierdagenais/tampermonkey-copy-url"
+    );
+});
