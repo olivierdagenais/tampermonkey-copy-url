@@ -5,6 +5,7 @@
     "main": "userscript/index.user.js",
     "scripts": {
         "test": "vitest run",
+        "liveTest": "vitest",
         "setUrls": "node setUrls.js",
         "build": "webpack"
     },
