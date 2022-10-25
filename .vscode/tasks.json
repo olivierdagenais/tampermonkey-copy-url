@@ -26,6 +26,28 @@
             }
         },
         {
+            "label": "Live Test",
+            "type": "shell",
+            "command": "./docker_node npm run liveTest",
+            "windows": {
+                "command": "wsl",
+                "args": ["bash", "-c", "./docker_node npm run liveTest"]
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "never",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            }
+        },
+        {
             "label": "Build",
             "type": "shell",
             "command": "./docker_node npm run build",

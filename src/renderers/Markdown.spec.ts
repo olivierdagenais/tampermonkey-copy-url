@@ -1,4 +1,4 @@
-import assert from "assert";
+import { assert, test } from "vitest";
 import { Clipboard } from "../Clipboard";
 import { Link } from "../Link";
 import { Markdown } from "./Markdown";

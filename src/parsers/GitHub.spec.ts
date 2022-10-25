@@ -1,4 +1,4 @@
-import assert from "assert";
+import { assert, test } from "vitest";
 import { JSDOM } from "jsdom";
 import { Link } from "../Link";
 import { Parser } from "../Parser";
