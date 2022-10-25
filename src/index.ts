@@ -9,68 +9,53 @@ import { Renderer } from "./Renderer";
 import { Textile } from "./renderers/Textile";
 import { Parser } from "./Parser";
 
-const renderers : Renderer[] = [
-    new Html(),
-    new Markdown(),
-    new Textile(),
-];
+const renderers: Renderer[] = [new Html(), new Markdown(), new Textile()];
 
 // parsers will be attempted in the order defined here
-const parsers : Parser[] = [
+const parsers: Parser[] = [
     new GitHub(),
     // always keep this one LAST in this list!
     new Default(),
 ];
 
-var statusPopup : HTMLDivElement | null;
+var statusPopup: HTMLDivElement | null;
 
 function handleKeydown(this: Window, e: KeyboardEvent) {
     if (e.ctrlKey && e.key == "o") {
         e.preventDefault();
-        console.log('asking the parsers...');
-        const document : Document = window.document;
-        const url : string = window.location.href;
-        var link : Link = {
+        console.log("asking the parsers...");
+        const document: Document = window.document;
+        const url: string = window.location.href;
+        var link: Link = {
             text: url,
             destination: url,
         };
-        var selectedParser : Parser = parsers[parsers.length - 1];
+        var selectedParser: Parser = parsers[parsers.length - 1];
         for (let i = 0; i < parsers.length; i++) {
             const parser = parsers[i];
             selectedParser = parser;
-            var candidate : Link | null = parser.parseLink(document, url);
+            var candidate: Link | null = parser.parseLink(document, url);
             if (candidate) {
                 link = candidate;
                 break;
             }
         }
-        var selectedRenderer : Renderer = renderers[0];
+        var selectedRenderer: Renderer = renderers[0];
         if (!e.altKey) {
             selectedRenderer = renderers[0];
-        }
-        else {
+        } else {
             selectedRenderer = renderers[2];
         }
         const clipboard: Clipboard = selectedRenderer.render(link);
-        var clipboardItemVersions : {[id:string]: Blob;} = {};
-        clipboardItemVersions["text/plain"] = new Blob(
-            [
-                clipboard.text
-            ],
-            {
-                type: "text/plain",
-            },
-        );
+        var clipboardItemVersions: { [id: string]: Blob } = {};
+        clipboardItemVersions["text/plain"] = new Blob([clipboard.text], {
+            type: "text/plain",
+        });
 
         if (clipboard.html !== null) {
-            clipboardItemVersions["text/html"] = new Blob(
-                [
-                    clipboard.html
-                ],
-                {
-                    type: "text/html",
-                },
-            );
+            clipboardItemVersions["text/html"] = new Blob([clipboard.html], {
+                type: "text/html",
+            });
         }
 
         if (statusPopup == null) {
@@ -90,10 +75,11 @@ function handleKeydown(this: Window, e: KeyboardEvent) {
             document.body.appendChild(statusPopup);
         }
         const clipboardItem = new ClipboardItem(clipboardItemVersions);
-        const status = `Parsed using ${selectedParser.constructor['name']}:`
-            + `<br />Destination: ${link.destination}`
-            + `<br />Text: ${link.text}`
-            + `<br />Rendered with ${selectedRenderer.constructor['name']}.`;
+        const status =
+            `Parsed using ${selectedParser.constructor["name"]}:` +
+            `<br />Destination: ${link.destination}` +
+            `<br />Text: ${link.text}` +
+            `<br />Rendered with ${selectedRenderer.constructor["name"]}.`;
         const data = [clipboardItem];
         navigator.clipboard.write(data).then(
             () => {
@@ -101,8 +87,9 @@ function handleKeydown(this: Window, e: KeyboardEvent) {
                 showStatusPopup(successHtml);
             },
             (e) => {
-                const failureHtml = `${status}<br />`
-                    + `<span style="color:darkred">Failure: ${e}</span>`;
+                const failureHtml =
+                    `${status}<br />` +
+                    `<span style="color:darkred">Failure: ${e}</span>`;
                 showStatusPopup(failureHtml);
             }
         );
@@ -131,4 +118,3 @@ async function main(): Promise<void> {
 }
 
 main();
-

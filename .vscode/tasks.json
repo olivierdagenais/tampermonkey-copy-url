@@ -9,11 +9,7 @@
             "command": "./docker_node npm test",
             "windows": {
                 "command": "wsl",
-                "args": [
-                    "bash",
-                    "-c",
-                    "./docker_node npm test",
-                ],
+                "args": ["bash", "-c", "./docker_node npm test"]
             },
             "presentation": {
                 "echo": true,
@@ -21,12 +17,12 @@
                 "focus": true,
                 "panel": "shared",
                 "showReuseMessage": true,
-                "clear": true,
+                "clear": true
             },
             "problemMatcher": [],
             "group": {
                 "kind": "test",
-                "isDefault": true,
+                "isDefault": true
             }
         },
         {
@@ -35,11 +31,7 @@
             "command": "./docker_node npm run build",
             "windows": {
                 "command": "wsl",
-                "args": [
-                    "bash",
-                    "-c",
-                    "./docker_node npm run build",
-                ],
+                "args": ["bash", "-c", "./docker_node npm run build"]
             },
             "presentation": {
                 "echo": true,
@@ -47,13 +39,13 @@
                 "focus": true,
                 "panel": "shared",
                 "showReuseMessage": true,
-                "clear": true,
+                "clear": true
             },
             "problemMatcher": [],
             "group": {
                 "kind": "build",
-                "isDefault": true,
+                "isDefault": true
             }
-        },
+        }
     ]
 }

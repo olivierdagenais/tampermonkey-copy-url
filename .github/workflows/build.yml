@@ -1,30 +1,30 @@
 name: Test, package
 
 on:
-  push:
-  pull_request:
-    branches:
-      - "main"
-      - "release/*"
+    push:
+    pull_request:
+        branches:
+            - "main"
+            - "release/*"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
+        steps:
+            - uses: actions/checkout@v2
 
-    - name: Install Node.JS
-      uses: actions/setup-node@v1
-      with:
-        node-version: 16
-        registry-url: https://registry.npmjs.org/
+            - name: Install Node.JS
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 16
+                  registry-url: https://registry.npmjs.org/
 
-    - name: Install dependencies
-      run: npm install
+            - name: Install dependencies
+              run: npm install
 
-    - name: Run tests
-      run: npm test
-    
-    - name: Package to Javascript bundle
-      run: npm run build
+            - name: Run tests
+              run: npm test
+
+            - name: Package to Javascript bundle
+              run: npm run build

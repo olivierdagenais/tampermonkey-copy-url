@@ -4,7 +4,7 @@ import { Renderer } from "../Renderer";
 
 export class Html implements Renderer {
     render(link: Link): Clipboard {
-        let result : Clipboard = {
+        let result: Clipboard = {
             text: link.text,
             html: `<a href="${link.destination}">${link.text}</a>`,
         };
