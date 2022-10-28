@@ -28,24 +28,38 @@ export class Bitbucket implements Parser {
         const deepCommitUrlMatch = rest.match(deepCommitUrlRegex);
         if (deepCommitUrlMatch && deepCommitUrlMatch.groups) {
             const deepCommitUrlGroups = deepCommitUrlMatch.groups;
-            const commitId = this.getCommitId(deepCommitUrlGroups);
-            const path = deepCommitUrlGroups.path;
-            var prefix = "";
-            if (path) {
-                prefix += `${path} at `;
-            }
-            const linkText = `${prefix}commit ${commitId} in ${project}/${repo}`;
-            const result: Link = {
-                text: linkText,
-                destination: url,
-            };
-            return result;
+            return this.parseDeepCommit(
+                url,
+                project,
+                repo,
+                deepCommitUrlGroups
+            );
         }
         return null;
     }
 
     private getCommitId(matchGroups: { [key: string]: string }): string {
         return matchGroups.commitId.substring(0, 10);
+    }
+
+    private parseDeepCommit(
+        url: string,
+        project: string,
+        repo: string,
+        deepCommitUrlGroups: { [key: string]: string }
+    ) {
+        const commitId = this.getCommitId(deepCommitUrlGroups);
+        const path = deepCommitUrlGroups.path;
+        var prefix = "";
+        if (path) {
+            prefix += `${path} at `;
+        }
+        const linkText = `${prefix}commit ${commitId} in ${project}/${repo}`;
+        const result: Link = {
+            text: linkText,
+            destination: url,
+        };
+        return result;
     }
 
     private parsePullRequest(
