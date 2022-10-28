@@ -13,6 +13,33 @@ function testParseLink(html: string, url: string): Link | null {
     return actual;
 }
 
+test("getPrettyRef with a commit ID", () => {
+    const input = { ref: "69336ecfefe0dec16963b9d2247b7ce5617939d0" };
+    const cut = new Bitbucket();
+
+    const actual = cut.getPrettyRef(input);
+
+    assert.equal(actual, "69336ecfef");
+});
+
+test("getPrettyRef with an encoded ref", () => {
+    const input = { ref: "refs%2Fheads%2Fmaster" };
+    const cut = new Bitbucket();
+
+    const actual = cut.getPrettyRef(input);
+
+    assert.equal(actual, "refs/heads/master");
+});
+
+test("getPrettyRef with a simple tag", () => {
+    const input = { ref: "v0.0.22" };
+    const cut = new Bitbucket();
+
+    const actual = cut.getPrettyRef(input);
+
+    assert.equal(actual, "v0.0.22");
+});
+
 test("should parse a simple Bitbucket pull request page", () => {
     const html = `
 <html>

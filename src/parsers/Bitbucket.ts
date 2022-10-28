@@ -3,12 +3,13 @@ import { Parser } from "../Parser";
 
 const bbUrlRegex =
     /https:\/\/(?<host>[^/]+)\/projects\/(?<project>[^/]+)\/repos\/(?<repo>[^/]+)\/(?<rest>.+)/;
-const commitListUrlRegex = /commits\?until=(?<encodedRef>[^&]+)(&.+)?/;
-const deepCommitUrlRegex = /commits\/(?<commitId>[a-f0-9]+)(#(?<path>[^?]+))?/;
+const commitIdRegex = /([a-f0-9]{40})/;
+const commitListUrlRegex = /commits\?until=(?<ref>[^&]+)(&.+)?/;
+const deepCommitUrlRegex = /commits\/(?<ref>[^#]+)(#(?<path>[^?]+))?/;
 const prUrlRegex = /pull-requests\/(?<prId>\d+)(\/(?<extra>.*))?/;
 const prTitleRegex = /Pull Request #(?<prId>\d+): (?<summary>.+) - Stash/;
 const prExtraRegex =
-    /commits\/(?<commitId>[a-f0-9]+)(#(?<path>[^?]+)(\?f=(?<lineNumber>\d+))?)?/;
+    /commits\/(?<ref>[^#]+)(#(?<path>[^?]+)(\?f=(?<lineNumber>\d+))?)?/;
 
 export class Bitbucket implements Parser {
     parseLink(doc: Document, url: string): Link | null {
@@ -48,8 +49,16 @@ export class Bitbucket implements Parser {
         return null;
     }
 
-    private getCommitId(matchGroups: { [key: string]: string }): string {
-        return matchGroups.commitId.substring(0, 10);
+    getPrettyRef(matchGroups: { [key: string]: string }): string {
+        const ref = matchGroups.ref;
+        if (ref.indexOf("%") > -1) {
+            return decodeURIComponent(ref);
+        }
+        const commitIdMatch = ref.match(commitIdRegex);
+        if (commitIdMatch) {
+            return ref.substring(0, 10);
+        }
+        return ref;
     }
 
     private parseCommitList(
@@ -58,8 +67,7 @@ export class Bitbucket implements Parser {
         repo: string,
         commitListUrlGroups: { [key: string]: string }
     ): Link | null {
-        const encodedRef = commitListUrlGroups.encodedRef;
-        const ref = decodeURIComponent(encodedRef);
+        const ref = this.getPrettyRef(commitListUrlGroups);
         const linkText = `commits at ${ref} in ${project}/${repo}`;
         const result: Link = {
             text: linkText,
@@ -74,13 +82,13 @@ export class Bitbucket implements Parser {
         repo: string,
         deepCommitUrlGroups: { [key: string]: string }
     ) {
-        const commitId = this.getCommitId(deepCommitUrlGroups);
+        const ref = this.getPrettyRef(deepCommitUrlGroups);
         const path = deepCommitUrlGroups.path;
         var prefix = "";
         if (path) {
             prefix += `${path} at `;
         }
-        const linkText = `${prefix}commit ${commitId} in ${project}/${repo}`;
+        const linkText = `${prefix}commit ${ref} in ${project}/${repo}`;
         const result: Link = {
             text: linkText,
             destination: url,
@@ -121,8 +129,8 @@ export class Bitbucket implements Parser {
                 if (prExtraGroups.path) {
                     prefix += `${prExtraGroups.path} at `;
                 }
-                const commitId = this.getCommitId(prExtraGroups);
-                prefix += `commit ${commitId} in `;
+                const ref = this.getPrettyRef(prExtraGroups);
+                prefix += `commit ${ref} in `;
             }
         }
 
