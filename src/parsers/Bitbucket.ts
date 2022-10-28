@@ -3,7 +3,7 @@ import { Parser } from "../Parser";
 
 const bbUrlRegex =
     /https:\/\/(?<host>[^/]+)\/projects\/(?<project>[^/]+)\/repos\/(?<repo>[^/]+)\/(?<rest>.+)/;
-const commitUrlRegex = /commits\/(?<commitId>[a-f0-9]+)(#(?<path>[^?]+))?/;
+const deepCommitUrlRegex = /commits\/(?<commitId>[a-f0-9]+)(#(?<path>[^?]+))?/;
 const prUrlRegex = /pull-requests\/(?<prId>\d+)(\/(?<extra>.*))?/;
 
 const prTitleRegex = /Pull Request #(?<prId>\d+): (?<summary>.+) - Stash/;
@@ -25,11 +25,11 @@ export class Bitbucket implements Parser {
             const prUrlGroups = prUrlMatch.groups;
             return this.parsePullRequest(doc, url, project, repo, prUrlGroups);
         }
-        const commitUrlMatch = rest.match(commitUrlRegex);
-        if (commitUrlMatch && commitUrlMatch.groups) {
-            const commitUrlGroups = commitUrlMatch.groups;
-            const commitId = this.getCommitId(commitUrlGroups);
-            const path = commitUrlGroups.path;
+        const deepCommitUrlMatch = rest.match(deepCommitUrlRegex);
+        if (deepCommitUrlMatch && deepCommitUrlMatch.groups) {
+            const deepCommitUrlGroups = deepCommitUrlMatch.groups;
+            const commitId = this.getCommitId(deepCommitUrlGroups);
+            const path = deepCommitUrlGroups.path;
             var prefix = "";
             if (path) {
                 prefix += `${path} at `;
