@@ -3,9 +3,9 @@ import { Parser } from "../Parser";
 
 const bbUrlRegex =
     /https:\/\/(?<host>[^/]+)\/projects\/(?<project>[^/]+)\/repos\/(?<repo>[^/]+)\/(?<rest>.+)/;
+const commitListUrlRegex = /commits\?until=(?<encodedRef>[^&]+)(&.+)?/;
 const deepCommitUrlRegex = /commits\/(?<commitId>[a-f0-9]+)(#(?<path>[^?]+))?/;
 const prUrlRegex = /pull-requests\/(?<prId>\d+)(\/(?<extra>.*))?/;
-
 const prTitleRegex = /Pull Request #(?<prId>\d+): (?<summary>.+) - Stash/;
 const prExtraRegex =
     /commits\/(?<commitId>[a-f0-9]+)(#(?<path>[^?]+)(\?f=(?<lineNumber>\d+))?)?/;
@@ -25,6 +25,16 @@ export class Bitbucket implements Parser {
             const prUrlGroups = prUrlMatch.groups;
             return this.parsePullRequest(doc, url, project, repo, prUrlGroups);
         }
+        const commitListUrlMatch = rest.match(commitListUrlRegex);
+        if (commitListUrlMatch && commitListUrlMatch.groups) {
+            const commitListUrlGroups = commitListUrlMatch.groups;
+            return this.parseCommitList(
+                url,
+                project,
+                repo,
+                commitListUrlGroups
+            );
+        }
         const deepCommitUrlMatch = rest.match(deepCommitUrlRegex);
         if (deepCommitUrlMatch && deepCommitUrlMatch.groups) {
             const deepCommitUrlGroups = deepCommitUrlMatch.groups;
@@ -40,6 +50,22 @@ export class Bitbucket implements Parser {
 
     private getCommitId(matchGroups: { [key: string]: string }): string {
         return matchGroups.commitId.substring(0, 10);
+    }
+
+    private parseCommitList(
+        url: string,
+        project: string,
+        repo: string,
+        commitListUrlGroups: { [key: string]: string }
+    ): Link | null {
+        const encodedRef = commitListUrlGroups.encodedRef;
+        const ref = decodeURIComponent(encodedRef);
+        const linkText = `commits at ${ref} in ${project}/${repo}`;
+        const result: Link = {
+            text: linkText,
+            destination: url,
+        };
+        return result;
     }
 
     private parseDeepCommit(

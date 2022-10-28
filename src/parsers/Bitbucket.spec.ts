@@ -84,3 +84,24 @@ test("should parse a deep link to a file in a commit", () => {
         "jf_agent/git/github.py at commit 69336ecfef in TP/jf_agent"
     );
 });
+
+test("should parse a link to a list of commits for a ref", () => {
+    const html = `
+<html>
+    <head>
+        <title>ThirdParty / jf_agent - Stash</title>
+    </head>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "https://bitbucket.example.com/projects/TP/repos/jf_agent/commits?until=refs%2Fheads%2Fmaster&merges=include"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "https://bitbucket.example.com/projects/TP/repos/jf_agent/commits?until=refs%2Fheads%2Fmaster&merges=include"
+    );
+    assert.equal(actual?.text, "commits at refs/heads/master in TP/jf_agent");
+});
