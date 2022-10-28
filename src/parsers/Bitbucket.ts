@@ -57,8 +57,13 @@ export class Bitbucket implements Parser {
         return null;
     }
 
-    getPrettyRef(matchGroups: { [key: string]: string }): string {
-        const ref = matchGroups.ref;
+    getPrettyRef(
+        stringOrMatchGroups: string | { [key: string]: string }
+    ): string {
+        const ref: string =
+            typeof stringOrMatchGroups === "string"
+                ? stringOrMatchGroups
+                : stringOrMatchGroups.ref;
         if (ref.indexOf("%") > -1) {
             return decodeURIComponent(ref);
         }

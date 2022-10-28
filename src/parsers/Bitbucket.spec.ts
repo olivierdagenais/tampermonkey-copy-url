@@ -13,6 +13,15 @@ function testParseLink(html: string, url: string): Link | null {
     return actual;
 }
 
+test("getPrettyRef with a commit ID as a string", () => {
+    const input = "69336ecfefe0dec16963b9d2247b7ce5617939d0";
+    const cut = new Bitbucket();
+
+    const actual = cut.getPrettyRef(input);
+
+    assert.equal(actual, "69336ecfef");
+});
+
 test("getPrettyRef with a commit ID", () => {
     const input = { ref: "69336ecfefe0dec16963b9d2247b7ce5617939d0" };
     const cut = new Bitbucket();
