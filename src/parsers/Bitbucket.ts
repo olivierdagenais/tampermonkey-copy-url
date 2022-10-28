@@ -1,10 +1,10 @@
 import { Link } from "../Link";
 import { Parser } from "../Parser";
 
-const commitUrlRegex =
-    /https:\/\/(?<host>[^/]+)\/projects\/(?<project>[^/]+)\/repos\/(?<repo>[^/]+)\/commits\/(?<commitId>[a-f0-9]+)(#(?<path>[^?]+))?/;
-const prUrlRegex =
-    /https:\/\/(?<host>[^/]+)\/projects\/(?<project>[^/]+)\/repos\/(?<repo>[^/]+)\/pull-requests\/(?<prId>\d+)(\/(?<extra>.*))?/;
+const bbUrlRegex =
+    /https:\/\/(?<host>[^/]+)\/projects\/(?<project>[^/]+)\/repos\/(?<repo>[^/]+)\/(?<rest>.+)/;
+const commitUrlRegex = /commits\/(?<commitId>[a-f0-9]+)(#(?<path>[^?]+))?/;
+const prUrlRegex = /pull-requests\/(?<prId>\d+)(\/(?<extra>.*))?/;
 
 const prTitleRegex = /Pull Request #(?<prId>\d+): (?<summary>.+) - Stash/;
 const prExtraRegex =
@@ -12,16 +12,22 @@ const prExtraRegex =
 
 export class Bitbucket implements Parser {
     parseLink(doc: Document, url: string): Link | null {
-        const prUrlMatch = url.match(prUrlRegex);
+        const bbUrlMatch = url.match(bbUrlRegex);
+        if (!bbUrlMatch || !bbUrlMatch.groups) {
+            return null;
+        }
+        const bbUrlGroups = bbUrlMatch.groups;
+        const project = bbUrlGroups.project;
+        const repo = bbUrlGroups.repo;
+        const rest = bbUrlGroups.rest;
+        const prUrlMatch = rest.match(prUrlRegex);
         if (prUrlMatch && prUrlMatch.groups) {
             const prUrlGroups = prUrlMatch.groups;
-            return this.parsePullRequest(doc, url, prUrlGroups);
+            return this.parsePullRequest(doc, url, project, repo, prUrlGroups);
         }
-        const commitUrlMatch = url.match(commitUrlRegex);
+        const commitUrlMatch = rest.match(commitUrlRegex);
         if (commitUrlMatch && commitUrlMatch.groups) {
             const commitUrlGroups = commitUrlMatch.groups;
-            const project = commitUrlGroups.project;
-            const repo = commitUrlGroups.repo;
             const commitId = this.getCommitId(commitUrlGroups);
             const path = commitUrlGroups.path;
             var prefix = "";
@@ -45,10 +51,10 @@ export class Bitbucket implements Parser {
     private parsePullRequest(
         doc: Document,
         url: string,
+        project: string,
+        repo: string,
         prUrlGroups: { [key: string]: string }
     ): Link | null {
-        const project = prUrlGroups.project;
-        const repo = prUrlGroups.repo;
         const prId = prUrlGroups.prId;
         const extra = prUrlGroups.extra;
 
