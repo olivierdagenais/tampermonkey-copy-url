@@ -3,6 +3,8 @@ import { Parser } from "../Parser";
 
 const bbUrlRegex =
     /https:\/\/(?<host>[^/]+)\/projects\/(?<project>[^/]+)\/repos\/(?<repo>[^/]+)\/(?<rest>.+)/;
+const browseUrlRegex =
+    /browse(\/(?<path>[^?]+)(\?at=(?<ref>[^#]+)(#(?<lines>[0-9,-]+))?)?)?/;
 const commitIdRegex = /([a-f0-9]{40})/;
 const commitListUrlRegex = /commits\?until=(?<ref>[^&]+)(&.+)?/;
 const deepCommitUrlRegex = /commits\/(?<ref>[^#]+)(#(?<path>[^?]+))?/;
@@ -21,6 +23,12 @@ export class Bitbucket implements Parser {
         const project = bbUrlGroups.project;
         const repo = bbUrlGroups.repo;
         const rest = bbUrlGroups.rest;
+
+        const browseUrlMatch = rest.match(browseUrlRegex);
+        if (browseUrlMatch && browseUrlMatch.groups) {
+            const browseUrlGroups = browseUrlMatch.groups;
+            return this.parseBrowseUrl(url, project, repo, browseUrlGroups);
+        }
         const prUrlMatch = rest.match(prUrlRegex);
         if (prUrlMatch && prUrlMatch.groups) {
             const prUrlGroups = prUrlMatch.groups;
@@ -59,6 +67,41 @@ export class Bitbucket implements Parser {
             return ref.substring(0, 10);
         }
         return ref;
+    }
+
+    private countLines(input: string): string {
+        var result = "line";
+        if (input.indexOf("-") > -1 || input.indexOf(",") > -1) {
+            result += "s";
+        }
+        return result;
+    }
+
+    private parseBrowseUrl(
+        url: string,
+        project: string,
+        repo: string,
+        browseUrlGroups: { [key: string]: string }
+    ): Link | null {
+        var prefix = "";
+        if (browseUrlGroups.lines) {
+            const lines = browseUrlGroups.lines;
+            const countLines = this.countLines(lines);
+            prefix += `${countLines} ${lines} of `;
+        }
+        if (browseUrlGroups.path) {
+            prefix += `${browseUrlGroups.path} at `;
+        }
+        if (browseUrlGroups.ref) {
+            const ref = this.getPrettyRef(browseUrlGroups);
+            prefix += `commit ${ref} in `;
+        }
+        const linkText = `${prefix}${project}/${repo}`;
+        const result: Link = {
+            text: linkText,
+            destination: url,
+        };
+        return result;
     }
 
     private parseCommitList(

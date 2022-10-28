@@ -132,3 +132,27 @@ test("should parse a link to a list of commits for a ref", () => {
     );
     assert.equal(actual?.text, "commits at refs/heads/master in TP/jf_agent");
 });
+
+test("should parse a link to lines in a file at a specific commit", () => {
+    const html = `
+<html>
+    <head>
+        <title>Source of github.py - jf_agent - Stash</title>
+    </head>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "https://bitbucket.example.com/projects/TP/repos/jf_agent/browse/jf_agent/git/github.py?at=69336ecfefe0dec16963b9d2247b7ce5617939d0#377,379-381,383"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "https://bitbucket.example.com/projects/TP/repos/jf_agent/browse/jf_agent/git/github.py?at=69336ecfefe0dec16963b9d2247b7ce5617939d0#377,379-381,383"
+    );
+    assert.equal(
+        actual?.text,
+        "lines 377,379-381,383 of jf_agent/git/github.py at commit 69336ecfef in TP/jf_agent"
+    );
+});
