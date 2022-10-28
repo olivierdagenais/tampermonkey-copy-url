@@ -203,7 +203,12 @@ test("should parse a link to a file and make it a specific commit", () => {
                                                 >
                                                     48e30865eb4
                                                 </a>
-                                                <time datetime="2022-05-11T16:22:58-0400" title="11 May 2022 04:22 PM">11 May 2022</time>
+                                                <time
+                                                    datetime="2022-05-11T16:22:58-0400"
+                                                    title="11 May 2022 04:22 PM"
+                                                >
+                                                    11 May 2022
+                                                </time>
                                             </span>
                                         </div>
                                     </div>
