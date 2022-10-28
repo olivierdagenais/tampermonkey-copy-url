@@ -11,10 +11,18 @@ const prExtraRegex =
 export class Bitbucket implements Parser {
     parseLink(doc: Document, url: string): Link | null {
         const prUrlMatch = url.match(prUrlRegex);
-        if (!prUrlMatch || !prUrlMatch.groups) {
-            return null;
+        if (prUrlMatch && prUrlMatch.groups) {
+            const prUrlGroups = prUrlMatch.groups;
+            return this.parsePullRequest(doc, url, prUrlGroups);
         }
-        const prUrlGroups = prUrlMatch.groups;
+        return null;
+    }
+
+    private parsePullRequest(
+        doc: Document,
+        url: string,
+        prUrlGroups: { [key: string]: string }
+    ): Link | null {
         const project = prUrlGroups.project;
         const repo = prUrlGroups.repo;
         const prId = prUrlGroups.prId;
@@ -44,7 +52,7 @@ export class Bitbucket implements Parser {
                     prefix += `${prExtraGroups.path} at `;
                 }
                 const commitId = prExtraGroups.commitId.substring(0, 10);
-                prefix += `commit ${commitId} in `
+                prefix += `commit ${commitId} in `;
             }
         }
 
