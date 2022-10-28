@@ -166,6 +166,73 @@ test("should parse a link to a file at a specific commit", () => {
     );
 });
 
+test("should parse a link to a file and make it a specific commit", () => {
+    const html = `
+<html>
+    <head>
+        <title>Source of github.py - jf_agent - Stash</title>
+    </head>
+    <body>
+        <section id="content" role="main">
+            <div class="aui-page-panel content-body" id="aui-page-panel-content-body">
+                <div class="aui-page-panel-inner">
+                    <section class="aui-page-panel-content">
+                        <div class="aui-toolbar2 branch-selector-toolbar" role="toolbar">
+                            <div class="aui-toolbar2-inner">
+                                <div class="aui-toolbar2-secondary commit-badge-container">
+                                    <div class="commit-badge-oneline">
+                                        <div class="double-avatar-with-name avatar-with-name">
+                                            <span class="commit-details">
+                                                <a
+                                                    href="/users/odagenais"
+                                                    class="commit-author"
+                                                    title="Olivier Dagenais"
+                                                >
+                                                    Olivier Dagenais
+                                                </a>
+                                                authored and
+                                                <span class="commit-author" title="Matt Klein">
+                                                    Matt Klein
+                                                </span>
+                                                committed
+                                                <a
+                                                    class="commitid"
+                                                    href="/projects/TP/repos/jf_agent/commits/48e30865eb4e894443fd554db2f86eac0807f8a0#jf_agent/git/github.py"
+                                                    data-commit-message="fix: sanitize GitHub PR comment bodies"
+                                                    data-commitid="48e30865eb4e894443fd554db2f86eac0807f8a0"
+                                                >
+                                                    48e30865eb4
+                                                </a>
+                                                <time datetime="2022-05-11T16:22:58-0400" title="11 May 2022 04:22 PM">11 May 2022</time>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "https://bitbucket.example.com/projects/TP/repos/jf_agent/browse/jf_agent/git/github.py#377,379-381,383"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "https://bitbucket.example.com/projects/TP/repos/jf_agent/browse/jf_agent/git/github.py?at=48e30865eb4e894443fd554db2f86eac0807f8a0#377,379-381,383"
+    );
+    assert.equal(
+        actual?.text,
+        "lines 377,379-381,383 of jf_agent/git/github.py at commit 48e30865eb in TP/jf_agent"
+    );
+});
+
 test("should parse a link to a line in a file at a specific commit", () => {
     const html = `
 <html>

@@ -4,7 +4,7 @@ import { Parser } from "../Parser";
 const bbUrlRegex =
     /https:\/\/(?<host>[^/]+)\/projects\/(?<project>[^/]+)\/repos\/(?<repo>[^/]+)\/(?<rest>.+)/;
 const browseUrlRegex =
-    /browse(\/(?<path>[^?]+)(\?at=(?<ref>[^#]+)(#(?<lines>[0-9,-]+))?)?)?/;
+    /browse(\/(?<path>[^?#]+)?(\?at=(?<ref>[^#]+))?(#(?<lines>[0-9,-]+))?)?/;
 const commitIdRegex = /([a-f0-9]{40})/;
 const commitListUrlRegex = /commits\?until=(?<ref>[^&]+)(&.+)?/;
 const deepCommitUrlRegex = /commits\/(?<ref>[^#]+)(#(?<path>[^?]+))?/;
@@ -27,7 +27,13 @@ export class Bitbucket implements Parser {
         const browseUrlMatch = rest.match(browseUrlRegex);
         if (browseUrlMatch && browseUrlMatch.groups) {
             const browseUrlGroups = browseUrlMatch.groups;
-            return this.parseBrowseUrl(url, project, repo, browseUrlGroups);
+            return this.parseBrowseUrl(
+                doc,
+                url,
+                project,
+                repo,
+                browseUrlGroups
+            );
         }
         const prUrlMatch = rest.match(prUrlRegex);
         if (prUrlMatch && prUrlMatch.groups) {
@@ -83,6 +89,7 @@ export class Bitbucket implements Parser {
     }
 
     private parseBrowseUrl(
+        doc: Document,
         url: string,
         project: string,
         repo: string,
@@ -100,7 +107,23 @@ export class Bitbucket implements Parser {
         if (browseUrlGroups.ref) {
             const ref = this.getPrettyRef(browseUrlGroups);
             prefix += `commit ${ref} in `;
+        } else {
+            const anchorElement = doc.querySelector(
+                "html > body > section#content a[data-commitid]"
+            );
+            if (anchorElement) {
+                const rawRef = anchorElement.getAttribute("data-commitid");
+                if (rawRef) {
+                    const ref = this.getPrettyRef(rawRef);
+                    prefix += `commit ${ref} in `;
+                    // now we need to insert at=${rawUrl} in the original URL's query string
+                    const parsedUrl = new URL(url);
+                    parsedUrl.searchParams.set("at", rawRef);
+                    url = parsedUrl.toString();
+                }
+            }
         }
+
         const linkText = `${prefix}${project}/${repo}`;
         const result: Link = {
             text: linkText,
