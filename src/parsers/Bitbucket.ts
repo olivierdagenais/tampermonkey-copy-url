@@ -22,7 +22,7 @@ export class Bitbucket implements Parser {
             const commitUrlGroups = commitUrlMatch.groups;
             const project = commitUrlGroups.project;
             const repo = commitUrlGroups.repo;
-            const commitId = commitUrlGroups.commitId.substring(0, 10);
+            const commitId = this.getCommitId(commitUrlGroups);
             const path = commitUrlGroups.path;
             var prefix = "";
             if (path) {
@@ -36,6 +36,10 @@ export class Bitbucket implements Parser {
             return result;
         }
         return null;
+    }
+
+    private getCommitId(matchGroups: { [key: string]: string }): string {
+        return matchGroups.commitId.substring(0, 10);
     }
 
     private parsePullRequest(
@@ -71,7 +75,7 @@ export class Bitbucket implements Parser {
                 if (prExtraGroups.path) {
                     prefix += `${prExtraGroups.path} at `;
                 }
-                const commitId = prExtraGroups.commitId.substring(0, 10);
+                const commitId = this.getCommitId(prExtraGroups);
                 prefix += `commit ${commitId} in `;
             }
         }
