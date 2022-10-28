@@ -60,3 +60,27 @@ test("should parse a deep link to a line in a file in a PR's commit", () => {
         "line 379 of jf_agent/git/github.py at commit 69336ecfef in TP/jf_agent#4: DO-8731: fix: sanitize GitHub PR comment bodies"
     );
 });
+
+test("should parse a deep link to a file in a commit", () => {
+    const html = `
+<html>
+    <head>
+        <title>ThirdParty / jf_agent / 69336ecfefe - Stash</title>
+    </head>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "https://bitbucket.example.com/projects/TP/repos/jf_agent/commits/69336ecfefe0dec16963b9d2247b7ce5617939d0#jf_agent/git/github.py"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "https://bitbucket.example.com/projects/TP/repos/jf_agent/commits/69336ecfefe0dec16963b9d2247b7ce5617939d0#jf_agent/git/github.py"
+    );
+    assert.equal(
+        actual?.text,
+        "jf_agent/git/github.py at commit 69336ecfef in TP/jf_agent"
+    );
+});

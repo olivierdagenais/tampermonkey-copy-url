@@ -1,6 +1,8 @@
 import { Link } from "../Link";
 import { Parser } from "../Parser";
 
+const commitUrlRegex =
+    /https:\/\/(?<host>[^/]+)\/projects\/(?<project>[^/]+)\/repos\/(?<repo>[^/]+)\/commits\/(?<commitId>[a-f0-9]+)(#(?<path>[^?]+))?/;
 const prUrlRegex =
     /https:\/\/(?<host>[^/]+)\/projects\/(?<project>[^/]+)\/repos\/(?<repo>[^/]+)\/pull-requests\/(?<prId>\d+)(\/(?<extra>.*))?/;
 
@@ -14,6 +16,24 @@ export class Bitbucket implements Parser {
         if (prUrlMatch && prUrlMatch.groups) {
             const prUrlGroups = prUrlMatch.groups;
             return this.parsePullRequest(doc, url, prUrlGroups);
+        }
+        const commitUrlMatch = url.match(commitUrlRegex);
+        if (commitUrlMatch && commitUrlMatch.groups) {
+            const commitUrlGroups = commitUrlMatch.groups;
+            const project = commitUrlGroups.project;
+            const repo = commitUrlGroups.repo;
+            const commitId = commitUrlGroups.commitId.substring(0, 10);
+            const path = commitUrlGroups.path;
+            var prefix = "";
+            if (path) {
+                prefix += `${path} at `;
+            }
+            const linkText = `${prefix}commit ${commitId} in ${project}/${repo}`;
+            const result: Link = {
+                text: linkText,
+                destination: url,
+            };
+            return result;
         }
         return null;
     }
