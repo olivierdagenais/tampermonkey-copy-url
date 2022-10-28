@@ -1,10 +1,13 @@
 import { Link } from "../Link";
 import { Parser } from "../Parser";
 
+const prUrlRegex =
+    /https:\/\/(?<host>[^/]+)\/projects\/(?<project>[^/]+)\/repos\/(?<repo>[^/]+)\/pull-requests\/(?<prId>\d+).*/;
+
+const prTitleRegex = /Pull Request #(?<prId>\d+): (?<summary>.+) - Stash/;
+
 export class Bitbucket implements Parser {
     parseLink(doc: Document, url: string): Link | null {
-        const prUrlRegex =
-            /https:\/\/(?<host>[^/]+)\/projects\/(?<project>[^/]+)\/repos\/(?<repo>[^/]+)\/pull-requests\/(?<prId>\d+).*/;
         const prUrlMatch = url.match(prUrlRegex);
         if (!prUrlMatch || !prUrlMatch.groups) {
             return null;
@@ -20,8 +23,6 @@ export class Bitbucket implements Parser {
             return null;
         }
         const titleString = titleElement.textContent;
-        const prTitleRegex =
-            /Pull Request #(?<prId>\d+): (?<summary>.+) - Stash/;
         const prTitleMatch = titleString?.match(prTitleRegex);
         if (!prTitleMatch || !prTitleMatch.groups) {
             return null;
