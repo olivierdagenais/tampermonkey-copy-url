@@ -109,7 +109,7 @@ export class Bitbucket implements Parser {
             prefix += `commit ${ref} in `;
         } else {
             const anchorElement = doc.querySelector(
-                "html > body > section#content a[data-commitid]"
+                "html > body section#content a[data-commitid]"
             );
             if (anchorElement) {
                 const rawRef = anchorElement.getAttribute("data-commitid");
