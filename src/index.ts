@@ -1,4 +1,5 @@
 // Keep this list sorted!
+import { Bitbucket } from "./parsers/Bitbucket";
 import { Clipboard } from "./Clipboard";
 import { Default } from "./parsers/Default";
 import { GitHub } from "./parsers/GitHub";
@@ -14,6 +15,7 @@ const renderers: Renderer[] = [new Html(), new Markdown(), new Textile()];
 // parsers will be attempted in the order defined here
 const parsers: Parser[] = [
     new GitHub(),
+    new Bitbucket(),
     // always keep this one LAST in this list!
     new Default(),
 ];
