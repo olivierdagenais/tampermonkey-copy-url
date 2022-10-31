@@ -13,4 +13,26 @@ function testParseLink(html: string, url: string): Link | null {
     return actual;
 }
 
-test("TODO", () => {});
+test("should parse a simple issue page", () => {
+    const html = `
+<html>
+    <head>
+        <title>[DO-8731] GitHub PR comment bodies are fully rendered - Jira</title>
+    </head>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "https://jira.example.com/browse/DO-8731"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "https://jira.example.com/browse/DO-8731"
+    );
+    assert.equal(
+        actual?.text,
+        "DO-8731: GitHub PR comment bodies are fully rendered"
+    );
+});
