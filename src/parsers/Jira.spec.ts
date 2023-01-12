@@ -19,6 +19,16 @@ test("should parse a simple issue page", () => {
     <head>
         <title>[DO-8731] GitHub PR comment bodies are fully rendered - Jira</title>
     </head>
+    <body>
+        <div id="page">
+            <div id="content">
+                <div class="aui-page-panel">
+                    <!-- etc., etc... -->
+                    <h1 id="summary-val">GitHub PR comment bodies are fully rendered</h1>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>`;
 
     const actual = testParseLink(
@@ -43,6 +53,16 @@ test("should parse a title from a custom JIRA deployment", () => {
     <head>
         <title>[JENKINS-69135] Add a &quot;Versions to include&quot; field to the Global Library Cache feature - Jenkins Jira</title>
     </head>
+    <body>
+        <div id="page">
+            <div id="content">
+                <div class="aui-page-panel">
+                    <!-- etc., etc... -->
+                    <h1 id="summary-val">Add a &quot;Versions to include&quot; field to the Global Library Cache feature</h1>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>`;
 
     const actual = testParseLink(
@@ -58,5 +78,42 @@ test("should parse a title from a custom JIRA deployment", () => {
     assert.equal(
         actual?.text,
         "JENKINS-69135: Add a \"Versions to include\" field to the Global Library Cache feature"
+    );
+});
+
+test("should parse a title without the word jira in it", () => {
+    const html = `
+<html>
+    <body
+        id="jira"
+        class="aui-layout aui-theme-default   aui-page-sidebar aui-sidebar-collapsed page-type-split page-issue-navigator page-type-navigator"
+        data-version="8.20.12"
+        data-aui-version="9.2.3-4dc984d9f"
+        >
+        <title>[BSERV-12252] Disable wordwrap in Pull Request diff view - Create and track feature requests for Atlassian products.</title>
+        <div id="page">
+            <div id="content">
+                <div class="aui-page-panel">
+                    <!-- etc., etc... -->
+                    <h1 id="summary-val">Disable wordwrap in Pull Request diff view</h1>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "https://jira.atlassian.com/browse/BSERV-12252"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "https://jira.atlassian.com/browse/BSERV-12252"
+    );
+    assert.equal(
+        actual?.text,
+        "BSERV-12252: Disable wordwrap in Pull Request diff view"
     );
 });

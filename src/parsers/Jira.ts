@@ -3,8 +3,6 @@ import { Link } from "../Link";
 
 const issueUrlRegex =
     /https:\/\/(?<host>[^/]+)\/browse\/(?<issueKey>[^?]+)(\?(?<rest>.+))?/;
-const issueTitleRegex =
-    /\[(?<issueKey>[A-Z][A-Z_0-9]+-[0-9]+)\] (?<summary>.+) - .*Jira/;
 export class Jira extends AbstractParser {
     parseLink(doc: Document, url: string): Link | null {
         const issueUrlMatch = url.match(issueUrlRegex);
@@ -15,15 +13,11 @@ export class Jira extends AbstractParser {
         const issueKey = issueUrlGroups.issueKey;
         var linkText = `${issueKey}`;
 
-        const titleString = this.findTitle(doc);
-        if (titleString) {
-            const issueTitleMatch = titleString.match(issueTitleRegex);
-            if (issueTitleMatch && issueTitleMatch.groups) {
-                const issueTitleGroups = issueTitleMatch.groups;
-                const summary = issueTitleGroups.summary;
-                if (summary) {
-                    linkText += `: ${summary}`;
-                }
+        const h1Element : HTMLElement | null = doc.querySelector("#summary-val");
+        if (h1Element) {
+            const summary = h1Element.textContent;
+            if (summary) {
+                linkText += `: ${summary}`;
             }
         }
 
