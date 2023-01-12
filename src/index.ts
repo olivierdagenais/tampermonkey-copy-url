@@ -4,6 +4,7 @@ import { Clipboard } from "./Clipboard";
 import { Default } from "./parsers/Default";
 import { GitHub } from "./parsers/GitHub";
 import { Html } from "./renderers/Html";
+import { Jira } from "./parsers/Jira";
 import { Link } from "./Link";
 import { Markdown } from "./renderers/Markdown";
 import { Renderer } from "./Renderer";
@@ -16,6 +17,7 @@ const renderers: Renderer[] = [new Html(), new Markdown(), new Textile()];
 const parsers: Parser[] = [
     new GitHub(),
     new Bitbucket(),
+    new Jira(),
     // always keep this one LAST in this list!
     new Default(),
 ];
