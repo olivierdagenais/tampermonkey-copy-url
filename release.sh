@@ -10,11 +10,14 @@ trap traperr ERR
 
 ACTION=${1:?ACTION argument is required}
 BRANCH_VERSION=${2:?BRANCH_VERSION argument is required}
-
+echo "Make sure we can run via docker_node by asking for the node version..."
+./docker_node node --version
+echo "Make sure the repo is up-to-date..."
+git fetch
 case "$ACTION" in
     createBranch)
         echo "Creating release branch for ${BRANCH_VERSION}.x series..."
-        git checkout -b release/${BRANCH_VERSION} main
+        git checkout -b release/${BRANCH_VERSION} origin/main
 
         echo "Setting version to ${BRANCH_VERSION}.0..."
         ./docker_node npm --no-git-tag-version version ${BRANCH_VERSION}.0
