@@ -1,5 +1,5 @@
+import { AbstractParser } from "./AbstractParser";
 import { Link } from "../Link";
-import { Parser } from "../Parser";
 
 const bbUrlRegex =
     /https:\/\/(?<host>[^/]+)\/projects\/(?<project>[^/]+)\/repos\/(?<repo>[^/]+)\/(?<rest>.+)/;
@@ -13,7 +13,7 @@ const prTitleRegex = /Pull Request #(?<prId>\d+): (?<summary>.+) - Stash/;
 const prExtraRegex =
     /commits\/(?<ref>[^#]+)(#(?<path>[^?]+)(\?f=(?<lineNumber>\d+))?)?/;
 
-export class Bitbucket implements Parser {
+export class Bitbucket extends AbstractParser {
     parseLink(doc: Document, url: string): Link | null {
         const bbUrlMatch = url.match(bbUrlRegex);
         if (!bbUrlMatch || !bbUrlMatch.groups) {
@@ -177,12 +177,7 @@ export class Bitbucket implements Parser {
         const prId = prUrlGroups.prId;
         const extra = prUrlGroups.extra;
 
-        const titleElement: HTMLElement | null =
-            doc.querySelector("html head title");
-        if (!titleElement) {
-            return null;
-        }
-        const titleString = titleElement.textContent;
+        const titleString = this.findTitle(doc);
         const prTitleMatch = titleString?.match(prTitleRegex);
         if (!prTitleMatch || !prTitleMatch.groups) {
             return null;
