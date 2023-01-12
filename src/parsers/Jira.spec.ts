@@ -36,3 +36,27 @@ test("should parse a simple issue page", () => {
         "DO-8731: GitHub PR comment bodies are fully rendered"
     );
 });
+
+test("should parse a title from a custom JIRA deployment", () => {
+    const html = `
+<html>
+    <head>
+        <title>[JENKINS-69135] Add a &quot;Versions to include&quot; field to the Global Library Cache feature - Jenkins Jira</title>
+    </head>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "https://issues.jenkins.io/browse/JENKINS-69135"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "https://issues.jenkins.io/browse/JENKINS-69135"
+    );
+    assert.equal(
+        actual?.text,
+        "JENKINS-69135: Add a \"Versions to include\" field to the Global Library Cache feature"
+    );
+});
