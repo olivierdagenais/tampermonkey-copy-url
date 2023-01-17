@@ -6,6 +6,7 @@ import { GitHub } from "./parsers/GitHub";
 import { Html } from "./renderers/Html";
 import { Jira } from "./parsers/Jira";
 import { ServiceDesk } from "./parsers/ServiceDesk";
+import { ServiceNow } from "./parsers/ServiceNow";
 import { Link } from "./Link";
 import { Markdown } from "./renderers/Markdown";
 import { Renderer } from "./Renderer";
@@ -20,6 +21,7 @@ const parsers: Parser[] = [
     new Bitbucket(),
     new Jira(),
     new ServiceDesk(),
+    new ServiceNow(),
     // always keep this one LAST in this list!
     new Default(),
 ];
