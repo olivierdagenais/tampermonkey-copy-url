@@ -48,7 +48,7 @@
     "grant": [],
     "exclude": [],
     "resources": [],
-    "downloadURL": "https://github.com/olivierdagenais/tampermonkey-copy-url/raw/release/1.5/userscript/index.user.js",
-    "updateURL": "https://github.com/olivierdagenais/tampermonkey-copy-url/raw/release/1.5/userscript/index.user.js"
+    "downloadURL": "https://github.com/olivierdagenais/tampermonkey-copy-url/raw/live/userscript/index.user.js",
+    "updateURL": "https://github.com/olivierdagenais/tampermonkey-copy-url/raw/live/userscript/index.user.js"
   }
 }
