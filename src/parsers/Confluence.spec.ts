@@ -51,3 +51,43 @@ test("should parse a simple page", () => {
     );
     assert.equal(actual?.text, "Supported AWS Objects");
 });
+
+test("should parse a page about Confluence in Confluence", () => {
+    const html = `
+<html>
+    <head>
+        <title>
+            Create and Edit Pages - Confluence Documentation - Confluence
+        </title>
+        <meta name="ajs-page-title" content="Create and Edit Pages">
+        <meta name="ajs-latest-published-page-title" content="Create and Edit Pages">
+        <meta name="wikilink" content="[CONFDOCS:Create and Edit Pages]">
+    </head>
+    <body
+        id="com-atlassian-confluence"
+        class="theme-default  aui-layout aui-theme-default synchrony-active"
+        data-aui-version="9.2.2"
+    >
+        <div id="page">
+            <!-- etc.. -->
+            <h1 id="title-text" class="with-breadcrumbs">
+                <a href="/confluence/display/CONFDOCS/Create+and+Edit+Pages">
+                    Create and Edit Pages
+                </a>
+            </h1>
+        </div>
+    </body>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "https://confluence.columbia.edu/confluence/display/CONFDOCS/Create+and+Edit+Pages"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "https://confluence.columbia.edu/confluence/display/CONFDOCS/Create+and+Edit+Pages"
+    );
+    assert.equal(actual?.text, "Create and Edit Pages");
+});
