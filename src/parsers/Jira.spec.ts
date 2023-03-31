@@ -82,6 +82,41 @@ test("should parse an issue page hosted under a folder", () => {
     );
 });
 
+test("should parse an issue page hosted under many folders", () => {
+    const html = `
+<html>
+    <head>
+        <title>[HTTPCLIENT-1763] Invalid 'expires' attribute - ASF JIRA</title>
+        <link rel="search" type="application/opensearchdescription+xml" href="/jira/osd.jsp" title="[HTTPCLIENT-1763] Invalid 'expires' attribute - ASF JIRA">
+    </head>
+    <body>
+        <div id="page">
+            <div id="content">
+                <div class="aui-page-panel">
+                    <!-- etc., etc... -->
+                    <h1 id="summary-val">Invalid 'expires' attribute</h1>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "https://issues.apache.org/jira/path/prefix/browse/HTTPCLIENT-1763"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "https://issues.apache.org/jira/path/prefix/browse/HTTPCLIENT-1763"
+    );
+    assert.equal(
+        actual?.text,
+        "HTTPCLIENT-1763: Invalid 'expires' attribute"
+    );
+});
+
 test("should parse a title from a custom JIRA deployment", () => {
     const html = `
 <html>
