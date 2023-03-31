@@ -2,7 +2,7 @@ import { AbstractParser } from "./AbstractParser";
 import { Link } from "../Link";
 
 const issueUrlRegex =
-    /https:\/\/(?<host>[^/]+)\/browse\/(?<issueKey>[^?]+)(\?(?<rest>.+))?/;
+    /https:\/\/(?<host>[^/]+)\/([^/]+\/)?browse\/(?<issueKey>[^?]+)(\?(?<rest>.+))?/;
 export class Jira extends AbstractParser {
     parseLink(doc: Document, url: string): Link | null {
         const issueUrlMatch = url.match(issueUrlRegex);
