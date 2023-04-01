@@ -73,7 +73,7 @@ test("should parse a simple Stash pull request page under a folder", () => {
     );
 });
 
-test("should parse a simple Bitbucket pull request page", () => {
+test("should parse a simple Stash pull request page", () => {
     const html = `
 <html>
     <head>
