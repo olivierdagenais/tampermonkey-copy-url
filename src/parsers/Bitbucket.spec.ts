@@ -49,6 +49,30 @@ test("getPrettyRef with a simple tag", () => {
     assert.equal(actual, "v0.0.22");
 });
 
+test("should parse a simple Stash pull request page under a folder", () => {
+    const html = `
+<html>
+    <head>
+        <title>Pull Request #4: DO-8731: fix: sanitize GitHub PR comment bodies - Stash</title>
+    </head>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "https://bitbucket.example.com/bitbucket/projects/TP/repos/jf_agent/pull-requests/4/overview"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "https://bitbucket.example.com/bitbucket/projects/TP/repos/jf_agent/pull-requests/4/overview"
+    );
+    assert.equal(
+        actual?.text,
+        "TP/jf_agent#4: DO-8731: fix: sanitize GitHub PR comment bodies"
+    );
+});
+
 test("should parse a simple Bitbucket pull request page", () => {
     const html = `
 <html>
