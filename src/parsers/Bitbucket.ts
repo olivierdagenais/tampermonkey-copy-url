@@ -9,7 +9,6 @@ const commitIdRegex = /([a-f0-9]{40})/;
 const commitListUrlRegex = /commits\?until=(?<ref>[^&]+)(&.+)?/;
 const deepCommitUrlRegex = /commits\/(?<ref>[^#]+)(#(?<path>[^?]+))?/;
 const prUrlRegex = /pull-requests\/(?<prId>\d+)(\/(?<extra>.*))?/;
-const prTitleRegex = /Pull Request #(?<prId>\d+): (?<summary>.+) - Stash/;
 const prExtraRegex =
     /commits\/(?<ref>[^#]+)(#(?<path>[^?]+)(\?f=(?<lineNumber>\d+))?)?/;
 
@@ -177,13 +176,13 @@ export class Bitbucket extends AbstractParser {
         const prId = prUrlGroups.prId;
         const extra = prUrlGroups.extra;
 
-        const titleString = this.findTitle(doc);
-        const prTitleMatch = titleString?.match(prTitleRegex);
-        if (!prTitleMatch || !prTitleMatch.groups) {
+        const h2Element = doc.querySelector(
+            "html > body h2.pull-request-title"
+        );
+        if (!h2Element) {
             return null;
         }
-        const prTitleGroups = prTitleMatch.groups;
-        const summary = prTitleGroups.summary;
+        const summary = h2Element.textContent;
         var prefix = "";
         if (extra) {
             const prExtraMatch = extra.match(prExtraRegex);
