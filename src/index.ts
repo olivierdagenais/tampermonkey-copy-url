@@ -6,11 +6,11 @@ import { Default } from "./parsers/Default";
 import { GitHub } from "./parsers/GitHub";
 import { Html } from "./renderers/Html";
 import { Jira } from "./parsers/Jira";
-import { ServiceDesk } from "./parsers/ServiceDesk";
-import { ServiceNow } from "./parsers/ServiceNow";
 import { Link } from "./Link";
 import { Markdown } from "./renderers/Markdown";
 import { Renderer } from "./Renderer";
+import { ServiceDesk } from "./parsers/ServiceDesk";
+import { ServiceNow } from "./parsers/ServiceNow";
 import { Textile } from "./renderers/Textile";
 import { Parser } from "./Parser";
 
