@@ -84,12 +84,12 @@ function handleKeydown(this: Window, e: KeyboardEvent) {
             statusPopup.attributes.setNamedItem(styleAttribute);
             document.body.appendChild(statusPopup);
         }
-        const clipboardItem = new ClipboardItem(clipboardItemVersions);
         const status =
             `Parsed using ${selectedParser.constructor["name"]}:` +
             `<br />Destination: ${link.destination}` +
             `<br />Text: ${link.text}` +
             `<br />Rendered with ${selectedRenderer.constructor["name"]}.`;
+        const clipboardItem = new ClipboardItem(clipboardItemVersions);
         const data = [clipboardItem];
         navigator.clipboard.write(data).then(
             () => {
