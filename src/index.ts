@@ -57,16 +57,6 @@ async function handleKeydown(this: Window, e: KeyboardEvent) {
             selectedRenderer = renderers[2];
         }
         const clipboard: Clipboard = selectedRenderer.render(link);
-        var clipboardItemVersions: { [id: string]: Blob } = {};
-        clipboardItemVersions["text/plain"] = new Blob([clipboard.text], {
-            type: "text/plain",
-        });
-
-        if (clipboard.html !== null) {
-            clipboardItemVersions["text/html"] = new Blob([clipboard.html], {
-                type: "text/html",
-            });
-        }
 
         if (statusPopup == null) {
             statusPopup = document.createElement("div");
@@ -90,7 +80,7 @@ async function handleKeydown(this: Window, e: KeyboardEvent) {
             `<br />Text: ${link.text}` +
             `<br />Rendered with ${selectedRenderer.constructor["name"]}.`;
         var result: any = null;
-        result = await copyWithAsyncClipboardApi(clipboardItemVersions);
+        result = await copyWithAsyncClipboardApi(clipboard);
         if (result == null) {
             const successHtml = `${status}<br />Success!`;
             showStatusPopup(successHtml);
@@ -110,12 +100,19 @@ async function handleKeydown(this: Window, e: KeyboardEvent) {
  * Restrictions: only works when the page is served over a secure channel (or via localhost)
  * as per https://stackoverflow.com/a/65996386/98903
  *
- * @param clipboardItemVersions a special data object that the ClipboardItem
- *                              constructor needs to carry out the write.
+ * @param clipboard an instance of Clipboard with the data to copy
  */
-async function copyWithAsyncClipboardApi(clipboardItemVersions: {
-    [id: string]: Blob;
-}): Promise<any> {
+async function copyWithAsyncClipboardApi(clipboard: Clipboard): Promise<any> {
+    var clipboardItemVersions: { [id: string]: Blob } = {};
+    clipboardItemVersions["text/plain"] = new Blob([clipboard.text], {
+        type: "text/plain",
+    });
+
+    if (clipboard.html !== null) {
+        clipboardItemVersions["text/html"] = new Blob([clipboard.html], {
+            type: "text/html",
+        });
+    }
     const clipboardItem = new ClipboardItem(clipboardItemVersions);
     const data = [clipboardItem];
     try {
