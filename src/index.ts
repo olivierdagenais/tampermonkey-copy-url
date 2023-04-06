@@ -6,11 +6,11 @@ import { Default } from "./parsers/Default";
 import { GitHub } from "./parsers/GitHub";
 import { Html } from "./renderers/Html";
 import { Jira } from "./parsers/Jira";
-import { ServiceDesk } from "./parsers/ServiceDesk";
-import { ServiceNow } from "./parsers/ServiceNow";
 import { Link } from "./Link";
 import { Markdown } from "./renderers/Markdown";
 import { Renderer } from "./Renderer";
+import { ServiceDesk } from "./parsers/ServiceDesk";
+import { ServiceNow } from "./parsers/ServiceNow";
 import { Textile } from "./renderers/Textile";
 import { Parser } from "./Parser";
 
@@ -30,7 +30,7 @@ const parsers: Parser[] = [
 
 var statusPopup: HTMLDivElement | null;
 
-function handleKeydown(this: Window, e: KeyboardEvent) {
+async function handleKeydown(this: Window, e: KeyboardEvent) {
     if (e.ctrlKey && e.key == "o") {
         e.preventDefault();
         console.log("asking the parsers...");
@@ -57,16 +57,6 @@ function handleKeydown(this: Window, e: KeyboardEvent) {
             selectedRenderer = renderers[2];
         }
         const clipboard: Clipboard = selectedRenderer.render(link);
-        var clipboardItemVersions: { [id: string]: Blob } = {};
-        clipboardItemVersions["text/plain"] = new Blob([clipboard.text], {
-            type: "text/plain",
-        });
-
-        if (clipboard.html !== null) {
-            clipboardItemVersions["text/html"] = new Blob([clipboard.html], {
-                type: "text/html",
-            });
-        }
 
         if (statusPopup == null) {
             statusPopup = document.createElement("div");
@@ -84,25 +74,66 @@ function handleKeydown(this: Window, e: KeyboardEvent) {
             statusPopup.attributes.setNamedItem(styleAttribute);
             document.body.appendChild(statusPopup);
         }
-        const clipboardItem = new ClipboardItem(clipboardItemVersions);
         const status =
             `Parsed using ${selectedParser.constructor["name"]}:` +
             `<br />Destination: ${link.destination}` +
             `<br />Text: ${link.text}` +
             `<br />Rendered with ${selectedRenderer.constructor["name"]}.`;
-        const data = [clipboardItem];
-        navigator.clipboard.write(data).then(
-            () => {
-                const successHtml = `${status}<br />Success!`;
-                showStatusPopup(successHtml);
-            },
-            (e) => {
-                const failureHtml =
-                    `${status}<br />` +
-                    `<span style="color:darkred">Failure: ${e}</span>`;
-                showStatusPopup(failureHtml);
-            }
-        );
+        var result: any = null;
+        result = await copyWithAsyncClipboardApi(clipboard);
+        if (result != null) {
+            result = await copyWithGreaseMonkeyClipboardApi(clipboard);
+        }
+        if (result == null) {
+            const successHtml = `${status}<br />Success!`;
+            showStatusPopup(successHtml);
+        } else {
+            const failureHtml =
+                `${status}<br />` +
+                `<span style="color:darkred">Failure: ${result}</span>`;
+            showStatusPopup(failureHtml);
+        }
+    }
+}
+
+async function copyWithGreaseMonkeyClipboardApi(
+    clipboard: Clipboard
+): Promise<any> {
+    if (clipboard.html !== null) {
+        GM_setClipboard(clipboard.html, "html");
+    } else {
+        GM_setClipboard(clipboard.text, "text");
+    }
+    return null;
+}
+
+/**
+ * Attempts to copy the specified data to the clipboard using the standardized (async)
+ * Clipboard API as per https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API
+ *
+ * Restrictions: only works when the page is served over a secure channel (or via localhost)
+ * as per https://stackoverflow.com/a/65996386/98903
+ *
+ * @param clipboard an instance of Clipboard with the data to copy
+ */
+async function copyWithAsyncClipboardApi(clipboard: Clipboard): Promise<any> {
+    var clipboardItemVersions: { [id: string]: Blob } = {};
+    clipboardItemVersions["text/plain"] = new Blob([clipboard.text], {
+        type: "text/plain",
+    });
+
+    if (clipboard.html !== null) {
+        clipboardItemVersions["text/html"] = new Blob([clipboard.html], {
+            type: "text/html",
+        });
+    }
+    const clipboardItem = new ClipboardItem(clipboardItemVersions);
+    const data = [clipboardItem];
+    try {
+        await navigator.clipboard.write(data);
+        return null;
+    } catch (error) {
+        return error;
     }
 }
 
