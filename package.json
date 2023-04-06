@@ -45,7 +45,9 @@
         ],
         "connect": [],
         "require": [],
-        "grant": [],
+        "grant": [
+            "GM_setClipboard"
+        ],
         "exclude": [],
         "resources": []
     }

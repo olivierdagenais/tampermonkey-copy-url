@@ -81,6 +81,9 @@ async function handleKeydown(this: Window, e: KeyboardEvent) {
             `<br />Rendered with ${selectedRenderer.constructor["name"]}.`;
         var result: any = null;
         result = await copyWithAsyncClipboardApi(clipboard);
+        if (result != null) {
+            result = await copyWithGreaseMonkeyClipboardApi(clipboard);
+        }
         if (result == null) {
             const successHtml = `${status}<br />Success!`;
             showStatusPopup(successHtml);
@@ -91,6 +94,17 @@ async function handleKeydown(this: Window, e: KeyboardEvent) {
             showStatusPopup(failureHtml);
         }
     }
+}
+
+async function copyWithGreaseMonkeyClipboardApi(
+    clipboard: Clipboard
+): Promise<any> {
+    if (clipboard.html !== null) {
+        GM_setClipboard(clipboard.html, "html");
+    } else {
+        GM_setClipboard(clipboard.text, "text");
+    }
+    return null;
 }
 
 /**
