@@ -2,7 +2,7 @@ import { AbstractParser } from "./AbstractParser";
 import { Link } from "../Link";
 
 const bbUrlRegex =
-    /https:\/\/(?<host>[^/]+)\/([^/]+\/)*projects\/(?<project>[^/]+)\/repos\/(?<repo>[^/]+)\/(?<rest>.+)/;
+    /https?:\/\/(?<host>[^/]+)\/([^/]+\/)*projects\/(?<project>[^/]+)\/repos\/(?<repo>[^/]+)\/(?<rest>.+)/;
 const browseUrlRegex =
     /browse(\/(?<path>[^?#]+)?(\?at=(?<ref>[^#]+))?(#(?<lines>[0-9,-]+))?)?/;
 const commitIdRegex = /([a-f0-9]{40})/;
