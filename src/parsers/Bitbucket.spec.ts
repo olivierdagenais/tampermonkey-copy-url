@@ -77,6 +77,62 @@ test("should parse a simple Stash pull request page under a folder", () => {
     );
 });
 
+test("PR without https", () => {
+    const html = `
+<html>
+    <head>
+        <title>Pull Request #4: DO-8731: fix: sanitize GitHub PR comment bodies - Stash</title>
+    </head>
+    <body>
+        <!-- etc.. -->
+        <h2 class="pull-request-title pull-request-header-title">DO-8731: fix: sanitize GitHub PR comment bodies</h2>
+    </body>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "http://bitbucket.example.com/bitbucket/projects/TP/repos/jf_agent/pull-requests/4/overview"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "http://bitbucket.example.com/bitbucket/projects/TP/repos/jf_agent/pull-requests/4/overview"
+    );
+    assert.equal(
+        actual?.text,
+        "TP/jf_agent#4: DO-8731: fix: sanitize GitHub PR comment bodies"
+    );
+});
+
+test("PR with custom port", () => {
+    const html = `
+<html>
+    <head>
+        <title>Pull Request #4: DO-8731: fix: sanitize GitHub PR comment bodies - Stash</title>
+    </head>
+    <body>
+        <!-- etc.. -->
+        <h2 class="pull-request-title pull-request-header-title">DO-8731: fix: sanitize GitHub PR comment bodies</h2>
+    </body>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "http://bitbucket.example.com:7990/bitbucket/projects/TP/repos/jf_agent/pull-requests/4/overview"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "http://bitbucket.example.com:7990/bitbucket/projects/TP/repos/jf_agent/pull-requests/4/overview"
+    );
+    assert.equal(
+        actual?.text,
+        "TP/jf_agent#4: DO-8731: fix: sanitize GitHub PR comment bodies"
+    );
+});
+
 test("should parse a simple Stash pull request page", () => {
     const html = `
 <html>
@@ -127,10 +183,7 @@ test("should parse a simple Bitbucket PR under a folder", () => {
         actual?.destination,
         "https://localhost/bitbucket/projects/PROJ/repos/repository/pull-requests/1/overview"
     );
-    assert.equal(
-        actual?.text,
-        "PROJ/repository#1: doc: clarify contents"
-    );
+    assert.equal(actual?.text, "PROJ/repository#1: doc: clarify contents");
 });
 
 test("should parse a deep link to a line in a file in a PR's commit", () => {
