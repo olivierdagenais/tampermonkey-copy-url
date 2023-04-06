@@ -183,10 +183,7 @@ test("should parse a simple Bitbucket PR under a folder", () => {
         actual?.destination,
         "https://localhost/bitbucket/projects/PROJ/repos/repository/pull-requests/1/overview"
     );
-    assert.equal(
-        actual?.text,
-        "PROJ/repository#1: doc: clarify contents"
-    );
+    assert.equal(actual?.text, "PROJ/repository#1: doc: clarify contents");
 });
 
 test("should parse a deep link to a line in a file in a PR's commit", () => {
