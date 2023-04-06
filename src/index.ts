@@ -30,7 +30,7 @@ const parsers: Parser[] = [
 
 var statusPopup: HTMLDivElement | null;
 
-function handleKeydown(this: Window, e: KeyboardEvent) {
+async function handleKeydown(this: Window, e: KeyboardEvent) {
     if (e.ctrlKey && e.key == "o") {
         e.preventDefault();
         console.log("asking the parsers...");
@@ -89,20 +89,40 @@ function handleKeydown(this: Window, e: KeyboardEvent) {
             `<br />Destination: ${link.destination}` +
             `<br />Text: ${link.text}` +
             `<br />Rendered with ${selectedRenderer.constructor["name"]}.`;
-        const clipboardItem = new ClipboardItem(clipboardItemVersions);
-        const data = [clipboardItem];
-        navigator.clipboard.write(data).then(
-            () => {
-                const successHtml = `${status}<br />Success!`;
-                showStatusPopup(successHtml);
-            },
-            (e) => {
-                const failureHtml =
-                    `${status}<br />` +
-                    `<span style="color:darkred">Failure: ${e}</span>`;
-                showStatusPopup(failureHtml);
-            }
-        );
+        var result: any = null;
+        result = await copyWithAsyncClipboardApi(clipboardItemVersions);
+        if (result == null) {
+            const successHtml = `${status}<br />Success!`;
+            showStatusPopup(successHtml);
+        } else {
+            const failureHtml =
+                `${status}<br />` +
+                `<span style="color:darkred">Failure: ${result}</span>`;
+            showStatusPopup(failureHtml);
+        }
+    }
+}
+
+/**
+ * Attempts to copy the specified data to the clipboard using the standardized (async)
+ * Clipboard API as per https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API
+ *
+ * Restrictions: only works when the page is served over a secure channel (or via localhost)
+ * as per https://stackoverflow.com/a/65996386/98903
+ *
+ * @param clipboardItemVersions a special data object that the ClipboardItem
+ *                              constructor needs to carry out the write.
+ */
+async function copyWithAsyncClipboardApi(clipboardItemVersions: {
+    [id: string]: Blob;
+}): Promise<any> {
+    const clipboardItem = new ClipboardItem(clipboardItemVersions);
+    const data = [clipboardItem];
+    try {
+        await navigator.clipboard.write(data);
+        return null;
+    } catch (error) {
+        return error;
     }
 }
 
