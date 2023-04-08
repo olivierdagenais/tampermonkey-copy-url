@@ -47,6 +47,40 @@ test("should parse a simple issue page", () => {
     );
 });
 
+test("issue page when coming from Confluence", () => {
+    const html = `
+<html>
+    <head>
+        <title>[DO-8731] GitHub PR comment bodies are fully rendered - Jira</title>
+    </head>
+    <body>
+        <div id="page">
+            <div id="content">
+                <div class="aui-page-panel">
+                    <!-- etc., etc... -->
+                    <h1 id="summary-val">GitHub PR comment bodies are fully rendered</h1>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "https://jira.example.com/browse/DO-8731?src=confmacro"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "https://jira.example.com/browse/DO-8731"
+    );
+    assert.equal(
+        actual?.text,
+        "DO-8731: GitHub PR comment bodies are fully rendered"
+    );
+});
+
 test("should parse an issue page hosted under a folder", () => {
     const html = `
 <html>
