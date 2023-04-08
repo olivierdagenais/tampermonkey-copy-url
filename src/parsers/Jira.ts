@@ -21,6 +21,11 @@ export class Jira extends AbstractParser {
             }
         }
 
+        const confMacro : string = "?src=confmacro";
+        if (url.endsWith(confMacro)) {
+            url = url.substring(0, url.length - confMacro.length);
+        }
+
         const result: Link = {
             text: linkText,
             destination: url,
