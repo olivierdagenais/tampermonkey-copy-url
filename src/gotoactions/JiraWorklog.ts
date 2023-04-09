@@ -10,6 +10,19 @@ import { GoToAction } from "../GoToAction";
 </a>*/
 export class JiraWorklog implements GoToAction {
     navigate(doc: Document, url: string): string | null {
-        throw new Error("Method not implemented.");
+        const baseUrl = new URL(url);
+        baseUrl.pathname = "";
+        // JIRA v9.7.0
+        const anchor: HTMLAnchorElement | null = doc.querySelector(
+            "aui-item-link#log-work a"
+        );
+        if (anchor) {
+            const path: string | null = anchor.getAttribute("href");
+            if (path) {
+                const destinationUrl = new URL(path, baseUrl);
+                return destinationUrl.toString();
+            }
+        }
+        return null;
     }
 }
