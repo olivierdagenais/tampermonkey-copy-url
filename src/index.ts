@@ -33,11 +33,11 @@ const parsers: Parser[] = [
 var statusPopup: HTMLDivElement | null;
 
 async function handleKeydown(this: Window, e: KeyboardEvent) {
+    const document: Document = window.document;
+    const url: string = window.location.href;
     if (e.ctrlKey && e.key == "o") {
         e.preventDefault();
         console.log("asking the parsers...");
-        const document: Document = window.document;
-        const url: string = window.location.href;
         var link: Link = {
             text: url,
             destination: url,
