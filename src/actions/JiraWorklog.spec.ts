@@ -1,7 +1,7 @@
 import { assert, test } from "vitest";
 import { JSDOM } from "jsdom";
 import { JiraWorklog } from "./JiraWorklog";
-import { GoToAction } from "../GoToAction";
+import { GoToAction } from "./GoToAction";
 
 function testNavigate(html: string, url: string): string | null {
     const dom: JSDOM = new JSDOM(html);

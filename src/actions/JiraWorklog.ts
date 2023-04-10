@@ -1,4 +1,4 @@
-import { GoToAction } from "../GoToAction";
+import { GoToAction } from "./GoToAction";
 
 /*<a
     id="log-work-link"
