@@ -1,4 +1,5 @@
 // Keep this list sorted!
+import { Action } from "./Action";
 import { Bitbucket } from "./parsers/Bitbucket";
 import { Clipboard } from "./Clipboard";
 import { Confluence } from "./parsers/Confluence";
@@ -6,6 +7,7 @@ import { Default } from "./parsers/Default";
 import { GitHub } from "./parsers/GitHub";
 import { Html } from "./renderers/Html";
 import { Jira } from "./parsers/Jira";
+import { JiraWorklog } from "./actions/JiraWorklog";
 import { Jenkins } from "./parsers/Jenkins";
 import { Link } from "./Link";
 import { Markdown } from "./renderers/Markdown";
@@ -16,6 +18,8 @@ import { Textile } from "./renderers/Textile";
 import { Parser } from "./Parser";
 
 const renderers: Renderer[] = [new Html(), new Markdown(), new Textile()];
+
+const jiraWorklog: Action = new JiraWorklog();
 
 // parsers will be attempted in the order defined here
 const parsers: Parser[] = [
@@ -94,6 +98,16 @@ async function handleKeydown(this: Window, e: KeyboardEvent) {
                 `${status}<br />` +
                 `<span style="color:darkred">Failure: ${result}</span>`;
             showStatusPopup(failureHtml);
+        }
+    } else if (
+        e.target &&
+        !(e.target instanceof HTMLInputElement) &&
+        !(e.target instanceof HTMLTextAreaElement)
+    ) {
+        if (!e.altKey && !e.ctrlKey && e.key == "f") {
+            if (jiraWorklog.perform(document, url)) {
+                e.preventDefault();
+            }
         }
     }
 }
