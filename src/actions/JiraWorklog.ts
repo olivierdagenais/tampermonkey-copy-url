@@ -8,7 +8,7 @@ import { GoToAction } from "./GoToAction";
     >
     <span>Log work</span>
 </a>*/
-export class JiraWorklog implements GoToAction {
+export class JiraWorklog extends GoToAction {
     navigate(doc: Document, url: string): string | null {
         const baseUrl = new URL(url);
         baseUrl.pathname = "";
