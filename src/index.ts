@@ -9,6 +9,7 @@ import { Html } from "./renderers/Html";
 import { Jira } from "./parsers/Jira";
 import { JiraWorklog } from "./actions/JiraWorklog";
 import { Jenkins } from "./parsers/Jenkins";
+import { KeyboardShortcut } from "./KeyboardShortcut";
 import { Link } from "./Link";
 import { Markdown } from "./renderers/Markdown";
 import { Renderer } from "./Renderer";
@@ -18,8 +19,14 @@ import { Textile } from "./renderers/Textile";
 import { Parser } from "./Parser";
 
 const renderers: Renderer[] = [new Html(), new Markdown(), new Textile()];
-
-const jiraWorklog: Action = new JiraWorklog();
+// prettier-ignore
+const shortcuts : Map<string, Array<Action>> = new Map([
+    [
+        KeyboardShortcut.asString(false, false, false, "f"), [
+            new JiraWorklog(),
+        ]
+    ],
+]);
 
 // parsers will be attempted in the order defined here
 const parsers: Parser[] = [
@@ -101,11 +108,25 @@ async function handleKeydown(this: Window, e: KeyboardEvent) {
         }
     } else if (
         e.target &&
+        // TODO: we could exclude these when modifiers aren't used
         !(e.target instanceof HTMLInputElement) &&
         !(e.target instanceof HTMLTextAreaElement)
     ) {
-        if (!e.altKey && !e.ctrlKey && e.key == "f") {
-            if (jiraWorklog.perform(document, url)) {
+        const shortcutString = KeyboardShortcut.asString(
+            e.ctrlKey,
+            e.altKey,
+            e.shiftKey,
+            e.key
+        );
+        if (shortcuts.has(shortcutString)) {
+            const actionList = shortcuts.get(shortcutString);
+            var handled = false;
+            actionList?.forEach((action) => {
+                if (!handled) {
+                    handled = action.perform(document, url);
+                }
+            });
+            if (handled) {
                 e.preventDefault();
             }
         }
