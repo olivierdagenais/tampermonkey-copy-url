@@ -1,4 +1,5 @@
 // Keep this list sorted!
+import { Action } from "./Action";
 import { Bitbucket } from "./parsers/Bitbucket";
 import { Clipboard } from "./Clipboard";
 import { Confluence } from "./parsers/Confluence";
@@ -6,7 +7,9 @@ import { Default } from "./parsers/Default";
 import { GitHub } from "./parsers/GitHub";
 import { Html } from "./renderers/Html";
 import { Jira } from "./parsers/Jira";
+import { JiraWorklog } from "./actions/JiraWorklog";
 import { Jenkins } from "./parsers/Jenkins";
+import { KeyboardShortcut } from "./KeyboardShortcut";
 import { Link } from "./Link";
 import { Markdown } from "./renderers/Markdown";
 import { Renderer } from "./Renderer";
@@ -16,6 +19,14 @@ import { Textile } from "./renderers/Textile";
 import { Parser } from "./Parser";
 
 const renderers: Renderer[] = [new Html(), new Markdown(), new Textile()];
+// prettier-ignore
+const shortcuts : Map<string, Array<Action>> = new Map([
+    [
+        KeyboardShortcut.asString(false, false, false, "f"), [
+            new JiraWorklog(),
+        ]
+    ],
+]);
 
 // parsers will be attempted in the order defined here
 const parsers: Parser[] = [
@@ -33,11 +44,11 @@ const parsers: Parser[] = [
 var statusPopup: HTMLDivElement | null;
 
 async function handleKeydown(this: Window, e: KeyboardEvent) {
+    const document: Document = window.document;
+    const url: string = window.location.href;
     if (e.ctrlKey && e.key == "o") {
         e.preventDefault();
         console.log("asking the parsers...");
-        const document: Document = window.document;
-        const url: string = window.location.href;
         var link: Link = {
             text: url,
             destination: url,
@@ -94,6 +105,30 @@ async function handleKeydown(this: Window, e: KeyboardEvent) {
                 `${status}<br />` +
                 `<span style="color:darkred">Failure: ${result}</span>`;
             showStatusPopup(failureHtml);
+        }
+    } else if (
+        e.target &&
+        // TODO: we could exclude these when modifiers aren't used
+        !(e.target instanceof HTMLInputElement) &&
+        !(e.target instanceof HTMLTextAreaElement)
+    ) {
+        const shortcutString = KeyboardShortcut.asString(
+            e.ctrlKey,
+            e.altKey,
+            e.shiftKey,
+            e.key
+        );
+        if (shortcuts.has(shortcutString)) {
+            const actionList = shortcuts.get(shortcutString);
+            var handled = false;
+            actionList?.forEach((action) => {
+                if (!handled) {
+                    handled = action.perform(document, url);
+                }
+            });
+            if (handled) {
+                e.preventDefault();
+            }
         }
     }
 }
