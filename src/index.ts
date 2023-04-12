@@ -164,9 +164,9 @@ async function copyWithAsyncClipboardApi(clipboard: Clipboard): Promise<any> {
             type: "text/html",
         });
     }
-    const clipboardItem = new ClipboardItem(clipboardItemVersions);
-    const data = [clipboardItem];
     try {
+        const clipboardItem = new ClipboardItem(clipboardItemVersions);
+        const data = [clipboardItem];
         await navigator.clipboard.write(data);
         return null;
     } catch (error) {
