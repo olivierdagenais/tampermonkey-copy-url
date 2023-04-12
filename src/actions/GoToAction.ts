@@ -1,7 +1,7 @@
 import { Action } from "../Action";
 
 export abstract class GoToAction implements Action {
-    perform(doc: Document, url: string): boolean {
+    async perform(doc: Document, url: string): Promise<boolean> {
         const result: string | null = this.navigate(doc, url);
         if (result) {
             window.location.href = result;

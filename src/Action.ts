@@ -1,3 +1,3 @@
 export interface Action {
-    perform(doc: Document, url: string): boolean;
+    perform(doc: Document, url: string): Promise<boolean>;
 }

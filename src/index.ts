@@ -121,9 +121,9 @@ async function handleKeydown(this: Window, e: KeyboardEvent) {
         if (shortcuts.has(shortcutString)) {
             const actionList = shortcuts.get(shortcutString);
             var handled = false;
-            actionList?.forEach((action) => {
+            actionList?.forEach(async (action) => {
                 if (!handled) {
-                    handled = action.perform(document, url);
+                    handled = await action.perform(document, url);
                 }
             });
             if (handled) {
