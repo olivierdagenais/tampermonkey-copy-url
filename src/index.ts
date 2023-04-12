@@ -64,10 +64,10 @@ async function handleKeydown(this: Window, e: KeyboardEvent) {
             }
         }
         var selectedRenderer: Renderer = renderers[0];
-        if (!e.altKey) {
-            selectedRenderer = renderers[0];
-        } else {
+        if (e.altKey) {
             selectedRenderer = renderers[2];
+        } else {
+            selectedRenderer = renderers[0];
         }
         const clipboard: Clipboard = selectedRenderer.render(link);
 
