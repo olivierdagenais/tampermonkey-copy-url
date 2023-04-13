@@ -123,7 +123,7 @@ async function handleKeydown(this: Window, e: KeyboardEvent) {
             if (actionList) {
                 var handled = false;
                 for (const action of actionList) {
-                    handled = await action.perform(document, url);
+                    handled = await action.perform(document, url, e);
                     if (handled) {
                         break;
                     }
