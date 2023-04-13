@@ -43,22 +43,6 @@ class CopyUrlAction implements Action {
         var selectedRenderer: Renderer = new Html();
         const clipboard: Clipboard = selectedRenderer.render(link);
 
-        if (statusPopup == null) {
-            statusPopup = doc.createElement("div");
-            const styleAttribute = doc.createAttribute("style");
-            styleAttribute.value = `
-                position: fixed;
-                top:0;
-                right: 0;
-                z-index: 65535;
-                color: black;
-                background-color: white;
-                padding: 5px;
-                display: none;
-            `;
-            statusPopup.attributes.setNamedItem(styleAttribute);
-            doc.body.appendChild(statusPopup);
-        }
         const status =
             `Parsed using ${selectedParser.constructor["name"]}:` +
             `<br />Destination: ${link.destination}` +
@@ -204,6 +188,23 @@ function hideStatusPopup() {
 }
 
 async function main(): Promise<void> {
+    if (statusPopup == null) {
+        var doc = window.document;
+        statusPopup = doc.createElement("div");
+        const styleAttribute = doc.createAttribute("style");
+        styleAttribute.value = `
+            position: fixed;
+            top:0;
+            right: 0;
+            z-index: 65535;
+            color: black;
+            background-color: white;
+            padding: 5px;
+            display: none;
+        `;
+        statusPopup.attributes.setNamedItem(styleAttribute);
+        doc.body.appendChild(statusPopup);
+    }
     window.addEventListener("keydown", handleKeydown);
 }
 
