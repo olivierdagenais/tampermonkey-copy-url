@@ -18,35 +18,12 @@ import { ServiceNow } from "./parsers/ServiceNow";
 import { Textile } from "./renderers/Textile";
 import { Parser } from "./Parser";
 
-const renderers: Renderer[] = [new Html(), new Markdown(), new Textile()];
-// prettier-ignore
-const shortcuts : Map<string, Array<Action>> = new Map([
-    [
-        KeyboardShortcut.asString(false, false, false, "f"), [
-            new JiraWorklog(),
-        ]
-    ],
-]);
-
-// parsers will be attempted in the order defined here
-const parsers: Parser[] = [
-    new Confluence(),
-    new GitHub(),
-    new Bitbucket(),
-    new Jira(),
-    new Jenkins(),
-    new ServiceDesk(),
-    new ServiceNow(),
-    // always keep this one LAST in this list!
-    new Default(),
-];
-
-var statusPopup: HTMLDivElement | null;
-
-async function handleKeydown(this: Window, e: KeyboardEvent) {
-    const document: Document = window.document;
-    const url: string = window.location.href;
-    if (e.ctrlKey && e.key == "o") {
+class CopyUrlAction implements Action {
+    async perform(
+        doc: Document,
+        url: string,
+        e: KeyboardEvent
+    ): Promise<boolean> {
         e.preventDefault();
         console.log("asking the parsers...");
         var link: Link = {
@@ -57,23 +34,18 @@ async function handleKeydown(this: Window, e: KeyboardEvent) {
         for (let i = 0; i < parsers.length; i++) {
             const parser = parsers[i];
             selectedParser = parser;
-            var candidate: Link | null = parser.parseLink(document, url);
+            var candidate: Link | null = parser.parseLink(doc, url);
             if (candidate) {
                 link = candidate;
                 break;
             }
         }
-        var selectedRenderer: Renderer = renderers[0];
-        if (e.altKey) {
-            selectedRenderer = renderers[2];
-        } else {
-            selectedRenderer = renderers[0];
-        }
+        var selectedRenderer: Renderer = new Html();
         const clipboard: Clipboard = selectedRenderer.render(link);
 
         if (statusPopup == null) {
-            statusPopup = document.createElement("div");
-            const styleAttribute = document.createAttribute("style");
+            statusPopup = doc.createElement("div");
+            const styleAttribute = doc.createAttribute("style");
             styleAttribute.value = `
                 position: fixed;
                 top:0;
@@ -85,7 +57,7 @@ async function handleKeydown(this: Window, e: KeyboardEvent) {
                 display: none;
             `;
             statusPopup.attributes.setNamedItem(styleAttribute);
-            document.body.appendChild(statusPopup);
+            doc.body.appendChild(statusPopup);
         }
         const status =
             `Parsed using ${selectedParser.constructor["name"]}:` +
@@ -106,7 +78,43 @@ async function handleKeydown(this: Window, e: KeyboardEvent) {
                 `<span style="color:darkred">Failure: ${result}</span>`;
             showStatusPopup(failureHtml);
         }
-    } else if (
+
+        return true;
+    }
+}
+
+// prettier-ignore
+const shortcuts : Map<string, Array<Action>> = new Map([
+    [
+        KeyboardShortcut.asString(false, false, false, "f"), [
+            new JiraWorklog(),
+        ]
+    ],
+    [
+        KeyboardShortcut.asString(true, false, false, "o"), [
+            new CopyUrlAction(),
+        ]
+    ],
+]);
+
+// parsers will be attempted in the order defined here
+const parsers: Parser[] = [
+    new Confluence(),
+    new GitHub(),
+    new Bitbucket(),
+    new Jira(),
+    new Jenkins(),
+    new ServiceDesk(),
+    new ServiceNow(),
+    // always keep this one LAST in this list!
+    new Default(),
+];
+
+var statusPopup: HTMLDivElement | null;
+async function handleKeydown(this: Window, e: KeyboardEvent) {
+    const document: Document = window.document;
+    const url: string = window.location.href;
+    if (
         e.target &&
         // TODO: we could exclude these when modifiers aren't used
         !(e.target instanceof HTMLInputElement) &&
