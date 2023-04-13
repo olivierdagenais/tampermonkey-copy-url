@@ -173,6 +173,7 @@ async function copyWithAsyncClipboardApi(clipboard: Clipboard): Promise<any> {
         await navigator.clipboard.write(data);
         return null;
     } catch (error) {
+        console.log(error);
         return error;
     }
 }
