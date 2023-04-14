@@ -150,6 +150,82 @@ test("run page", () => {
     assert.equal(actual?.text, "Project » Repository » Branch #1");
 });
 
+test("run page, version 2.361.4", () => {
+    const html = `
+<html>
+    <head>
+        <title>ALPHA » bravo » charlie » delta #106 [Jenkins]</title>
+    </head>
+    <body
+        data-model-type="org.jenkinsci.plugins.workflow.job.WorkflowRun"
+        id="jenkins"
+        class="yui-skin-sam two-column jenkins-2.361.4"
+        data-version="2.361.4"
+        >
+        <!-- etc., etc... -->
+        <div class="jenkins-breadcrumbs">
+            <ul id="breadcrumbs">
+                <li class="item">
+                    <a href="/" class="model-link">
+                        Dashboard
+                        <span class="jenkins-menu-dropdown-chevron"></span>
+                    </a>
+                </li>
+                <li href="/" class="children"></li>
+                <li class="item">
+                    <a href="/job/ALPHA/" class="model-link">
+                        ALPHA
+                        <span class="jenkins-menu-dropdown-chevron"></span>
+                    </a>
+                </li>
+                <li href="/job/ALPHA/" class="children"></li>
+                <li class="item">
+                    <a href="/job/ALPHA/job/bravo/" class="model-link">
+                        bravo
+                        <span class="jenkins-menu-dropdown-chevron"></span>
+                    </a>
+                </li>
+                <li href="/job/ALPHA/job/bravo/" class="children"></li>
+                <li class="item">
+                    <a href="/job/ALPHA/job/bravo/job/charlie/" class="model-link">
+                        charlie
+                        <span class="jenkins-menu-dropdown-chevron"></span>
+                    </a>
+                </li>
+                <li href="/job/ALPHA/job/bravo/job/charlie/" class="children"></li>
+                <li class="item">
+                    <a href="/job/ALPHA/job/bravo/job/charlie/job/delta/" class="model-link">
+                        delta
+                        <span class="jenkins-menu-dropdown-chevron"></span>
+                    </a>
+                </li>
+                <li href="/job/ALPHA/job/bravo/job/charlie/job/delta/" class="children"></li>
+                <li class="item">
+                    <a href="/job/ALPHA/job/bravo/job/charlie/job/delta/106/" class="model-link">
+                        #106
+                        <span class="jenkins-menu-dropdown-chevron"></span>
+                    </a>
+                </li>
+                <li class="separator"></li>
+            </ul>
+            <div id="breadcrumb-menu-target"></div>
+        </div>
+    </body>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "http://localhost:8080/job/ALPHA/job/bravo/job/charlie/job/delta/106/"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "http://localhost:8080/job/ALPHA/job/bravo/job/charlie/job/delta/106/"
+    );
+    assert.equal(actual?.text, "ALPHA » bravo » charlie » delta #106");
+});
+
 test("run's Pipeline steps", () => {
     const html = `
 <html>

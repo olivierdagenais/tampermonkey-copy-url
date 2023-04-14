@@ -12,10 +12,16 @@ export class Jenkins extends AbstractParser {
             return null;
         }
 
+        var selector = ".jenkins-breadcrumbs__list-item";
+        const jenkinsVersion = bodyElement.getAttribute("data-version");
+        switch (jenkinsVersion) {
+            case "2.361.4":
+                selector = ".jenkins-breadcrumbs .item";
+                break;
+        }
         var linkText = ``;
-        const listItems: NodeListOf<HTMLElement> = doc.querySelectorAll(
-            ".jenkins-breadcrumbs__list-item"
-        );
+        const listItems: NodeListOf<HTMLElement> =
+            doc.querySelectorAll(selector);
         listItems.forEach((value: HTMLElement, key: number) => {
             if (key > 0) {
                 const anchor: HTMLAnchorElement | null =
