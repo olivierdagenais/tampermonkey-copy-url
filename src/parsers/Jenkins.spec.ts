@@ -13,6 +13,22 @@ function testParseLink(html: string, url: string): Link | null {
     return actual;
 }
 
+test("splitUrlPath with deep URL", () => {
+    const input = "http://localhost:8080/job/Project/job/Repository/job/Branch/";
+    const cut = new Jenkins();
+
+    const actual = cut.splitUrlPath(input);
+
+    assert.equal(actual.length, 7);
+    assert.equal(actual[0], "");
+    assert.equal(actual[1], "job");
+    assert.equal(actual[2], "Project");
+    assert.equal(actual[3], "job");
+    assert.equal(actual[4], "Repository");
+    assert.equal(actual[5], "job");
+    assert.equal(actual[6], "Branch");
+});
+
 test("job page", () => {
     const html = `
 <html>
@@ -148,6 +164,78 @@ test("run page", () => {
         "http://localhost:8080/job/Project/job/Repository/job/Branch/1/"
     );
     assert.equal(actual?.text, "Project » Repository » Branch #1");
+});
+
+test("run's console output", () => {
+    const html = `
+<html>
+    <head>
+        <title>Project » Repository » Branch #1 Console [Jenkins]</title>
+    </head>
+    <body
+        data-model-type="org.jenkinsci.plugins.workflow.job.WorkflowRun"
+        id="jenkins"
+        class="yui-skin-sam two-column jenkins-2.387.1"
+        data-version="2.387.1"
+        >
+        <!-- etc., etc... -->
+        <div
+            id="breadcrumbBar"
+            class="jenkins-breadcrumbs"
+            aria-label="breadcrumb"
+            >
+            <ol class="jenkins-breadcrumbs__list" id="breadcrumbs">
+                <li class="jenkins-breadcrumbs__list-item">
+                    <a href="/" class="model-link">
+                        Dashboard
+                        <span class="jenkins-menu-dropdown-chevron"></span>
+                    </a>
+                </li>
+                <li href="/" class="children"></li>
+                <li class="jenkins-breadcrumbs__list-item">
+                    <a href="/job/Project/" class="model-link">
+                        Project
+                        <span class="jenkins-menu-dropdown-chevron"></span>
+                    </a>
+                </li>
+                <li href="/job/Project/" class="children"></li>
+                <li class="jenkins-breadcrumbs__list-item">
+                    <a href="/job/Project/job/Repository/" class="model-link">
+                        Repository
+                        <span class="jenkins-menu-dropdown-chevron"></span>
+                    </a>
+                </li>
+                <li href="/job/Project/job/Repository/" class="children"></li>
+                <li class="jenkins-breadcrumbs__list-item">
+                    <a href="/job/Project/job/Repository/job/Branch/" class="model-link">
+                        Branch
+                        <span class="jenkins-menu-dropdown-chevron"></span>
+                    </a>
+                </li>
+                <li href="/job/Project/job/Repository/job/Branch/" class="children"></li>
+                <li class="jenkins-breadcrumbs__list-item">
+                    <a href="/job/Project/job/Repository/job/Branch/1/" class="model-link">
+                        #1
+                        <span class="jenkins-menu-dropdown-chevron"></span>
+                    </a>
+                </li>
+                <li class="separator"></li>
+            </ol>
+        </div>
+    </body>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "http://localhost:8080/job/Project/job/Repository/job/Branch/1/console"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "http://localhost:8080/job/Project/job/Repository/job/Branch/1/console"
+    );
+    assert.equal(actual?.text, "Project » Repository » Branch #1 » Console Output");
 });
 
 test("run page, version 2.361.4", () => {

@@ -4,6 +4,22 @@ import { Link } from "../Link";
 // Right-Pointing Double Angle Quotation Mark
 const chevron = "\u00BB";
 export class Jenkins extends AbstractParser {
+    splitPath(path: string): string[] {
+        const numToTrim = path.endsWith("/") ? 1 : 0;
+        const adjustedPath = path.substring(0, path.length - numToTrim);
+        const pathParts = adjustedPath.split("/");
+        return pathParts;
+    }
+
+    splitUrlPath(urlString: string): string[] {
+        const url = new URL(urlString);
+        return this.splitPath(url.pathname);
+    }
+
+    isInteger(s: string): boolean {
+        return Number.isInteger(Number.parseInt(s, 10));
+    }
+
     parseLink(doc: Document, url: string): Link | null {
         const bodyElement: HTMLElement | null = doc.querySelector(
             "html body[id=jenkins]"
@@ -19,6 +35,10 @@ export class Jenkins extends AbstractParser {
                 selector = ".jenkins-breadcrumbs .item";
                 break;
         }
+        const urlParts = this.splitUrlPath(url);
+        const isUrlToRunConsole =
+            "console" === urlParts[urlParts.length - 1] &&
+            this.isInteger(urlParts[urlParts.length - 2]);
         var linkText = ``;
         const listItems: NodeListOf<HTMLElement> =
             doc.querySelectorAll(selector);
@@ -30,14 +50,9 @@ export class Jenkins extends AbstractParser {
                     var isUrlToRun = false;
                     const href: string | null = anchor.getAttribute("href");
                     if (href) {
-                        const numToTrim = href.endsWith("/") ? 1 : 0;
-                        const relativeUrl = href.substring(
-                            0,
-                            href.length - numToTrim
-                        );
-                        const hrefParts = relativeUrl.split("/");
+                        const hrefParts = this.splitPath(href);
                         const lastPart = hrefParts[hrefParts.length - 1];
-                        if (Number.isInteger(Number.parseInt(lastPart, 10))) {
+                        if (this.isInteger(lastPart)) {
                             isUrlToRun = !(
                                 "node" === hrefParts[hrefParts.length - 2] &&
                                 "execution" === hrefParts[hrefParts.length - 3]
@@ -52,6 +67,9 @@ export class Jenkins extends AbstractParser {
                         }
                     }
                     linkText += anchor.text.trim();
+                    if (key == listItems.length - 1 && isUrlToRunConsole) {
+                        linkText += ` ${chevron} Console Output`;
+                    }
                 }
             }
         });
