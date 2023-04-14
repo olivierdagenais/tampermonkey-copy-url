@@ -18,6 +18,16 @@ const shortcuts : Map<string, Array<Action>> = new Map([
     ],
     [
         KeyboardShortcut.asString(true, false, false, "o"), [
+            new CopyUrl(statusPopup, new Markdown()),
+        ]
+    ],
+    [
+        KeyboardShortcut.asString(true, true, false, "o"), [
+            new CopyUrl(statusPopup, new Textile()),
+        ]
+    ],
+    [
+        KeyboardShortcut.asString(true, true, false, "p"), [
             new CopyUrl(statusPopup, new Html()),
         ]
     ],
