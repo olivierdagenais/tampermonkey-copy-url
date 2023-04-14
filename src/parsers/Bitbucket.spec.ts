@@ -238,6 +238,30 @@ test("should parse a deep link to a file in a commit", () => {
     );
 });
 
+test("a deep link to a file in a commit in a personal repo", () => {
+    const html = `
+<html>
+    <head>
+        <title>Olivier Dagenais / jf_agent / 69336ecfefe - Stash</title>
+    </head>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "https://bitbucket.example.com/users/odagenais/repos/jf_agent/commits/69336ecfefe0dec16963b9d2247b7ce5617939d0#jf_agent/git/github.py"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "https://bitbucket.example.com/users/odagenais/repos/jf_agent/commits/69336ecfefe0dec16963b9d2247b7ce5617939d0#jf_agent/git/github.py"
+    );
+    assert.equal(
+        actual?.text,
+        "jf_agent/git/github.py at commit 69336ecfef in ~odagenais/jf_agent"
+    );
+});
+
 test("should parse a link to a list of commits for a ref", () => {
     const html = `
 <html>

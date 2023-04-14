@@ -2,7 +2,7 @@ import { AbstractParser } from "./AbstractParser";
 import { Link } from "../Link";
 
 const bbUrlRegex =
-    /https?:\/\/(?<host>[^/]+)\/([^/]+\/)*projects\/(?<project>[^/]+)\/repos\/(?<repo>[^/]+)\/(?<rest>.+)/;
+    /https?:\/\/(?<host>[^/]+)\/([^/]+\/)*(?<projectsOrUsers>projects|users)\/(?<project>[^/]+)\/repos\/(?<repo>[^/]+)\/(?<rest>.+)/;
 const browseUrlRegex =
     /browse(\/(?<path>[^?#]+)?(\?at=(?<ref>[^#]+))?(#(?<lines>[0-9,-]+))?)?/;
 const commitIdRegex = /([a-f0-9]{40})/;
@@ -19,7 +19,9 @@ export class Bitbucket extends AbstractParser {
             return null;
         }
         const bbUrlGroups = bbUrlMatch.groups;
-        const project = bbUrlGroups.project;
+        const projectsOrUsers = bbUrlGroups.projectsOrUsers;
+        const project =
+            (projectsOrUsers === "users" ? "~" : "") + bbUrlGroups.project;
         const repo = bbUrlGroups.repo;
         const rest = bbUrlGroups.rest;
 
