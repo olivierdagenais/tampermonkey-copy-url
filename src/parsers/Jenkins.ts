@@ -11,6 +11,11 @@ export class Jenkins extends AbstractParser {
         return pathParts;
     }
 
+    splitUrlPath(urlString: string): string[] {
+        const url = new URL(urlString);
+        return this.splitPath(url.pathname);
+    }
+
     isInteger(s: string): boolean {
         return Number.isInteger(Number.parseInt(s, 10));
     }
