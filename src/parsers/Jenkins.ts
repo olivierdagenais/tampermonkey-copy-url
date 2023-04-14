@@ -11,6 +11,10 @@ export class Jenkins extends AbstractParser {
         return pathParts;
     }
 
+    isInteger(s: string): boolean {
+        return Number.isInteger(Number.parseInt(s, 10));
+    }
+
     parseLink(doc: Document, url: string): Link | null {
         const bodyElement: HTMLElement | null = doc.querySelector(
             "html body[id=jenkins]"
@@ -39,7 +43,7 @@ export class Jenkins extends AbstractParser {
                     if (href) {
                         const hrefParts = this.splitPath(href);
                         const lastPart = hrefParts[hrefParts.length - 1];
-                        if (Number.isInteger(Number.parseInt(lastPart, 10))) {
+                        if (this.isInteger(lastPart)) {
                             isUrlToRun = !(
                                 "node" === hrefParts[hrefParts.length - 2] &&
                                 "execution" === hrefParts[hrefParts.length - 3]
