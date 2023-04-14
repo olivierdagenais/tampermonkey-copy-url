@@ -35,6 +35,10 @@ export class Jenkins extends AbstractParser {
                 selector = ".jenkins-breadcrumbs .item";
                 break;
         }
+        const urlParts = this.splitUrlPath(url);
+        const isUrlToRunConsole =
+            "console" === urlParts[urlParts.length - 1] &&
+            this.isInteger(urlParts[urlParts.length - 2]);
         var linkText = ``;
         const listItems: NodeListOf<HTMLElement> =
             doc.querySelectorAll(selector);
@@ -63,6 +67,9 @@ export class Jenkins extends AbstractParser {
                         }
                     }
                     linkText += anchor.text.trim();
+                    if (key == listItems.length - 1 && isUrlToRunConsole) {
+                        linkText += ` ${chevron} Console Output`;
+                    }
                 }
             }
         });
