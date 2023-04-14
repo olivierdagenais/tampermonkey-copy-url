@@ -4,6 +4,13 @@ import { Link } from "../Link";
 // Right-Pointing Double Angle Quotation Mark
 const chevron = "\u00BB";
 export class Jenkins extends AbstractParser {
+    splitPath(path: string): string[] {
+        const numToTrim = path.endsWith("/") ? 1 : 0;
+        const adjustedPath = path.substring(0, path.length - numToTrim);
+        const pathParts = adjustedPath.split("/");
+        return pathParts;
+    }
+
     parseLink(doc: Document, url: string): Link | null {
         const bodyElement: HTMLElement | null = doc.querySelector(
             "html body[id=jenkins]"
@@ -30,12 +37,7 @@ export class Jenkins extends AbstractParser {
                     var isUrlToRun = false;
                     const href: string | null = anchor.getAttribute("href");
                     if (href) {
-                        const numToTrim = href.endsWith("/") ? 1 : 0;
-                        const relativeUrl = href.substring(
-                            0,
-                            href.length - numToTrim
-                        );
-                        const hrefParts = relativeUrl.split("/");
+                        const hrefParts = this.splitPath(href);
                         const lastPart = hrefParts[hrefParts.length - 1];
                         if (Number.isInteger(Number.parseInt(lastPart, 10))) {
                             isUrlToRun = !(
