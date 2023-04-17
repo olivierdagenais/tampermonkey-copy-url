@@ -22,9 +22,7 @@ export class Jenkins extends AbstractParser {
     }
 
     parseLink(doc: Document, url: string): Link | null {
-        const bodyElement: HTMLElement | null = doc.querySelector(
-            "html body[id=jenkins]"
-        );
+        const bodyElement = JenkinsHelpers.getBodyElement(doc);
         if (!bodyElement) {
             return null;
         }

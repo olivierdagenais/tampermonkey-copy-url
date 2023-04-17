@@ -9,9 +9,7 @@ export class JenkinsDashboard extends GoToAction {
     }
 
     navigate(doc: Document, urlString: string): string | null {
-        const bodyElement: HTMLElement | null = doc.querySelector(
-            "html body[id=jenkins]"
-        );
+        const bodyElement = JenkinsHelpers.getBodyElement(doc);
         if (!bodyElement) {
             return null;
         }
