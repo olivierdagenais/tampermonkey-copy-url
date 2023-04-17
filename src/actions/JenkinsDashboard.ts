@@ -1,7 +1,7 @@
 import { GoToAction } from "./GoToAction";
 
 export class JenkinsDashboard extends GoToAction {
-    buildUrl(urlString: string, newPath: string) : string {
+    buildUrl(urlString: string, newPath: string): string {
         const url = new URL(urlString);
         url.pathname = newPath;
         return url.toString();
