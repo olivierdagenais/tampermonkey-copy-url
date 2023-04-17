@@ -1,4 +1,5 @@
 import { AbstractParser } from "./AbstractParser";
+import { JenkinsHelpers } from "../JenkinsHelpers";
 import { Link } from "../Link";
 
 // Right-Pointing Double Angle Quotation Mark
@@ -28,13 +29,7 @@ export class Jenkins extends AbstractParser {
             return null;
         }
 
-        var selector = ".jenkins-breadcrumbs__list-item";
-        const jenkinsVersion = bodyElement.getAttribute("data-version");
-        switch (jenkinsVersion) {
-            case "2.361.4":
-                selector = ".jenkins-breadcrumbs .item";
-                break;
-        }
+        const selector = JenkinsHelpers.getBreadcrumbItemSelector(bodyElement);
         const urlParts = this.splitUrlPath(url);
         const isUrlToRunConsole =
             "console" === urlParts[urlParts.length - 1] &&

@@ -1,4 +1,5 @@
 import { GoToAction } from "./GoToAction";
+import { JenkinsHelpers } from "../JenkinsHelpers";
 
 export class JenkinsDashboard extends GoToAction {
     buildUrl(urlString: string, newPath: string): string {
@@ -15,13 +16,7 @@ export class JenkinsDashboard extends GoToAction {
             return null;
         }
 
-        var selector = ".jenkins-breadcrumbs__list-item";
-        const jenkinsVersion = bodyElement.getAttribute("data-version");
-        switch (jenkinsVersion) {
-            case "2.361.4":
-                selector = ".jenkins-breadcrumbs .item";
-                break;
-        }
+        const selector = JenkinsHelpers.getBreadcrumbItemSelector(bodyElement);
 
         const breaCrumbListItem = doc.querySelector(selector);
         if (breaCrumbListItem) {
