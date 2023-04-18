@@ -1,5 +1,11 @@
 export class JenkinsHelpers {
-    static getBodyElement(doc: Document) : HTMLElement | null {
+    static buildUrl(urlString: string, newPath: string): string {
+        const url = new URL(urlString);
+        url.pathname = newPath;
+        return url.toString();
+    }
+
+    static getBodyElement(doc: Document): HTMLElement | null {
         const bodyElement: HTMLElement | null = doc.querySelector(
             "html body[id=jenkins]"
         );
