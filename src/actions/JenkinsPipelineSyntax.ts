@@ -15,6 +15,22 @@ export class JenkinsPipelineSyntax extends GoToAction {
         if (anchor) {
             return JenkinsHelpers.buildUrl(url, anchor.href);
         }
+        const crumbSelector =
+            JenkinsHelpers.getBreadcrumbItemSelector(bodyElement);
+        const crumbListItems = doc.querySelectorAll(crumbSelector);
+        if (1 == crumbListItems.length) {
+            const listItem = crumbListItems.item(0);
+            const anchor = listItem.querySelector("a");
+            if (anchor) {
+                const path = anchor.getAttribute("href");
+                if (path) {
+                    return JenkinsHelpers.buildUrl(
+                        url,
+                        path + "pipeline-syntax"
+                    );
+                }
+            }
+        }
 
         return null;
     }
