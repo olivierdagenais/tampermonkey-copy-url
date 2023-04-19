@@ -73,3 +73,36 @@ test("job page", () => {
         "http://localhost:8080/job/Project/job/Repository/job/Branch/configure"
     );
 });
+
+test("dashboard page", () => {
+    const html = `
+<html>
+    <head>
+        <title>Dashboard [Jenkins]</title>
+    </head>
+    <body
+        data-model-type="org.jenkinsci.plugins.workflow.job.WorkflowRun"
+        id="jenkins"
+        class="yui-skin-sam two-column jenkins-2.361.4"
+        data-version="2.361.4"
+        >
+        <!-- etc., etc... -->
+        <div class="jenkins-breadcrumbs">
+            <ul id="breadcrumbs">
+                <li class="item">
+                    <a href="/" class="model-link">
+                        Dashboard
+                        <span class="jenkins-menu-dropdown-chevron"></span>
+                    </a>
+                </li>
+                <li href="/" class="children"></li>
+            </ul>
+            <div id="breadcrumb-menu-target"></div>
+        </div>
+    </body>
+</html>`;
+
+    const actual = testNavigate(html, "http://localhost:8080");
+
+    assert.equal(actual, "http://localhost:8080/configure");
+});
