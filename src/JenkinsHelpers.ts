@@ -26,4 +26,16 @@ export class JenkinsHelpers {
     static isInteger(s: string): boolean {
         return Number.isInteger(Number.parseInt(s, 10));
     }
+
+    static splitPath(path: string): string[] {
+        const numToTrim = path.endsWith("/") ? 1 : 0;
+        const adjustedPath = path.substring(0, path.length - numToTrim);
+        const pathParts = adjustedPath.split("/");
+        return pathParts;
+    }
+
+    static splitUrlPath(urlString: string): string[] {
+        const url = new URL(urlString);
+        return this.splitPath(url.pathname);
+    }
 }
