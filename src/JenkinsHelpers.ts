@@ -22,4 +22,8 @@ export class JenkinsHelpers {
         }
         return selector;
     }
+
+    static isInteger(s: string): boolean {
+        return Number.isInteger(Number.parseInt(s, 10));
+    }
 }

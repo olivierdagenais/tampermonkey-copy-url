@@ -17,10 +17,6 @@ export class Jenkins extends AbstractParser {
         return this.splitPath(url.pathname);
     }
 
-    isInteger(s: string): boolean {
-        return Number.isInteger(Number.parseInt(s, 10));
-    }
-
     parseLink(doc: Document, url: string): Link | null {
         const bodyElement = JenkinsHelpers.getBodyElement(doc);
         if (!bodyElement) {
@@ -31,7 +27,7 @@ export class Jenkins extends AbstractParser {
         const urlParts = this.splitUrlPath(url);
         const isUrlToRunConsole =
             "console" === urlParts[urlParts.length - 1] &&
-            this.isInteger(urlParts[urlParts.length - 2]);
+            JenkinsHelpers.isInteger(urlParts[urlParts.length - 2]);
         var linkText = ``;
         const listItems: NodeListOf<HTMLElement> =
             doc.querySelectorAll(selector);
@@ -45,7 +41,7 @@ export class Jenkins extends AbstractParser {
                     if (href) {
                         const hrefParts = this.splitPath(href);
                         const lastPart = hrefParts[hrefParts.length - 1];
-                        if (this.isInteger(lastPart)) {
+                        if (JenkinsHelpers.isInteger(lastPart)) {
                             isUrlToRun = !(
                                 "node" === hrefParts[hrefParts.length - 2] &&
                                 "execution" === hrefParts[hrefParts.length - 3]
