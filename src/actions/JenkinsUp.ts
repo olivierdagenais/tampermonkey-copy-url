@@ -11,8 +11,14 @@ export class JenkinsUp extends GoToAction {
         const selector = JenkinsHelpers.getBreadcrumbItemSelector(bodyElement);
         const breaCrumbListItems = doc.querySelectorAll(selector);
         if (breaCrumbListItems && breaCrumbListItems.length > 1) {
+            var offset = 2;
+            const urlParts = JenkinsHelpers.splitUrlPath(urlString);
+            const lastPart = urlParts[urlParts.length - 1];
+            if ("consoleFull" == lastPart || "console" == lastPart) {
+                offset = 1;
+            }
             const penultimateItem = breaCrumbListItems.item(
-                breaCrumbListItems.length - 2
+                breaCrumbListItems.length - offset
             );
             const anchor = penultimateItem.querySelector("a");
             if (anchor) {
