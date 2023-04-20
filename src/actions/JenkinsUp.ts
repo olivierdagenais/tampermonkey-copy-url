@@ -14,6 +14,28 @@ export class JenkinsUp extends GoToAction {
             var offset = 2;
             const urlParts = JenkinsHelpers.splitUrlPath(urlString);
             const lastPart = urlParts[urlParts.length - 1];
+            // execution/node/5/
+            if (
+                urlParts.length > 3 &&
+                JenkinsHelpers.isInteger(lastPart) &&
+                "node" == urlParts[urlParts.length - 2] &&
+                "execution" == urlParts[urlParts.length - 3]
+            ) {
+                const penultimateItem = breaCrumbListItems.item(
+                    breaCrumbListItems.length - 2
+                );
+                const anchor = penultimateItem.querySelector("a");
+                if (anchor) {
+                    const path = anchor.getAttribute("href");
+                    if (path) {
+                        return JenkinsHelpers.buildUrl(
+                            urlString,
+                            path + "flowGraphTable/"
+                        );
+                    }
+                }
+                return null;
+            }
             if ("consoleFull" == lastPart || "console" == lastPart) {
                 offset = 1;
             }
