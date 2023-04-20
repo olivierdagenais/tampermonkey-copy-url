@@ -10,16 +10,17 @@ export class JenkinsPipelineSyntax extends GoToAction {
 
         /* <a> elements with an href ending in "pipeline-syntax" */
         const selector = "a[href$='/pipeline-syntax']";
-        const anchor: HTMLAnchorElement | null =
-            bodyElement.querySelector(selector);
-        if (anchor) {
-            return JenkinsHelpers.buildUrl(url, anchor.href);
-        }
         const crumbSelector =
             JenkinsHelpers.getBreadcrumbItemSelector(bodyElement);
         const crumbListItems = doc.querySelectorAll(crumbSelector);
+        var index = -1;
         if (1 == crumbListItems.length) {
-            const listItem = crumbListItems.item(0);
+            index = 0;
+        } else if (bodyElement.querySelector(selector)) {
+            index = crumbListItems.length - 1;
+        }
+        if (index >= 0) {
+            const listItem = crumbListItems.item(index);
             const anchor = listItem.querySelector("a");
             if (anchor) {
                 const path = anchor.getAttribute("href");
