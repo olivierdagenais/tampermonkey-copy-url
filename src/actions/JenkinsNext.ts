@@ -21,6 +21,15 @@ export class JenkinsNext extends GoToAction {
                 urlParts[urlParts.length - 1] = nextRun.toString();
                 const rebuiltPath = urlParts.join("/") + "/";
                 return JenkinsHelpers.buildUrl(urlString, rebuiltPath);
+            } else {
+                const mostRecentRunSelector = "tr.build-row a.build-link";
+                const anchor = bodyElement.querySelector(mostRecentRunSelector);
+                if (anchor) {
+                    const path = anchor.getAttribute("href");
+                    if (path) {
+                        return JenkinsHelpers.buildUrl(urlString, path);
+                    }
+                }
             }
         }
         return null;
