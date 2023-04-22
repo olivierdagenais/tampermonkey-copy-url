@@ -77,7 +77,7 @@ test("run page", () => {
 
     assert.equal(
         actual,
-        "http://localhost:8080/job/Project/job/Repository/job/Branch/1/"
+        "http://localhost:8080/job/Project/job/Repository/job/Branch/1"
     );
 });
 

@@ -19,7 +19,7 @@ export class JenkinsPrevious extends GoToAction {
             if (isUrlToRun) {
                 const prevRun = Number.parseInt(lastPart, 10) - 1;
                 urlParts[urlParts.length - 1] = prevRun.toString();
-                const rebuiltPath = urlParts.join("/") + "/";
+                const rebuiltPath = urlParts.join("/");
                 return JenkinsHelpers.buildUrl(urlString, rebuiltPath);
             }
         }
