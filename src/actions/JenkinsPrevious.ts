@@ -12,13 +12,14 @@ export class JenkinsPrevious extends GoToAction {
         const breaCrumbListItems = doc.querySelectorAll(selector);
         if (breaCrumbListItems) {
             var urlParts = JenkinsHelpers.splitUrlPath(urlString);
-            const lastPart = urlParts[urlParts.length - 1];
+            var index = urlParts.length - 1;
+            const lastPart = urlParts[index];
             const isUrlToRun =
-                "job" === urlParts[urlParts.length - 3] &&
+                "job" === urlParts[index - 2] &&
                 JenkinsHelpers.isInteger(lastPart);
             if (isUrlToRun) {
                 const prevRun = Number.parseInt(lastPart, 10) - 1;
-                urlParts[urlParts.length - 1] = prevRun.toString();
+                urlParts[index] = prevRun.toString();
                 const rebuiltPath = urlParts.join("/");
                 return JenkinsHelpers.buildUrl(urlString, rebuiltPath);
             }
