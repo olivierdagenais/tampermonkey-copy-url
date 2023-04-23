@@ -27,6 +27,24 @@ export class JenkinsBuild extends GoToAction {
                     );
                 }
             }
+        } else {
+            for (var index = crumbListItems.length - 1; index > 1; index--) {
+                const item = crumbListItems.item(index);
+                const anchor = item.querySelector("a");
+                if (anchor) {
+                    const href = anchor.getAttribute("href");
+                    if (href) {
+                        const hrefParts = JenkinsHelpers.splitPath(href);
+                        if ("job" == hrefParts[hrefParts.length - 2]) {
+                            return JenkinsHelpers.buildUrl(
+                                url,
+                                href + "build",
+                                "delay=0sec"
+                            );
+                        }
+                    }
+                }
+            }
         }
 
         return null;
