@@ -36,7 +36,8 @@ export class JenkinsUp extends GoToAction {
                 }
                 return null;
             }
-            if ("consoleFull" == lastPart || "console" == lastPart) {
+            const specialCases = new Set<string>(["consoleFull", "console"]);
+            if (specialCases.has(lastPart)) {
                 offset = 1;
             }
             const penultimateItem = breaCrumbListItems.item(
