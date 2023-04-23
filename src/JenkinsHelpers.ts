@@ -1,7 +1,14 @@
 export class JenkinsHelpers {
-    static buildUrl(urlString: string, newPath: string): string {
+    static buildUrl(
+        urlString: string,
+        newPath: string,
+        queryString?: string
+    ): string {
         const url = new URL(urlString);
         url.pathname = newPath;
+        if (queryString) {
+            url.search = queryString;
+        }
         return url.toString();
     }
 
