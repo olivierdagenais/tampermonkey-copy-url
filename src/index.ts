@@ -2,6 +2,15 @@
 import { Action } from "./Action";
 import { CopyUrl } from "./actions/CopyUrl";
 import { Html } from "./renderers/Html";
+import { JenkinsBuild } from "./actions/JenkinsBuild";
+import { JenkinsConfigure } from "./actions/JenkinsConfigure";
+import { JenkinsConsole } from "./actions/JenkinsConsole";
+import { JenkinsCredentials } from "./actions/JenkinsCredentials";
+import { JenkinsDashboard } from "./actions/JenkinsDashboard";
+import { JenkinsNext } from "./actions/JenkinsNext";
+import { JenkinsPipelineSyntax } from "./actions/JenkinsPipelineSyntax";
+import { JenkinsPrevious } from "./actions/JenkinsPrevious";
+import { JenkinsUp } from "./actions/JenkinsUp";
 import { JiraWorklog } from "./actions/JiraWorklog";
 import { KeyboardShortcut } from "./KeyboardShortcut";
 import { Markdown } from "./renderers/Markdown";
@@ -12,8 +21,29 @@ const statusPopup: HTMLDivElement = window.document.createElement("div");
 // prettier-ignore
 const shortcuts : Map<string, Array<Action>> = new Map([
     [
+        KeyboardShortcut.asString(false, false, false, "b"), [
+            new JenkinsBuild(),
+        ]
+    ],
+    [
+        KeyboardShortcut.asString(false, false, false, "c"), [
+            new JenkinsConfigure(),
+        ]
+    ],
+    [
         KeyboardShortcut.asString(false, false, false, "f"), [
+            new JenkinsConsole(),
             new JiraWorklog(),
+        ]
+    ],
+    [
+        KeyboardShortcut.asString(false, false, false, "k"), [
+            new JenkinsCredentials(),
+        ]
+    ],
+    [
+        KeyboardShortcut.asString(false, false, false, "n"), [
+            new JenkinsNext(),
         ]
     ],
     [
@@ -27,8 +57,24 @@ const shortcuts : Map<string, Array<Action>> = new Map([
         ]
     ],
     [
+        KeyboardShortcut.asString(false, false, false, "p"), [
+            new JenkinsPipelineSyntax(),
+            new JenkinsPrevious(),
+        ]
+    ],
+    [
         KeyboardShortcut.asString(true, true, false, "p"), [
             new CopyUrl(statusPopup, new Html()),
+        ]
+    ],
+    [
+        KeyboardShortcut.asString(false, false, false, "r"), [
+            new JenkinsDashboard(),
+        ]
+    ],
+    [
+        KeyboardShortcut.asString(false, false, false, "u"), [
+            new JenkinsUp(),
         ]
     ],
 ]);
