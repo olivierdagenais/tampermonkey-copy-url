@@ -134,6 +134,14 @@ async function main(): Promise<void> {
     statusPopup.attributes.setNamedItem(styleAttribute);
     doc.body.appendChild(statusPopup);
 
+    const jiraBody = doc.querySelector("body#jira[data-version]");
+    if (jiraBody) {
+        const anchor = jiraBody.querySelector("a#home_link[accesskey=d]");
+        if (anchor) {
+            anchor.removeAttribute("accesskey");
+        }
+    }
+
     window.addEventListener("keydown", handleKeydown);
 }
 
