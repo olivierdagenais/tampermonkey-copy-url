@@ -6,22 +6,23 @@ export class JiraSave implements Action {
         url: string,
         e: KeyboardEvent
     ): Promise<boolean> {
-        const form: HTMLFormElement | null = this.findSaveableForm(doc, url);
-        if (form) {
-            form.submit();
+        const button: HTMLInputElement | null = this.findSaveButton(doc, url);
+        if (button) {
+            button.click();
             return true;
         }
         return false;
     }
 
-    findSaveableForm(doc: Document, url: string): HTMLFormElement | null {
+    findSaveButton(doc: Document, url: string): HTMLInputElement | null {
         const body: HTMLBodyElement | null = doc.querySelector("body#jira");
         if (!body) {
             return null;
         }
 
-        const form: HTMLFormElement | null =
-            doc.querySelector("form#issue-create");
-        return form;
+        const button: HTMLInputElement | null = doc.querySelector(
+            "input#issue-create-submit"
+        );
+        return button;
     }
 }
