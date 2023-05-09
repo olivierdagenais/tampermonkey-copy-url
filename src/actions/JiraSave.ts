@@ -21,7 +21,7 @@ export class JiraSave implements Action {
         }
 
         const button: HTMLInputElement | null = doc.querySelector(
-            "input#issue-create-submit"
+            "input#issue-create-submit, input#edit-issue-submit"
         );
         return button;
     }
