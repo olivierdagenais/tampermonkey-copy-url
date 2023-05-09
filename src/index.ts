@@ -88,11 +88,17 @@ const shortcuts : Map<string, Array<Action>> = new Map([
 async function handleKeydown(this: Window, e: KeyboardEvent) {
     const document: Document = window.document;
     const url: string = window.location.href;
+    // prettier-ignore
     if (
         e.target &&
-        // TODO: we could exclude these when modifiers aren't used
-        !(e.target instanceof HTMLInputElement) &&
-        !(e.target instanceof HTMLTextAreaElement)
+        (
+            e.ctrlKey ||
+            e.altKey ||
+            (
+                !(e.target instanceof HTMLInputElement) &&
+                !(e.target instanceof HTMLTextAreaElement)
+            )
+        )
     ) {
         const shortcutString = KeyboardShortcut.asString(
             e.ctrlKey,
