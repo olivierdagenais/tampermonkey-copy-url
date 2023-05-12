@@ -207,3 +207,79 @@ test("JIRA edit issue, pop-up", () => {
 
     assert.isNotNull(actual);
 });
+
+test("JIRA edit issue labels, pop-up", () => {
+    const html = `
+<html class="mozilla" lang="en">
+    <head>
+        <title>Labels: PIG-1</title>
+    </head>
+    <body
+        id="jira"
+        data-version="8.20.17"
+        data-aui-version="9.2.3-4dc984d9f"
+        >
+        <div id="content">
+            <main role="main" id="main" class="content">
+                <div class="issue-view">
+                </div>
+            </main>
+        </div>
+        <div class="jira-dialog-content jira-dialog-core-content">
+            <div class="dialog-title hidden">Labels</div>
+            <form
+                action="/jira/secure/EditLabels.jspa?atl_token=BWP3-NZB2-6EDY-6C7K_e34a6a6b54443f624777e87414875b1a3875eb1a_lin"
+                class="aui edit-labels"
+                id="edit-labels-form"
+                method="post"
+                >
+                <div class="form-body" style="max-height: 426px">
+                    <div class="field-group aui-field-labelpicker">
+                        <label for="labels-textarea">
+                            Labels
+                        </label>
+                        <div
+                            class="jira-multi-select long-field"
+                            id="labels-multi-select"
+                            data-query="breakfast">
+                            <span class="icon drop-menu noloading" tabindex="-1"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons-container form-footer">
+                    <div class="buttons">
+                        <input
+                            accesskey="s"
+                            class="aui-button"
+                            id="submit"
+                            name="edit-labels-submit"
+                            title="Press Alt+Shift+s to submit this form"
+                            type="submit"
+                            value="Update"
+                            resolved=""
+                            />
+                        <a
+                            accesskey="\`"
+                            class="aui-button aui-button-link cancel"
+                            href="/jira/browse/PIG-1"
+                            id="cancel"
+                            title="Press Alt+Shift+\` to cancel"
+                            resolved=""
+                            >
+                            Cancel
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
+`;
+
+    const actual = testFindSaveButton(
+        html,
+        "http://localhost:2990/jira/browse/PIG-1"
+    );
+
+    assert.isNotNull(actual);
+});
