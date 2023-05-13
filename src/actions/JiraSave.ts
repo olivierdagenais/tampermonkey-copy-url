@@ -25,6 +25,7 @@ export class JiraSave implements Action {
             "input#edit-issue-submit",
             "input[name='edit-labels-submit']",
             "input[name='Link'][type='submit'].aui-button",
+            "input#log-work-submit",
         ];
         const button: HTMLInputElement | null = doc.querySelector(
             saveButtonSelectors.join(", ")
