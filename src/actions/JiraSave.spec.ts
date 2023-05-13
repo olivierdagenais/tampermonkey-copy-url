@@ -339,3 +339,61 @@ test("JIRA add issue link", () => {
 
     assert.isNotNull(actual);
 });
+
+test("JIRA issue add worklog", () => {
+    const html = `
+<html class="mozilla" lang="en">
+    <head>
+        <title>Log work: PIG-1</title>
+    </head>
+    <body
+        id="jira"
+        data-version="8.20.17"
+        data-aui-version="9.2.3-4dc984d9f"
+        >
+        <div id="content">
+            <main role="main" id="main" class="aui-page-panel-content">
+                <form
+                    action="CreateWorklog.jspa"
+                    class="aui dnd-attachment-support"
+                    id="log-work"
+                    method="post"
+                    >
+                    <div class="buttons-container form-footer">
+                        <div class="buttons">
+                            <input
+                                accesskey="s"
+                                class="aui-button"
+                                id="log-work-submit"
+                                name="Log"
+                                title="Press Alt+Shift+s to submit this form"
+                                type="submit"
+                                value="Log"
+                                resolved=""
+                                />
+                            <a
+                                accesskey="\`"
+                                class="aui-button aui-button-link cancel"
+                                href="/jira/browse/PIG-1"
+                                id="log-work-cancel"
+                                title="Press Alt+Shift+\` to cancel"
+                                resolved=""
+                                >
+                                Cancel
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </body>
+</html>
+`;
+
+    const actual = testFindSaveButton(
+        html,
+        "http://localhost:2990/jira/secure/CreateWorklog.jspa"
+    );
+
+    assert.isNotNull(actual);
+});
