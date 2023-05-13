@@ -20,8 +20,13 @@ export class JiraSave implements Action {
             return null;
         }
 
+        const saveButtonSelectors = [
+            "input#issue-create-submit",
+            "input#edit-issue-submit",
+            "input[name='edit-labels-submit']",
+        ];
         const button: HTMLInputElement | null = doc.querySelector(
-            "input#issue-create-submit, input#edit-issue-submit, input[name='edit-labels-submit']"
+            saveButtonSelectors.join(", ")
         );
         return button;
     }
