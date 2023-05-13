@@ -398,6 +398,95 @@ test("JIRA add issue link", () => {
     assert.isNotNull(actual);
 });
 
+test("JIRA add issue link, pop-up", () => {
+    const html = `
+<html class="mozilla" lang="en">
+    <head>
+        <title>Link</title>
+    </head>
+    <body
+        id="jira"
+        data-version="8.20.17"
+        data-aui-version="9.2.3-4dc984d9f"
+        >
+        <div id="content">
+            <main role="main" id="main" class="aui-page-panel-content">
+            </main>
+        </div>
+        <div
+            id="link-issue-dialog"
+            class="jira-dialog jira-dialog-core box-shadow jira-dialog-open popup-width-large jira-dialog-content-ready"
+            style="width: 810px; margin-left: -406px; margin-top: -283px">
+            <div class="jira-dialog-heading jira-dialog-core-heading">
+                <h2 title="Link">Link</h2>
+            </div>
+            <div class="jira-dialog-content jira-dialog-core-content">
+                <div class="aui-group">
+                    <div class="aui-item dialog-menu-group">
+                        <ul class="dialog-menu">
+                            <li>
+                                <button
+                                    id="add-jira-issue-link-link"
+                                    data-url="/jira/secure/LinkJiraIssue!default.jspa?id=10000"
+                                    class="dialog-menu-item selected">
+                                    Jira Issue
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    id="add-web-link-link"
+                                    data-url="/jira/secure/AddWebLink!default.jspa?id=10000"
+                                    class="dialog-menu-item">
+                                    Web Link
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="aui-item dialog-pane">
+                        <form
+                            action="LinkJiraIssue.jspa"
+                            method="post"
+                            id="link-jira-issue"
+                            class="aui dnd-attachment-support">
+                            <div class="buttons-container form-footer">
+                                <div class="buttons">
+                                    <input
+                                        accesskey="s"
+                                        class="aui-button"
+                                        name="Link"
+                                        title="Press Alt+Shift+s to submit this form"
+                                        type="submit"
+                                        value="Link"
+                                        resolved=""
+                                        />
+                                    <a
+                                        accesskey="\`"
+                                        class="aui-button aui-button-link cancel"
+                                        href="/jira/browse/PIG-1"
+                                        title="Press Alt+Shift+\` to cancel"
+                                        resolved=""
+                                        >
+                                        Cancel
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+`;
+
+    const actual = testFindSaveButton(
+        html,
+        "http://localhost:2990/jira/browse/PIG-1"
+    );
+
+    assert.isNotNull(actual);
+});
+
 test("JIRA issue add worklog", () => {
     const html = `
 <html class="mozilla" lang="en">
