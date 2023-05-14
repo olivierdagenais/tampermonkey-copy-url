@@ -544,3 +544,70 @@ test("JIRA issue add worklog", () => {
 
     assert.isNotNull(actual);
 });
+
+test("JIRA issue add worklog, pop-up", () => {
+    const html = `
+<html class="mozilla" lang="en">
+    <head>
+        <title>Log Work: PIG-1</title>
+    </head>
+    <body
+        id="jira"
+        data-version="8.20.17"
+        data-aui-version="9.2.3-4dc984d9f"
+        >
+        <div id="content">
+        </div>
+        <div
+            id="log-work-dialog"
+            class="jira-dialog jira-dialog-core box-shadow jira-dialog-open popup-width-large jira-dialog-content-ready"
+            style="width: 810px; margin-left: -406px; margin-top: -358.5px"
+            >
+            <div class="jira-dialog-heading jira-dialog-core-heading">
+                <h2 title="Log Work: PIG-1">Log Work: PIG-1</h2>
+            </div>
+            <div class="jira-dialog-content jira-dialog-core-content">
+                <form
+                    action="CreateWorklog.jspa"
+                    class="aui dnd-attachment-support"
+                    id="log-work"
+                    method="post"
+                    >
+                    <div class="buttons-container form-footer">
+                        <div class="buttons">
+                            <input
+                                accesskey="s"
+                                class="aui-button"
+                                id="log-work-submit"
+                                name="Log"
+                                title="Press Alt+Shift+s to submit this form"
+                                type="submit"
+                                value="Log"
+                                resolved=""
+                                />
+                            <a
+                                accesskey="\`"
+                                class="aui-button aui-button-link cancel"
+                                href="/jira/browse/PIG-1"
+                                id="log-work-cancel"
+                                title="Press Alt+Shift+\` to cancel"
+                                resolved=""
+                                >
+                                Cancel
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
+`;
+
+    const actual = testFindSaveButton(
+        html,
+        "http://localhost:2990/jira/browse/PIG-1"
+    );
+
+    assert.isNotNull(actual);
+});
