@@ -208,6 +208,65 @@ test("JIRA edit issue, pop-up", () => {
     assert.isNotNull(actual);
 });
 
+test("JIRA edit issue, standalone", () => {
+    const html = `
+<html class="mozilla" lang="en">
+    <head>
+        <title>Edit Issue : [PIG-6]</title>
+    </head>
+    <body
+        id="jira"
+        data-version="8.20.17"
+        data-aui-version="9.2.3-4dc984d9f"
+        >
+        <div id="content">
+            <main role="main" id="main" class="aui-page-panel-content">
+                <form
+                    action="/jira/secure/EditIssue.jspa?atl_token=BWP3-NZB2-6EDY-6C7K_e3dba220a134df2d189afefa2aaa822b77b4a6fc_lin"
+                    class="aui"
+                    enctype="multipart/form-data"
+                    id="issue-edit"
+                    method="post"
+                    >
+                    <div class="buttons-container form-footer">
+                        <div class="buttons">
+                            <input
+                                accesskey="s"
+                                class="aui-button"
+                                id="issue-edit-submit"
+                                name="Update"
+                                title="Press Alt+Shift+s to submit this form"
+                                type="submit"
+                                value="Update"
+                                resolved=""
+                                />
+                            <a
+                                accesskey="\`"
+                                class="aui-button aui-button-link cancel"
+                                href="/jira/browse/PIG-6"
+                                id="issue-edit-cancel"
+                                title="Press Alt+Shift+\` to cancel"
+                                resolved=""
+                                >
+                                Cancel
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </body>
+</html>
+`;
+
+    const actual = testFindSaveButton(
+        html,
+        "http://localhost:2990/jira/secure/EditIssue!default.jspa?id=10301"
+    );
+
+    assert.isNotNull(actual);
+});
+
 test("JIRA edit issue labels", () => {
     const html = `
 <html class="mozilla" lang="en">
