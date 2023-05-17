@@ -8,6 +8,7 @@ import { JenkinsConsole } from "./actions/JenkinsConsole";
 import { JenkinsCredentials } from "./actions/JenkinsCredentials";
 import { JenkinsDashboard } from "./actions/JenkinsDashboard";
 import { JiraLinkIssue } from "./actions/JiraLinkIssue";
+import { JiraSave } from "./actions/JiraSave";
 import { JenkinsNext } from "./actions/JenkinsNext";
 import { JenkinsPipelineSyntax } from "./actions/JenkinsPipelineSyntax";
 import { JenkinsPrevious } from "./actions/JenkinsPrevious";
@@ -76,6 +77,11 @@ const shortcuts : Map<string, Array<Action>> = new Map([
     [
         KeyboardShortcut.asString(false, false, false, "r"), [
             new JenkinsDashboard(),
+        ]
+    ],
+    [
+        KeyboardShortcut.asString(false, true, false, "s"), [
+            new JiraSave(),
         ]
     ],
     [
