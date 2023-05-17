@@ -96,14 +96,12 @@ async function handleKeydown(this: Window, e: KeyboardEvent) {
     const url: string = window.location.href;
     // prettier-ignore
     if (
+        e.ctrlKey ||
+        e.altKey ||
         e.target &&
         (
-            e.ctrlKey ||
-            e.altKey ||
-            (
-                !(e.target instanceof HTMLInputElement) &&
-                !(e.target instanceof HTMLTextAreaElement)
-            )
+            !(e.target instanceof HTMLInputElement) &&
+            !(e.target instanceof HTMLTextAreaElement)
         )
     ) {
         const shortcutString = KeyboardShortcut.asString(
