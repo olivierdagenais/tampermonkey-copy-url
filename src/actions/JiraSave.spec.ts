@@ -72,6 +72,76 @@ test("JIRA create issue starting point, standalone", () => {
     assert.isNotNull(actual);
 });
 
+test("JIRA create issue details, pop-up", () => {
+    const html = `
+<html class="mozilla" lang="en">
+    <head>
+        <title>[PIG-1] The Chicken contributed, the Pig committed</title>
+    </head>
+    <body
+        id="jira"
+        data-version="8.20.17"
+        data-aui-version="9.2.3-4dc984d9f"
+        >
+        <div id="page">
+        </div>
+        <section
+            id="create-subtask-dialog"
+            class="aui-dialog2 aui-layer jira-dialog2 jira-dialog-core aui-dialog2-large jira-dialog-open jira-dialog-content-ready"
+            role="dialog"
+            aria-labelledby="jira-dialog2__heading"
+            style="z-index: 3000"
+            data-aui-focus="false"
+            data-aui-blanketed="true"
+            open=""
+            tabindex="-1"
+            >
+            <footer class="aui-dialog2-footer">
+                <div class="buttons-container form-footer">
+                    <div class="buttons">
+                        <label
+                            for="qf-create-another"
+                            class="qf-create-another"
+                            >
+                            <input id="qf-create-another" type="checkbox" />
+                            Create another
+                        </label>
+                        <input
+                            accesskey="s"
+                            title="Press Alt+Shift+s to submit this form"
+                            class="aui-button aui-button-primary"
+                            id="create-issue-submit"
+                            name="Edit"
+                            type="submit"
+                            value="Create"
+                            form="dialog-form"
+                            resolved=""
+                            />
+                        <button
+                            type="button"
+                            accesskey="\`"
+                            title="Press Alt+Shift+\` to cancel"
+                            class="aui-button aui-button-link cancel"
+                            resolved=""
+                            >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </footer>
+        </section>
+        </body>
+</html>
+`;
+
+    const actual = testFindSaveButton(
+        html,
+        "http://localhost:2990/jira/browse/PIG-1"
+    );
+
+    assert.isNotNull(actual);
+});
+
 test("JIRA create issue details, standalone", () => {
     const html = `
 <html class="mozilla" lang="en">

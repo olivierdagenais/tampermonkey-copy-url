@@ -21,6 +21,7 @@ export class JiraSave implements Action {
         }
 
         const saveButtonSelectors = [
+            "input#create-issue-submit",
             "input#issue-create-submit",
             "input#edit-issue-submit",
             "input#issue-edit-submit",
