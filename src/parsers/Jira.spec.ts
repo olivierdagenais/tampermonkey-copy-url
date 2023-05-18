@@ -47,6 +47,40 @@ test("should parse a simple issue page", () => {
     );
 });
 
+test("should parse a simple issue page w/query fragment", () => {
+    const html = `
+<html>
+    <head>
+        <title>[PIG-1] The Chicken contributed, the Pig committed - Jira</title>
+    </head>
+    <body id="jira">
+        <div id="page">
+            <div id="content">
+                <div class="aui-page-panel">
+                    <!-- etc., etc... -->
+                    <h1 id="summary-val">The Chicken contributed, the Pig committed</h1>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "http://localhost:2990/jira/browse/PIG-1#linkingmodule"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "http://localhost:2990/jira/browse/PIG-1"
+    );
+    assert.equal(
+        actual?.text,
+        "PIG-1: The Chicken contributed, the Pig committed"
+    );
+});
+
 test("issue page when coming from Confluence", () => {
     const html = `
 <html>
