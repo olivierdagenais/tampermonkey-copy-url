@@ -19,7 +19,7 @@ test("should parse a simple issue page", () => {
     <head>
         <title>[DO-8731] GitHub PR comment bodies are fully rendered - Jira</title>
     </head>
-    <body>
+    <body id="jira">
         <div id="page">
             <div id="content">
                 <div class="aui-page-panel">
@@ -53,7 +53,7 @@ test("issue page when coming from Confluence", () => {
     <head>
         <title>[DO-8731] GitHub PR comment bodies are fully rendered - Jira</title>
     </head>
-    <body>
+    <body id="jira">
         <div id="page">
             <div id="content">
                 <div class="aui-page-panel">
@@ -88,7 +88,7 @@ test("should parse an issue page hosted under a folder", () => {
         <title>[HTTPCLIENT-1763] Invalid 'expires' attribute - ASF JIRA</title>
         <link rel="search" type="application/opensearchdescription+xml" href="/jira/osd.jsp" title="[HTTPCLIENT-1763] Invalid 'expires' attribute - ASF JIRA">
     </head>
-    <body>
+    <body id="jira">
         <div id="page">
             <div id="content">
                 <div class="aui-page-panel">
@@ -123,7 +123,7 @@ test("should parse an issue page hosted under many folders", () => {
         <title>[HTTPCLIENT-1763] Invalid 'expires' attribute - ASF JIRA</title>
         <link rel="search" type="application/opensearchdescription+xml" href="/jira/osd.jsp" title="[HTTPCLIENT-1763] Invalid 'expires' attribute - ASF JIRA">
     </head>
-    <body>
+    <body id="jira">
         <div id="page">
             <div id="content">
                 <div class="aui-page-panel">
@@ -157,7 +157,7 @@ test("should parse a title from a custom JIRA deployment", () => {
     <head>
         <title>[JENKINS-69135] Add a &quot;Versions to include&quot; field to the Global Library Cache feature - Jenkins Jira</title>
     </head>
-    <body>
+    <body id="jira">
         <div id="page">
             <div id="content">
                 <div class="aui-page-panel">
