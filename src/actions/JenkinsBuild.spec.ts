@@ -1,4 +1,5 @@
 import { assert, test } from "vitest";
+import { BuildableItem } from "./JenkinsBuild";
 import { JenkinsBuild } from "./JenkinsBuild";
 import { JSDOM } from "jsdom";
 
@@ -279,6 +280,23 @@ test("dashboard page", () => {
     assert.equal(actual, null);
 });
 
+async function testCreateBuildableItem(json: string): Promise<BuildableItem> {
+    const body: XMLHttpRequestBodyInit = json;
+    const responseInit: ResponseInit = {
+        headers: [
+            ["Content-Type", "application/json;charset=utf-8"],
+            ["X-Jenkins", "2.361.4"],
+        ],
+        status: 200,
+        statusText: "OK",
+    };
+    const response: Response = new Response(body, responseInit);
+
+    const actual = await JenkinsBuild.createBuildableItem(response);
+
+    return actual;
+}
+
 test("createBuildableItem: run queued and stuck", async () => {
     const json = `{
     "_class": "hudson.model.Queue$BuildableItem",
@@ -312,18 +330,8 @@ test("createBuildableItem: run queued and stuck", async () => {
     "buildableStartMilliseconds": 1684891412993,
     "pending": false
 }`;
-    const body: XMLHttpRequestBodyInit = json;
-    const responseInit: ResponseInit = {
-        headers: [
-            ["Content-Type", "application/json;charset=utf-8"],
-            ["X-Jenkins", "2.361.4"],
-        ],
-        status: 200,
-        statusText: "OK",
-    };
-    const response: Response = new Response(body, responseInit);
 
-    const actual = await JenkinsBuild.createBuildableItem(response);
+    const actual = await testCreateBuildableItem(json);
 
     assert.equal(actual.blocked, false);
     assert.equal(actual.buildable, true);
