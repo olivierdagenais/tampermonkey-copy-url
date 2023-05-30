@@ -2,7 +2,9 @@ import { assert, test } from "vitest";
 import { JenkinsBuild } from "./JenkinsBuild";
 import { JSDOM } from "jsdom";
 
-function testNavigate(html: string, url: string): string | null {
+// @vitest-environment happy-dom
+
+function testNavigate(html: string, url: string): Request | null {
     const dom: JSDOM = new JSDOM(html);
     const document: Document = dom.window.document;
     const cut = new JenkinsBuild();
@@ -99,7 +101,7 @@ test("job page 2.361.4", () => {
     );
 
     assert.equal(
-        actual,
+        actual?.url,
         "http://localhost:8080/job/Project/job/Repository/job/Branch/build?delay=0sec"
     );
 });
@@ -169,7 +171,7 @@ test("run page", () => {
     );
 
     assert.equal(
-        actual,
+        actual?.url,
         "http://localhost:8080/job/Project/job/Repository/job/Branch/build?delay=0sec"
     );
 });
@@ -239,7 +241,7 @@ test("run console page", () => {
     );
 
     assert.equal(
-        actual,
+        actual?.url,
         "http://localhost:8080/job/Project/job/Repository/job/Branch/build?delay=0sec"
     );
 });
