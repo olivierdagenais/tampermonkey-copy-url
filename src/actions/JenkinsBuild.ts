@@ -1,7 +1,7 @@
 import { JenkinsHelpers } from "../JenkinsHelpers";
 import { Action } from "../Action";
 
-interface BuildableItem {
+export interface BuildableItem {
     blocked?: boolean;
     buildable?: boolean;
     stuck?: boolean;
