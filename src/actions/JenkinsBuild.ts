@@ -1,6 +1,12 @@
 import { JenkinsHelpers } from "../JenkinsHelpers";
 import { Action } from "../Action";
 
+interface BuildableItem {
+    blocked?: boolean;
+    buildable?: boolean;
+    stuck?: boolean;
+}
+
 export class JenkinsBuild implements Action {
     async perform(
         doc: Document,
@@ -13,6 +19,18 @@ export class JenkinsBuild implements Action {
             return true;
         }
         return false;
+    }
+
+    static async createBuildableItem(
+        response: Response
+    ): Promise<BuildableItem> {
+        const map: any = await response.json();
+        const result: BuildableItem = {
+            blocked: map.blocked,
+            buildable: map.buildable,
+            stuck: map.stuck,
+        };
+        return result;
     }
 
     navigate(doc: Document, url: string): Request | null {
