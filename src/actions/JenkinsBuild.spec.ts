@@ -278,3 +278,54 @@ test("dashboard page", () => {
 
     assert.equal(actual, null);
 });
+
+test("createBuildableItem: run queued and stuck", async () => {
+    const json = `{
+    "_class": "hudson.model.Queue$BuildableItem",
+    "actions": [
+        {
+            "_class": "hudson.model.CauseAction",
+            "causes": [
+                {
+                    "_class": "hudson.model.Cause$UserIdCause",
+                    "shortDescription": "Started by user Olivier Admin Dagenais",
+                    "userId": "admin",
+                    "userName": "Olivier Admin Dagenais"
+                }
+            ]
+        }
+    ],
+    "blocked": false,
+    "buildable": true,
+    "id": 18,
+    "inQueueSince": 1684891412992,
+    "params": "",
+    "stuck": true,
+    "task": {
+        "_class": "hudson.model.FreeStyleProject",
+        "name": "Non Parameterized Branch",
+        "url": "http://localhost:8080/job/Project/job/Repository/job/Non%20Parameterized%20Branch/",
+        "color": "blue"
+    },
+    "url": "queue/item/18/",
+    "why": "'Jenkins' doesn't have label 'chicken'",
+    "buildableStartMilliseconds": 1684891412993,
+    "pending": false
+}`;
+    const body: XMLHttpRequestBodyInit = json;
+    const responseInit: ResponseInit = {
+        headers: [
+            ["Content-Type", "application/json;charset=utf-8"],
+            ["X-Jenkins", "2.361.4"],
+        ],
+        status: 200,
+        statusText: "OK",
+    };
+    const response: Response = new Response(body, responseInit);
+
+    const actual = await JenkinsBuild.createBuildableItem(response);
+
+    assert.equal(actual.blocked, false);
+    assert.equal(actual.buildable, true);
+    assert.equal(actual.stuck, true);
+});
