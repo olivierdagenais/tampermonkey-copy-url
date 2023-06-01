@@ -13,9 +13,9 @@ export class JenkinsBuild implements Action {
         url: string,
         e: KeyboardEvent
     ): Promise<boolean> {
-        const request: Request | null = this.navigate(doc, url);
+        const request = this.navigate(doc, url);
         if (request) {
-            window.location.href = request.url;
+            setTimeout(() => this.queueRun(request), 1 /*ms*/);
             return true;
         }
         return false;
@@ -81,5 +81,9 @@ export class JenkinsBuild implements Action {
         }
 
         return null;
+    }
+
+    queueRun(request: Request) {
+        window.location.href = request.url;
     }
 }
