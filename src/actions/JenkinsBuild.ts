@@ -39,6 +39,17 @@ export class JenkinsBuild implements Action {
             return null;
         }
 
+        const headElement = doc.querySelector(
+            "head[data-crumb-header][data-crumb-value]"
+        );
+        if (!headElement) {
+            return null;
+        }
+        const headerName = headElement.getAttribute("data-crumb-header");
+        const headerValue = headElement.getAttribute("data-crumb-value");
+        if (!headerName || !headerValue) {
+            return null;
+        }
         /* <a> elements with an href ending in "/build?delay=0sec" */
         const linkSelector = "a[href$='/build?delay=0sec']";
         const crumbSelector =

@@ -17,7 +17,10 @@ function testNavigate(html: string, url: string): Request | null {
 test("job page 2.361.4", () => {
     const html = `
 <html>
-    <head>
+    <head
+        data-crumb-header="Jenkins-Crumb"
+        data-crumb-value="c928c875447b927341155d6b0f64ab0720e27f9fd2972c04f41dd48d4aa9e4d3"
+        >
         <title>Branch [Project » Repository] [Jenkins]</title>
     </head>
     <body
@@ -110,7 +113,10 @@ test("job page 2.361.4", () => {
 test("run page", () => {
     const html = `
 <html>
-    <head>
+    <head
+        data-crumb-header="Jenkins-Crumb"
+        data-crumb-value="c928c875447b927341155d6b0f64ab0720e27f9fd2972c04f41dd48d4aa9e4d3"
+        >
         <title>Project » Repository » Branch #1 [Jenkins]</title>
     </head>
     <body
@@ -180,7 +186,10 @@ test("run page", () => {
 test("run console page", () => {
     const html = `
 <html>
-    <head>
+    <head
+        data-crumb-header="Jenkins-Crumb"
+        data-crumb-value="c928c875447b927341155d6b0f64ab0720e27f9fd2972c04f41dd48d4aa9e4d3"
+        >
         <title>Project » Repository » Branch #1 Console [Jenkins]</title>
     </head>
     <body
@@ -250,7 +259,10 @@ test("run console page", () => {
 test("dashboard page", () => {
     const html = `
 <html>
-    <head>
+    <head
+        data-crumb-header="Jenkins-Crumb"
+        data-crumb-value="c928c875447b927341155d6b0f64ab0720e27f9fd2972c04f41dd48d4aa9e4d3"
+        >
         <title>Branch [Project » Repository] [Jenkins]</title>
     </head>
     <body
