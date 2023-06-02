@@ -439,6 +439,14 @@ test("createBuildableItem: run completed", async () => {
     assert.equal(actual.buildable, false);
     assert.equal(actual.stuck, false);
     assert.equal(actual.cancelled, false);
-    assert.isNotNull(actual.executable);
-    assert.equal(actual.executable.url, "http://localhost:8080/job/Project/job/Repository/job/Non%20Parameterized%20Branch/11/");
+    if (actual.executable) {
+        assert.equal(
+            actual.executable.url,
+            "http://localhost:8080/job/Project/job/Repository/job/Non%20Parameterized%20Branch/11/"
+        );
+    } else {
+        assert.fail(
+            "actual.executable was null or undefined: " + actual.executable
+        );
+    }
 });
