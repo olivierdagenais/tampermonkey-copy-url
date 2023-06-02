@@ -5,6 +5,7 @@ export interface BuildableItem {
     blocked?: boolean;
     buildable?: boolean;
     stuck?: boolean;
+    cancelled?: boolean;
 }
 
 export class JenkinsBuild implements Action {
@@ -29,6 +30,7 @@ export class JenkinsBuild implements Action {
             blocked: map.blocked,
             buildable: map.buildable,
             stuck: map.stuck,
+            cancelled: map.cancelled,
         };
         return result;
     }

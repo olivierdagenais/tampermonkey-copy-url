@@ -349,3 +349,45 @@ test("createBuildableItem: run queued and stuck", async () => {
     assert.equal(actual.buildable, true);
     assert.equal(actual.stuck, true);
 });
+
+test("createBuildableItem: run aborted", async () => {
+    const json = `{
+    "_class": "hudson.model.Queue$LeftItem",
+    "actions": [
+        {
+            "_class": "hudson.model.CauseAction",
+            "causes": [
+                {
+                    "_class": "hudson.model.Cause$UserIdCause",
+                    "shortDescription": "Started by user Olivier Admin Dagenais",
+                    "userId": "admin",
+                    "userName": "Olivier Admin Dagenais"
+                }
+            ]
+        }
+    ],
+    "blocked": false,
+    "buildable": false,
+    "id": 18,
+    "inQueueSince": 1684891412992,
+    "params": "",
+    "stuck": false,
+    "task": {
+        "_class": "hudson.model.FreeStyleProject",
+        "name": "Non Parameterized Branch",
+        "url": "http://localhost:8080/job/Project/job/Repository/job/Non%20Parameterized%20Branch/",
+        "color": "blue"
+    },
+    "url": "queue/item/18/",
+    "why": null,
+    "cancelled": true,
+    "executable": null
+}`;
+
+    const actual = await testCreateBuildableItem(json);
+
+    assert.equal(actual.blocked, false);
+    assert.equal(actual.buildable, false);
+    assert.equal(actual.stuck, false);
+    assert.equal(actual.cancelled, true);
+});
