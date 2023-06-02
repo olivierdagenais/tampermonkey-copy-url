@@ -33,9 +33,9 @@ export class JenkinsBuild implements Action {
     ): Promise<BuildableItem> {
         const map: any = await response.json();
         const result: BuildableItem = {
-            blocked: map.blocked,
-            buildable: map.buildable,
-            stuck: map.stuck,
+            blocked: map.blocked || false,
+            buildable: map.buildable || false,
+            stuck: map.stuck || false,
             cancelled: map.cancelled || false,
             executable: map.executable || null,
         };
