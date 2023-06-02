@@ -349,6 +349,7 @@ test("createBuildableItem: run queued and stuck", async () => {
     assert.equal(actual.buildable, true);
     assert.equal(actual.stuck, true);
     assert.equal(actual.cancelled, false);
+    assert.isNull(actual.executable);
 });
 
 test("createBuildableItem: run aborted", async () => {
@@ -391,4 +392,53 @@ test("createBuildableItem: run aborted", async () => {
     assert.equal(actual.buildable, false);
     assert.equal(actual.stuck, false);
     assert.equal(actual.cancelled, true);
+    assert.isNull(actual.executable);
+});
+
+test("createBuildableItem: run completed", async () => {
+    const json = `{
+    "_class": "hudson.model.Queue$LeftItem",
+    "actions": [
+        {
+            "_class": "hudson.model.CauseAction",
+            "causes": [
+                {
+                    "_class": "hudson.model.Cause$UserIdCause",
+                    "shortDescription": "Started by user Olivier Admin Dagenais",
+                    "userId": "admin",
+                    "userName": "Olivier Admin Dagenais"
+                }
+            ]
+        }
+    ],
+    "blocked": false,
+    "buildable": false,
+    "id": 20,
+    "inQueueSince": 1684891664768,
+    "params": "",
+    "stuck": false,
+    "task": {
+        "_class": "hudson.model.FreeStyleProject",
+        "name": "Non Parameterized Branch",
+        "url": "http://localhost:8080/job/Project/job/Repository/job/Non%20Parameterized%20Branch/",
+        "color": "blue"
+    },
+    "url": "queue/item/20/",
+    "why": null,
+    "cancelled": false,
+    "executable": {
+        "_class": "hudson.model.FreeStyleBuild",
+        "number": 11,
+        "url": "http://localhost:8080/job/Project/job/Repository/job/Non%20Parameterized%20Branch/11/"
+    }
+}`;
+
+    const actual = await testCreateBuildableItem(json);
+
+    assert.equal(actual.blocked, false);
+    assert.equal(actual.buildable, false);
+    assert.equal(actual.stuck, false);
+    assert.equal(actual.cancelled, false);
+    assert.isNotNull(actual.executable);
+    assert.equal(actual.executable.url, "http://localhost:8080/job/Project/job/Repository/job/Non%20Parameterized%20Branch/11/");
 });

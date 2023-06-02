@@ -1,11 +1,17 @@
 import { JenkinsHelpers } from "../JenkinsHelpers";
 import { Action } from "../Action";
 
+export interface Executable {
+    number?: number;
+    url?: string;
+}
+
 export interface BuildableItem {
     blocked?: boolean;
     buildable?: boolean;
     stuck?: boolean;
     cancelled?: boolean;
+    executable?: Executable;
 }
 
 export class JenkinsBuild implements Action {
@@ -31,6 +37,7 @@ export class JenkinsBuild implements Action {
             buildable: map.buildable,
             stuck: map.stuck,
             cancelled: map.cancelled || false,
+            executable: map.executable || null,
         };
         return result;
     }
