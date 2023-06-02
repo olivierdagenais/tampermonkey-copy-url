@@ -348,6 +348,7 @@ test("createBuildableItem: run queued and stuck", async () => {
     assert.equal(actual.blocked, false);
     assert.equal(actual.buildable, true);
     assert.equal(actual.stuck, true);
+    assert.equal(actual.cancelled, false);
 });
 
 test("createBuildableItem: run aborted", async () => {

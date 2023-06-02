@@ -30,7 +30,7 @@ export class JenkinsBuild implements Action {
             blocked: map.blocked,
             buildable: map.buildable,
             stuck: map.stuck,
-            cancelled: map.cancelled,
+            cancelled: map.cancelled || false,
         };
         return result;
     }
