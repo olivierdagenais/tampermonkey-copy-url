@@ -28,6 +28,13 @@ export class JenkinsBuild implements Action {
         return false;
     }
 
+    static async fetchBuildableItem(location: string): Promise<BuildableItem> {
+        const request = new Request(location);
+        const response = await fetch(request);
+        const result = this.createBuildableItem(response);
+        return result;
+    }
+
     static async createBuildableItem(
         response: Response
     ): Promise<BuildableItem> {
@@ -48,6 +55,7 @@ export class JenkinsBuild implements Action {
             return null;
         }
 
+        const headers: Headers = new Headers();
         const headElement = doc.querySelector(
             "head[data-crumb-header][data-crumb-value]"
         );
@@ -59,6 +67,16 @@ export class JenkinsBuild implements Action {
         if (!headerName || !headerValue) {
             return null;
         }
+        headers.append(headerName, headerValue);
+
+        const PostOptions: RequestInit = {
+            method: "POST",
+            credentials: "same-origin",
+            headers: headers,
+            mode: "same-origin",
+            cache: "default",
+        };
+
         /* <a> elements with an href ending in "/build?delay=0sec" */
         const linkSelector = "a[href$='/build?delay=0sec']";
         const crumbSelector =
@@ -76,7 +94,7 @@ export class JenkinsBuild implements Action {
                         path + "build",
                         "delay=0sec"
                     );
-                    return new Request(destinationUrl);
+                    return new Request(destinationUrl, PostOptions);
                 }
             }
         } else {
@@ -93,7 +111,7 @@ export class JenkinsBuild implements Action {
                                 href + "build",
                                 "delay=0sec"
                             );
-                            return new Request(destinationUrl);
+                            return new Request(destinationUrl, PostOptions);
                         }
                     }
                 }
@@ -103,7 +121,43 @@ export class JenkinsBuild implements Action {
         return null;
     }
 
-    queueRun(request: Request) {
-        window.location.href = request.url;
+    async queueRun(request: Request) {
+        const response = await fetch(request);
+        const locationBase = response.headers.get("Location");
+        if (201 == response.status && locationBase) {
+            // TODO: announce to user
+            // locationBase looks like "http://localhost:8080/queue/item/18/"
+            const location = locationBase + "api/json";
+            for (let index = 0; index < 10; index++) {
+                // TODO: should we wait _first_?
+                const buildableItem = await JenkinsBuild.fetchBuildableItem(
+                    location
+                );
+                if (buildableItem.cancelled) {
+                    // TODO: announce to user
+                    break;
+                }
+                if (buildableItem.executable) {
+                    const runUrl = buildableItem.executable.url;
+                    if (runUrl) {
+                        const consoleUrl = runUrl + "consoleFull";
+                        window.location.href = consoleUrl;
+                        break;
+                    }
+                }
+                // TODO: announce to user
+                // TODO: we could also do a capped exponential backoff: 1, 2, 4, 4, 4, 4
+                await JenkinsBuild.sleep(1000);
+            }
+        }
+        // TODO: if the response isn't HTTP 201 (Created),
+        // then we need to provide parameters?
+    }
+
+    // https://stackoverflow.com/a/47092642/98903
+    static async sleep(milliseconds: number) {
+        return new Promise((resolve) => {
+            setTimeout(resolve, milliseconds);
+        });
     }
 }
