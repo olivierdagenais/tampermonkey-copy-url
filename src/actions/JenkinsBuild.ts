@@ -149,9 +149,10 @@ export class JenkinsBuild implements Action {
                 // TODO: we could also do a capped exponential backoff: 1, 2, 4, 4, 4, 4
                 await JenkinsBuild.sleep(1000);
             }
+        } else if (400 == response.status) {
+            // build is parameterized, try again with HTTP GET
+            window.location.href = request.url;
         }
-        // TODO: if the response isn't HTTP 201 (Created),
-        // then we need to provide parameters?
     }
 
     // https://stackoverflow.com/a/47092642/98903
