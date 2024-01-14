@@ -11,6 +11,7 @@ import { Parser } from "../Parser";
 import { Renderer } from "../Renderer";
 import { ServiceDesk } from "../parsers/ServiceDesk";
 import { ServiceNow } from "../parsers/ServiceNow";
+import { Zabbix } from "../parsers/Zabbix";
 
 // parsers will be attempted in the order defined here
 const parsers: Parser[] = [
@@ -21,6 +22,7 @@ const parsers: Parser[] = [
     new Jenkins(),
     new ServiceDesk(),
     new ServiceNow(),
+    new Zabbix(),
     // always keep this one LAST in this list!
     new Default(),
 ];
