@@ -26,8 +26,7 @@ export class Zabbix extends AbstractParser {
             const fromInputElement: HTMLInputElement | null =
                 doc.querySelector("input#from");
             if (fromInputElement) {
-                const from: string | null =
-                    fromInputElement.getAttribute("value");
+                const from: string | null = fromInputElement.value;
                 if (from) {
                     parsedUrl.searchParams.set("from", from);
                 }
@@ -35,7 +34,7 @@ export class Zabbix extends AbstractParser {
             const toInputElement: HTMLInputElement | null =
                 doc.querySelector("input#to");
             if (toInputElement) {
-                const to: string | null = toInputElement.getAttribute("value");
+                const to: string | null = toInputElement.value;
                 if (to) {
                     parsedUrl.searchParams.set("to", to);
                 }
