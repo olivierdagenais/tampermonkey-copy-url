@@ -61,6 +61,8 @@ test("should parse a page about Confluence in Confluence", () => {
         </title>
         <meta name="ajs-page-title" content="Create and Edit Pages">
         <meta name="ajs-latest-published-page-title" content="Create and Edit Pages">
+        <link rel="canonical" href="https://confluence.columbia.edu/confluence/display/CONFDOCS/Create+and+Edit+Pages">
+        <link rel="shortlink" href="https://confluence.columbia.edu/confluence/x/14KCCg">
         <meta name="wikilink" content="[CONFDOCS:Create and Edit Pages]">
     </head>
     <body
@@ -87,7 +89,7 @@ test("should parse a page about Confluence in Confluence", () => {
     assert.notEqual(actual, null);
     assert.equal(
         actual?.destination,
-        "https://confluence.columbia.edu/confluence/display/CONFDOCS/Create+and+Edit+Pages"
+        "https://confluence.columbia.edu/confluence/x/14KCCg"
     );
     assert.equal(actual?.text, "Create and Edit Pages");
 });

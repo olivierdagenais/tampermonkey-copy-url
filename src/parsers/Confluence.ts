@@ -10,6 +10,13 @@ export class Confluence extends AbstractParser {
             return null;
         }
 
+        const shortlinkElement: HTMLLinkElement | null = doc.querySelector(
+            "html > head > link[rel=shortlink]"
+        );
+        if (shortlinkElement) {
+            url = shortlinkElement.href;
+        }
+
         const titleElement: HTMLElement | null =
             doc.querySelector("#title-text");
         if (!titleElement || !titleElement.textContent) {
