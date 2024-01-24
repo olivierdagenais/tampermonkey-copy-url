@@ -64,6 +64,12 @@ const shortcuts : Map<string, Array<Action>> = new Map([
         ]
     ],
     [
+        // Ctrl+Alt+o with FR-CA keyboard on Windows 10 yields a "Section Sign"
+        KeyboardShortcut.asString(false, false, false, "\u00a7"), [
+            new CopyUrl(statusPopup, new Textile()),
+        ]
+    ],
+    [
         KeyboardShortcut.asString(false, false, false, "p"), [
             new JenkinsPipelineSyntax(),
             new JenkinsPrevious(),
@@ -71,6 +77,12 @@ const shortcuts : Map<string, Array<Action>> = new Map([
     ],
     [
         KeyboardShortcut.asString(true, true, false, "p"), [
+            new CopyUrl(statusPopup, new Html()),
+        ]
+    ],
+    [
+        // Ctrl+Alt+p with FR-CA keyboard on Windows 10 yields a "Pilcrow Sign"
+        KeyboardShortcut.asString(false, false, false, "\u00b6"), [
             new CopyUrl(statusPopup, new Html()),
         ]
     ],
