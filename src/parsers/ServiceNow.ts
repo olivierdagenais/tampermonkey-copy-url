@@ -50,7 +50,30 @@ export class ServiceNow extends AbstractParser {
             };
             return result;
         } else {
-            return null;
+            // Does it look like a ServiceNow page?
+            const divElement: HTMLElement | null = doc.querySelector(
+                "body div.sp-page-root"
+            );
+            if (divElement) {
+                const ticketNumberHeading: HTMLHeadingElement | null =
+                    divElement.querySelector("h2.ticket-number");
+                const ticketDescParagraph: HTMLParagraphElement | null =
+                    divElement.querySelector("p.ticket-desc");
+                if (ticketNumberHeading && ticketDescParagraph) {
+                    const ticketNumber = ticketNumberHeading.textContent;
+                    const ticketDesc = ticketDescParagraph.textContent;
+                    const linkText = `${ticketNumber}: ${ticketDesc}`;
+                    const result: Link = {
+                        text: linkText,
+                        destination: url,
+                    };
+                    return result;
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
         }
     }
 }
