@@ -140,6 +140,30 @@ async function handleKeydown(this: Window, e: KeyboardEvent) {
     }
 }
 
+async function handleBitbucketSearchLoaded(
+    mutations: MutationRecord[],
+    observer: MutationObserver
+) {
+    if (bitbucketSearchDiv) {
+        const searchBox: HTMLInputElement | null =
+            bitbucketSearchDiv.querySelector(
+                "form#search-form input.search-query"
+            );
+        if (searchBox) {
+            observer.disconnect();
+            searchBox.focus({ preventScroll: false });
+        }
+    } else {
+        observer.disconnect();
+    }
+}
+const codeSearchObserver = new MutationObserver(handleBitbucketSearchLoaded);
+const codeSearchObserverConfig: MutationObserverInit = {
+    subtree: true,
+    childList: true,
+};
+var bitbucketSearchDiv: HTMLDivElement | null;
+
 async function main(): Promise<void> {
     var doc = window.document;
     const styleAttribute = doc.createAttribute("style");
@@ -157,11 +181,19 @@ async function main(): Promise<void> {
     doc.body.appendChild(statusPopup);
 
     const jiraBody = doc.querySelector("body#jira[data-version]");
+    bitbucketSearchDiv = doc.querySelector(
+        "body.bitbucket-theme div#codesearch"
+    );
     if (jiraBody) {
         const anchor = jiraBody.querySelector("a#home_link[accesskey=d]");
         if (anchor) {
             anchor.removeAttribute("accesskey");
         }
+    } else if (bitbucketSearchDiv) {
+        codeSearchObserver.observe(
+            bitbucketSearchDiv,
+            codeSearchObserverConfig
+        );
     }
 
     window.addEventListener("keydown", handleKeydown);
