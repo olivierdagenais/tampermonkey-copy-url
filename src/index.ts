@@ -181,19 +181,20 @@ async function main(): Promise<void> {
     doc.body.appendChild(statusPopup);
 
     const jiraBody = doc.querySelector("body#jira[data-version]");
-    bitbucketSearchDiv = doc.querySelector(
-        "body.bitbucket-theme div#codesearch"
-    );
+    const bitbucketBody = doc.querySelector("body.bitbucket-theme");
     if (jiraBody) {
         const anchor = jiraBody.querySelector("a#home_link[accesskey=d]");
         if (anchor) {
             anchor.removeAttribute("accesskey");
         }
-    } else if (bitbucketSearchDiv) {
-        codeSearchObserver.observe(
-            bitbucketSearchDiv,
-            codeSearchObserverConfig
-        );
+    } else if (bitbucketBody) {
+        bitbucketSearchDiv = bitbucketBody.querySelector("div#codesearch");
+        if (bitbucketSearchDiv) {
+            codeSearchObserver.observe(
+                bitbucketSearchDiv,
+                codeSearchObserverConfig
+            );
+        }
     }
 
     window.addEventListener("keydown", handleKeydown);
