@@ -17,6 +17,7 @@ import { JiraWorklog } from "./actions/JiraWorklog";
 import { KeyboardShortcut } from "./KeyboardShortcut";
 import { Markdown } from "./renderers/Markdown";
 import { Textile } from "./renderers/Textile";
+import CodeMirror from "codemirror";
 
 const statusPopup: HTMLDivElement = window.document.createElement("div");
 
@@ -164,6 +165,61 @@ const codeSearchObserverConfig: MutationObserverInit = {
 };
 var bitbucketSearchDiv: HTMLDivElement | null;
 
+interface CodeMirrorWrappedDiv extends HTMLDivElement {
+    CodeMirror?: CodeMirror.Editor;
+}
+
+const focusedClass = "CodeMirror-focused";
+async function handleCodeMirrorFocus(
+    mutations: MutationRecord[],
+    observer: MutationObserver
+) {
+    for (const mutation of mutations) {
+        switch (mutation.type) {
+            case "attributes":
+                switch (mutation.attributeName) {
+                    case "class":
+                        const div: CodeMirrorWrappedDiv | null =
+                            mutation.target as CodeMirrorWrappedDiv;
+                        if (div) {
+                            if (
+                                div.classList.contains(focusedClass) &&
+                                mutation.oldValue?.indexOf(focusedClass) == -1
+                            ) {
+                                const editor = div.CodeMirror;
+                                if (editor) {
+                                    console.log(
+                                        "Found a CodeMirror, patching Home & End..."
+                                    );
+                                    var extraKeys =
+                                        editor.getOption("extraKeys");
+                                    if (
+                                        !extraKeys ||
+                                        typeof extraKeys === "string"
+                                    ) {
+                                        extraKeys = {};
+                                        editor.setOption(
+                                            "extraKeys",
+                                            extraKeys
+                                        );
+                                    }
+                                    extraKeys.Home = "goLineLeftSmart";
+                                    extraKeys.End = "goLineRight";
+                                }
+                            }
+                        }
+                }
+        }
+    }
+}
+const codeMirrorObserver = new MutationObserver(handleCodeMirrorFocus);
+const codeMirrorObserverConfig: MutationObserverInit = {
+    attributeFilter: ["class"],
+    attributeOldValue: true,
+    subtree: true,
+};
+var bitbucketBody: HTMLBodyElement | null;
+
 async function main(): Promise<void> {
     var doc = window.document;
     const styleAttribute = doc.createAttribute("style");
@@ -181,7 +237,7 @@ async function main(): Promise<void> {
     doc.body.appendChild(statusPopup);
 
     const jiraBody = doc.querySelector("body#jira[data-version]");
-    const bitbucketBody = doc.querySelector("body.bitbucket-theme");
+    bitbucketBody = doc.querySelector("body.bitbucket-theme");
     if (jiraBody) {
         const anchor = jiraBody.querySelector("a#home_link[accesskey=d]");
         if (anchor) {
@@ -194,6 +250,8 @@ async function main(): Promise<void> {
                 bitbucketSearchDiv,
                 codeSearchObserverConfig
             );
+        } else {
+            codeMirrorObserver.observe(bitbucketBody, codeMirrorObserverConfig);
         }
     }
 
