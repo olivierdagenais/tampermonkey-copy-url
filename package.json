@@ -51,5 +51,8 @@
         ],
         "exclude": [],
         "resources": []
+    },
+    "dependencies": {
+        "@types/codemirror": "^5.60.15"
     }
 }
