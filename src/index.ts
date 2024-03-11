@@ -188,29 +188,40 @@ async function handleCodeMirrorFocus(
                             ) {
                                 const editor = div.CodeMirror;
                                 if (editor) {
-                                    console.log(
-                                        "Found a CodeMirror, patching Home & End..."
-                                    );
-                                    var extraKeys =
-                                        editor.getOption("extraKeys");
-                                    if (
-                                        !extraKeys ||
-                                        typeof extraKeys === "string"
-                                    ) {
-                                        extraKeys = {};
-                                        editor.setOption(
-                                            "extraKeys",
-                                            extraKeys
-                                        );
-                                    }
-                                    extraKeys.Home = "goLineLeftSmart";
-                                    extraKeys.End = "goLineRight";
+                                    patchCodeMirrorEditor(editor, div);
                                 }
                             }
                         }
                 }
         }
     }
+}
+
+function patchCodeMirrorEditor(editor: CodeMirror.Editor, div: HTMLDivElement) {
+    console.log("Found a CodeMirror, patching Home & End...");
+    var extraKeys = editor.getOption("extraKeys");
+    if (!extraKeys || typeof extraKeys === "string") {
+        extraKeys = {};
+        editor.setOption("extraKeys", extraKeys);
+    }
+    extraKeys.Home = "goLineLeftSmart";
+    extraKeys.End = (cm) =>
+        cm.extendSelectionsBy((range) => {
+            const top = cm.cursorCoords(range.head, "div").top + 5;
+            const coords = cm.coordsChar(
+                {
+                    left: div.offsetWidth,
+                    top: top,
+                },
+                "div"
+            );
+            const doc = cm.getDoc();
+            const currentLine = doc.getLine(coords.line);
+            if (coords.ch != 0 && coords.ch != currentLine.length) {
+                coords.ch = coords.ch - 1;
+            }
+            return coords;
+        });
 }
 const codeMirrorObserver = new MutationObserver(handleCodeMirrorFocus);
 const codeMirrorObserverConfig: MutationObserverInit = {
