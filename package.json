@@ -1,58 +1,60 @@
 {
-    "name": "tampermonkey-copy-url",
-    "version": "1.0.0",
-    "description": "A Tampermonkey userscript to copy nice-looking URLs to the clipboard.",
-    "main": "userscript/index.user.js",
-    "scripts": {
-        "test": "vitest run",
-        "liveTest": "vitest",
-        "setUrls": "node setUrls.js",
-        "build": "webpack"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/olivierdagenais/tampermonkey-copy-url.git"
-    },
-    "keywords": [],
-    "author": "Olivier Dagenais",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/olivierdagenais/tampermonkey-copy-url/issues"
-    },
-    "homepage": "https://github.com/olivierdagenais/tampermonkey-copy-url",
-    "devDependencies": {
-        "@types/jsdom": "^16.2.14",
-        "@types/node": "^16.11.10",
-        "@types/tampermonkey": "^4.0.5",
-        "@types/webpack": "^5.28.0",
-        "happy-dom": "^9.20.3",
-        "jsdom": "^19.0.0",
-        "node": "^16.19.0",
-        "package-json-io": "1.0.0",
-        "prettier": "^2.7.1",
-        "ts-loader": "^9.2.6",
-        "ts-node": "^10.4.0",
-        "typescript": "^4.5.2",
-        "vitest": "^0.24.3",
-        "webpack": "^5.76.0",
-        "webpack-cli": "^4.9.1"
-    },
-    "userscript": {
-        "require-template": "https://cdn.jsdelivr.net/npm/${dependencyName}@${dependencyVersion}",
-        "namespace": "https://olivierdagenais.github.io/",
-        "license": "https://opensource.org/licenses/MIT",
-        "match": [
-            "*://*/*"
-        ],
-        "connect": [],
-        "require": [],
-        "grant": [
-            "GM_setClipboard"
-        ],
-        "exclude": [],
-        "resources": []
-    },
-    "dependencies": {
-        "@types/codemirror": "^5.60.15"
-    }
+  "name": "tampermonkey-copy-url",
+  "version": "2.11.0",
+  "description": "A Tampermonkey userscript to copy nice-looking URLs to the clipboard.",
+  "main": "userscript/index.user.js",
+  "scripts": {
+    "test": "vitest run",
+    "liveTest": "vitest",
+    "setUrls": "node setUrls.js",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olivierdagenais/tampermonkey-copy-url.git"
+  },
+  "keywords": [],
+  "author": "Olivier Dagenais",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/olivierdagenais/tampermonkey-copy-url/issues"
+  },
+  "homepage": "https://github.com/olivierdagenais/tampermonkey-copy-url",
+  "devDependencies": {
+    "@types/jsdom": "^16.2.14",
+    "@types/node": "^16.11.10",
+    "@types/tampermonkey": "^4.0.5",
+    "@types/webpack": "^5.28.0",
+    "happy-dom": "^9.20.3",
+    "jsdom": "^19.0.0",
+    "node": "^16.19.0",
+    "package-json-io": "1.0.0",
+    "prettier": "^2.7.1",
+    "ts-loader": "^9.2.6",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2",
+    "vitest": "^0.24.3",
+    "webpack": "^5.76.0",
+    "webpack-cli": "^4.9.1"
+  },
+  "userscript": {
+    "require-template": "https://cdn.jsdelivr.net/npm/${dependencyName}@${dependencyVersion}",
+    "namespace": "https://olivierdagenais.github.io/",
+    "license": "https://opensource.org/licenses/MIT",
+    "match": [
+      "*://*/*"
+    ],
+    "connect": [],
+    "require": [],
+    "grant": [
+      "GM_setClipboard"
+    ],
+    "exclude": [],
+    "resources": [],
+    "downloadURL": "https://github.com/olivierdagenais/tampermonkey-copy-url/raw/release/2.11/userscript/index.user.js",
+    "updateURL": "https://github.com/olivierdagenais/tampermonkey-copy-url/raw/release/2.11/userscript/index.user.js"
+  },
+  "dependencies": {
+    "@types/codemirror": "^5.60.15"
+  }
 }
