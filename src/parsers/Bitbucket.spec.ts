@@ -77,6 +77,36 @@ test("should parse a simple Stash pull request page under a folder", () => {
     );
 });
 
+test("parseLink when Bitbucket DC 8.19.6", () => {
+    const html = `
+<html>
+    <head>
+        <title>Pull Request #4: DO-8731: fix: sanitize GitHub PR comment bodies - Stash</title>
+    </head>
+    <body>
+        <!-- etc.. -->
+        <span class="pull-request-title pull-request-header-title">
+            <h2>DO-8731: fix: sanitize GitHub PR comment bodies</h2>
+        </span>
+    </body>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "https://bitbucket.example.com/bitbucket/projects/TP/repos/jf_agent/pull-requests/4/overview"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "https://bitbucket.example.com/bitbucket/projects/TP/repos/jf_agent/pull-requests/4/overview"
+    );
+    assert.equal(
+        actual?.text,
+        "TP/jf_agent#4: DO-8731: fix: sanitize GitHub PR comment bodies"
+    );
+});
+
 test("PR without https", () => {
     const html = `
 <html>
