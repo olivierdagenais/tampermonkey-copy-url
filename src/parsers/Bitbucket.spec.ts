@@ -298,6 +298,30 @@ test("should parse a deep link to a file in a commit", () => {
     );
 });
 
+test("a deep link to a line in a file in a commit", () => {
+    const html = `
+<html>
+    <head>
+        <title>PROJECT_1 / rep_1 / d6edcbf924 - Bitbucket</title>
+    </head>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "http://localhost:7990/bitbucket/projects/PROJECT_1/repos/rep_1/commits/d6edcbf924697ab811a867421dab60d954ccad99#basic_branching%2Ffile.txt?t=1"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "http://localhost:7990/bitbucket/projects/PROJECT_1/repos/rep_1/commits/d6edcbf924697ab811a867421dab60d954ccad99#basic_branching%2Ffile.txt?t=1"
+    );
+    assert.equal(
+        actual?.text,
+        "line 1 of basic_branching/file.txt at commit d6edcbf924 in PROJECT_1/rep_1"
+    );
+});
+
 test("a deep link to a file in a commit in a personal repo", () => {
     const html = `
 <html>
