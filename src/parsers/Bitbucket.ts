@@ -10,7 +10,7 @@ const commitListUrlRegex = /commits\?until=(?<ref>[^&]+)(&.+)?/;
 const deepCommitUrlRegex = /commits\/(?<ref>[^#]+)(#(?<path>[^?]+))?/;
 const prUrlRegex = /pull-requests\/(?<prId>\d+)(\/(?<extra>.*))?/;
 const prExtraRegex =
-    /commits\/(?<ref>[^#]+)(#(?<path>[^?]+)(\?f=(?<lineNumber>\d+))?)?/;
+    /commits\/(?<ref>[^#]+)(#(?<path>[^?]+)(\?[ft]=(?<lineNumber>\d+))?)?/;
 
 export class Bitbucket extends AbstractParser {
     parseLink(doc: Document, url: string): Link | null {
@@ -196,7 +196,8 @@ export class Bitbucket extends AbstractParser {
                     prefix += `line ${prExtraGroups.lineNumber} of `;
                 }
                 if (prExtraGroups.path) {
-                    prefix += `${prExtraGroups.path} at `;
+                    const decodedPath = decodeURIComponent(prExtraGroups.path);
+                    prefix += `${decodedPath} at `;
                 }
                 const ref = this.getPrettyRef(prExtraGroups);
                 prefix += `commit ${ref} in `;
