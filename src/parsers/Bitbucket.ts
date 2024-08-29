@@ -7,7 +7,8 @@ const browseUrlRegex =
     /browse(\/(?<path>[^?#]+)?(\?at=(?<ref>[^#]+))?(#(?<lines>[0-9,-]+))?)?/;
 const commitIdRegex = /([a-f0-9]{40})/;
 const commitListUrlRegex = /commits\?until=(?<ref>[^&]+)(&.+)?/;
-const deepCommitUrlRegex = /commits\/(?<ref>[^#]+)(#(?<path>[^?]+))?/;
+const deepCommitUrlRegex =
+    /commits\/(?<ref>[^#]+)(#(?<path>[^?]+)(\?[ft]=(?<lineNumber>\d+))?)?/;
 const prUrlRegex = /pull-requests\/(?<prId>\d+)(\/(?<extra>.*))?/;
 const prExtraRegex =
     /commits\/(?<ref>[^#]+)(#(?<path>[^?]+)(\?[ft]=(?<lineNumber>\d+))?)?/;
@@ -158,7 +159,12 @@ export class Bitbucket extends AbstractParser {
         const path = deepCommitUrlGroups.path;
         var prefix = "";
         if (path) {
-            prefix += `${path} at `;
+            const lineNumber = deepCommitUrlGroups.lineNumber;
+            if (lineNumber) {
+                prefix += `line ${lineNumber} of `;
+            }
+            const decodedPath = decodeURIComponent(path);
+            prefix += `${decodedPath} at `;
         }
         const linkText = `${prefix}commit ${ref} in ${project}/${repo}`;
         const result: Link = {
