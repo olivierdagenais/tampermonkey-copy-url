@@ -178,9 +178,11 @@ export class Bitbucket extends AbstractParser {
         const prId = prUrlGroups.prId;
         const extra = prUrlGroups.extra;
 
-        const h2Element = doc.querySelector(
-            "html > body h2.pull-request-title"
-        );
+        const h2Selectors = [
+            "html > body h2.pull-request-title",
+            "html > body span.pull-request-title > h2",
+        ];
+        const h2Element = doc.querySelector(h2Selectors.join(", "));
         if (!h2Element) {
             return null;
         }
