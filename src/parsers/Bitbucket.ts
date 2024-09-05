@@ -155,24 +155,29 @@ export class Bitbucket extends AbstractParser {
         repo: string,
         deepCommitUrlGroups: { [key: string]: string }
     ) {
-        var prefix = "";
-        const path = deepCommitUrlGroups.path;
-        if (path) {
-            const lineNumber = deepCommitUrlGroups.lineNumber;
-            if (lineNumber) {
-                prefix += `line ${lineNumber} of `;
-            }
-            const decodedPath = decodeURIComponent(path);
-            prefix += `${decodedPath} at `;
-        }
-        const ref = this.getPrettyRef(deepCommitUrlGroups);
-        prefix += `commit ${ref} in `;
+        const prefix = this.prefixForLinePathCommit(deepCommitUrlGroups);
         const linkText = `${prefix}${project}/${repo}`;
         const result: Link = {
             text: linkText,
             destination: url,
         };
         return result;
+    }
+
+    private prefixForLinePathCommit(groups: { [key: string]: string }): string {
+        var prefix = "";
+        const path = groups.path;
+        if (path) {
+            const lineNumber = groups.lineNumber;
+            if (lineNumber) {
+                prefix += `line ${lineNumber} of `;
+            }
+            const decodedPath = decodeURIComponent(path);
+            prefix += `${decodedPath} at `;
+        }
+        const ref = this.getPrettyRef(groups);
+        prefix += `commit ${ref} in `;
+        return prefix;
     }
 
     private parsePullRequest(
@@ -199,17 +204,7 @@ export class Bitbucket extends AbstractParser {
             const prExtraMatch = extra.match(prExtraRegex);
             if (prExtraMatch && prExtraMatch.groups) {
                 const prExtraGroups = prExtraMatch.groups;
-                const path = prExtraGroups.path;
-                if (path) {
-                    const lineNumber = prExtraGroups.lineNumber;
-                    if (lineNumber) {
-                        prefix += `line ${lineNumber} of `;
-                    }
-                    const decodedPath = decodeURIComponent(path);
-                    prefix += `${decodedPath} at `;
-                }
-                const ref = this.getPrettyRef(prExtraGroups);
-                prefix += `commit ${ref} in `;
+                prefix = this.prefixForLinePathCommit(prExtraGroups);
             }
         }
 
