@@ -155,7 +155,6 @@ export class Bitbucket extends AbstractParser {
         repo: string,
         deepCommitUrlGroups: { [key: string]: string }
     ) {
-        const ref = this.getPrettyRef(deepCommitUrlGroups);
         const path = deepCommitUrlGroups.path;
         var prefix = "";
         if (path) {
@@ -166,7 +165,9 @@ export class Bitbucket extends AbstractParser {
             const decodedPath = decodeURIComponent(path);
             prefix += `${decodedPath} at `;
         }
-        const linkText = `${prefix}commit ${ref} in ${project}/${repo}`;
+        const ref = this.getPrettyRef(deepCommitUrlGroups);
+        prefix += `commit ${ref} in `;
+        const linkText = `${prefix}${project}/${repo}`;
         const result: Link = {
             text: linkText,
             destination: url,
