@@ -198,8 +198,9 @@ export class Bitbucket extends AbstractParser {
             const prExtraMatch = extra.match(prExtraRegex);
             if (prExtraMatch && prExtraMatch.groups) {
                 const prExtraGroups = prExtraMatch.groups;
-                if (prExtraGroups.lineNumber) {
-                    prefix += `line ${prExtraGroups.lineNumber} of `;
+                const lineNumber = prExtraGroups.lineNumber;
+                if (lineNumber) {
+                    prefix += `line ${lineNumber} of `;
                 }
                 if (prExtraGroups.path) {
                     const decodedPath = decodeURIComponent(prExtraGroups.path);
