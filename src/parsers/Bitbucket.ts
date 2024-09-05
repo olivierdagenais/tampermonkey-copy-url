@@ -155,8 +155,8 @@ export class Bitbucket extends AbstractParser {
         repo: string,
         deepCommitUrlGroups: { [key: string]: string }
     ) {
-        const path = deepCommitUrlGroups.path;
         var prefix = "";
+        const path = deepCommitUrlGroups.path;
         if (path) {
             const lineNumber = deepCommitUrlGroups.lineNumber;
             if (lineNumber) {
