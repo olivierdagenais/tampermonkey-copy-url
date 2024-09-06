@@ -10,8 +10,6 @@ const commitListUrlRegex = /commits\?until=(?<ref>[^&]+)(&.+)?/;
 const deepCommitUrlRegex =
     /commits\/(?<ref>[^#]+)(#(?<path>[^?]+)(\?[ft]=(?<lineNumber>\d+))?)?/;
 const prUrlRegex = /pull-requests\/(?<prId>\d+)(\/(?<extra>.*))?/;
-const prExtraRegex =
-    /commits\/(?<ref>[^#]+)(#(?<path>[^?]+)(\?[ft]=(?<lineNumber>\d+))?)?/;
 
 export class Bitbucket extends AbstractParser {
     parseLink(doc: Document, url: string): Link | null {
@@ -201,7 +199,7 @@ export class Bitbucket extends AbstractParser {
         const summary = h2Element.textContent;
         var prefix = "";
         if (extra) {
-            const prExtraMatch = extra.match(prExtraRegex);
+            const prExtraMatch = extra.match(deepCommitUrlRegex);
             if (prExtraMatch && prExtraMatch.groups) {
                 const prExtraGroups = prExtraMatch.groups;
                 prefix = this.prefixForLinePathCommit(prExtraGroups);
