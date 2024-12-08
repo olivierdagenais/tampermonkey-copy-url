@@ -30,6 +30,7 @@ export class SemVer {
     }
 
     compareTo(that: SemVer): number {
+        // TODO: this doesn't (yet) compare pre-releases
         return (
             SemVer.compareTo(this.major, that.major) ||
             SemVer.compareTo(this.minor, that.minor) ||
