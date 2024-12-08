@@ -51,6 +51,14 @@ test("compare with larger minor", () => {
     assert.equal(y.compareTo(x), 1);
 });
 
+test("compare with larger patch", () => {
+    const x = new SemVer(1, 2, 3);
+    const y = new SemVer(1, 2, 4);
+
+    assert.equal(x.compareTo(y), -1);
+    assert.equal(y.compareTo(x), 1);
+});
+
 test("parse with invalid value", () => {
     const input = "invalid";
 
