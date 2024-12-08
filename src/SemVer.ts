@@ -32,7 +32,8 @@ export class SemVer {
     compareTo(that: SemVer): number {
         return (
             SemVer.compareTo(this.major, that.major) ||
-            SemVer.compareTo(this.minor, that.minor)
+            SemVer.compareTo(this.minor, that.minor) ||
+            SemVer.compareTo(this.patch, that.patch)
         );
     }
 
