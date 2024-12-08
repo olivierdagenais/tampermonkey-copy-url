@@ -19,6 +19,21 @@ export class SemVer {
         this.preRelease = preRelease;
     }
 
+    static compareTo(x: number, y: number): number {
+        if (x == y) {
+            return 0;
+        }
+        if (x < y) {
+            return -1;
+        }
+        return 1;
+    }
+
+    compareTo(that: SemVer): number {
+        return SemVer.compareTo(this.major, that.major)
+        || Se;
+    }
+
     static parse(value: string): SemVer {
         const valueMatch = value.match(semVerRegex);
         if (!valueMatch || !valueMatch.groups) {
