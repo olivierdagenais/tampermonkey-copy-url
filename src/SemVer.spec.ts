@@ -27,6 +27,15 @@ test("construct with MAJOR.MINOR.PATCH-PRE_RELEASE", () => {
     assert.equal(actual.preRelease, preRelease);
 });
 
+test("compare with larger major", () => {
+    const input = new SemVer(1, 2, 3);
+    const that = new SemVer(2, 2, 3);
+
+    const actual = input.compareTo(that);
+
+    assert.equal(actual, -1);
+});
+
 test("parse with invalid value", () => {
     const input = "invalid";
 
