@@ -1,5 +1,5 @@
 const semVerRegex =
-    /(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?:-(?<preRelease>.+))?/;
+    /(?<major>\d+)\.(?<minor>\d+)(?:\.(?<patch>\d+)(?:-(?<preRelease>.+))?)?/;
 
 export class SemVer {
     readonly major: number;
@@ -17,6 +17,14 @@ export class SemVer {
         this.minor = minor;
         this.patch = patch;
         this.preRelease = preRelease;
+    }
+
+    static asInteger(value: string): number {
+        const maybeInt = Number.parseInt(value, 10);
+        if (Number.isNaN(maybeInt)) {
+            return 0;
+        }
+        return maybeInt;
     }
 
     static compareTo(x: number, y: number): number {
@@ -44,9 +52,9 @@ export class SemVer {
             throw new Error(`Can't parse ${value} as a valid SemVer`);
         }
         const valueGroups = valueMatch.groups;
-        const major = Number.parseInt(valueGroups.major, 10);
-        const minor = Number.parseInt(valueGroups.minor, 10);
-        const patch = Number.parseInt(valueGroups.patch, 10);
+        const major = SemVer.asInteger(valueGroups.major);
+        const minor = SemVer.asInteger(valueGroups.minor);
+        const patch = SemVer.asInteger(valueGroups.patch);
         const preRelease = valueGroups.preRelease;
 
         return new SemVer(major, minor, patch, preRelease);
