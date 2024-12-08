@@ -1,4 +1,5 @@
-const semVerRegex = /(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)/;
+const semVerRegex =
+    /(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?:-(?<preRelease>.+))?/;
 
 export class SemVer {
     readonly major: number;
@@ -27,7 +28,8 @@ export class SemVer {
         const major = Number.parseInt(valueGroups.major, 10);
         const minor = Number.parseInt(valueGroups.minor, 10);
         const patch = Number.parseInt(valueGroups.patch, 10);
+        const preRelease = valueGroups.preRelease;
 
-        return new SemVer(major, minor, patch);
+        return new SemVer(major, minor, patch, preRelease);
     }
 }
