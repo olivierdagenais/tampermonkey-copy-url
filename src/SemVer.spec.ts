@@ -42,3 +42,14 @@ test("parse with MAJOR.MINOR.PATCH", () => {
     assert.equal(actual.minor, 2);
     assert.equal(actual.patch, 3);
 });
+
+test("parse with MAJOR.MINOR.PATCH-PRERELEASE", () => {
+    const input = "1.2.3-SNAPSHOT";
+
+    const actual = SemVer.parse(input);
+
+    assert.equal(actual.major, 1);
+    assert.equal(actual.minor, 2);
+    assert.equal(actual.patch, 3);
+    assert.equal(actual.preRelease, "SNAPSHOT");
+});
