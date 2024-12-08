@@ -32,3 +32,13 @@ test("parse with invalid value", () => {
 
     assert.throw(() => SemVer.parse(input));
 });
+
+test("parse with MAJOR.MINOR.PATCH", () => {
+    const input = "1.2.3";
+
+    const actual = SemVer.parse(input);
+
+    assert.equal(actual.major, 1);
+    assert.equal(actual.minor, 2);
+    assert.equal(actual.patch, 3);
+});

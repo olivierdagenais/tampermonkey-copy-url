@@ -1,3 +1,5 @@
+const semVerRegex = /(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)/;
+
 export class SemVer {
     readonly major: number;
     readonly minor: number;
@@ -17,6 +19,15 @@ export class SemVer {
     }
 
     static parse(value: string): SemVer {
-        throw new Error(`Can't parse ${value} as a valid SemVer`);
+        const valueMatch = value.match(semVerRegex);
+        if (!valueMatch || !valueMatch.groups) {
+            throw new Error(`Can't parse ${value} as a valid SemVer`);
+        }
+        const valueGroups = valueMatch.groups;
+        const major = Number.parseInt(valueGroups.major, 10);
+        const minor = Number.parseInt(valueGroups.minor, 10);
+        const patch = Number.parseInt(valueGroups.patch, 10);
+
+        return new SemVer(major, minor, patch);
     }
 }
