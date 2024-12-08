@@ -27,9 +27,25 @@ test("construct with MAJOR.MINOR.PATCH-PRE_RELEASE", () => {
     assert.equal(actual.preRelease, preRelease);
 });
 
+test("compare when equal", () => {
+    const x = new SemVer(1, 2, 3);
+    const y = new SemVer(1, 2, 3);
+
+    assert.equal(x.compareTo(y), 0);
+    assert.equal(y.compareTo(x), 0);
+});
+
 test("compare with larger major", () => {
     const x = new SemVer(1, 2, 3);
     const y = new SemVer(2, 2, 3);
+
+    assert.equal(x.compareTo(y), -1);
+    assert.equal(y.compareTo(x), 1);
+});
+
+test("compare with larger minor", () => {
+    const x = new SemVer(1, 2, 3);
+    const y = new SemVer(1, 3, 3);
 
     assert.equal(x.compareTo(y), -1);
     assert.equal(y.compareTo(x), 1);
