@@ -15,4 +15,8 @@ export class SemVer {
         this.patch = patch;
         this.preRelease = preRelease;
     }
+
+    static parse(value: string): SemVer {
+        throw new Error(`Can't parse ${value} as a valid SemVer`);
+    }
 }
