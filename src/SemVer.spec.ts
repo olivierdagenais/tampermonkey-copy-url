@@ -26,3 +26,9 @@ test("construct with MAJOR.MINOR.PATCH-PRE_RELEASE", () => {
     assert.equal(actual.patch, patch);
     assert.equal(actual.preRelease, preRelease);
 });
+
+test("parse with invalid value", () => {
+    const input = "invalid";
+
+    assert.throw(() => SemVer.parse(input));
+});
