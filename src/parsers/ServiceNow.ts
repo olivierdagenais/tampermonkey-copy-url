@@ -33,7 +33,7 @@ export class ServiceNow extends AbstractParser {
                         }
                     }
                 }
-                if (!subject || subject === undefined) {
+                if (!subject) {
                     const h2Element: HTMLElement | null =
                         doc.querySelector("#short-desc");
                     if (h2Element) {
