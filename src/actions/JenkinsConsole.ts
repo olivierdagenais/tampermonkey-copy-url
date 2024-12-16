@@ -31,15 +31,14 @@ export class JenkinsConsole extends GoToAction {
                 }
                 return null;
             } else {
-                const mostRecentRunSelector =
-                    "tr.build-row a.build-status-link";
+                const mostRecentRunSelector = "tr.build-row a.build-link";
                 const anchor = bodyElement.querySelector(mostRecentRunSelector);
                 if (anchor) {
                     const path = anchor.getAttribute("href");
                     if (path) {
                         return JenkinsHelpers.buildUrl(
                             urlString,
-                            path + "Full"
+                            path + "consoleFull"
                         );
                     }
                 }
