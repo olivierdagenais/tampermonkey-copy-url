@@ -23,9 +23,9 @@ export class JenkinsConsole extends GoToAction {
                 if (anchor) {
                     const path = anchor.getAttribute("href");
                     if (path) {
-                        return (
-                            JenkinsHelpers.buildUrl(urlString, path) +
-                            "consoleFull"
+                        return JenkinsHelpers.buildUrl(
+                            urlString,
+                            path + "consoleFull"
                         );
                     }
                 }
