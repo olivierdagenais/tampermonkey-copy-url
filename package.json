@@ -27,7 +27,7 @@
         "@types/webpack": "^5.28.0",
         "happy-dom": "^15.10.2",
         "jsdom": "^19.0.0",
-        "node": "^16.19.0",
+        "node": "^20.18.1",
         "package-json-io": "1.0.0",
         "prettier": "^2.7.1",
         "ts-loader": "^9.2.6",
