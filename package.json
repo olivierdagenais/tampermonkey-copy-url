@@ -22,7 +22,7 @@
     "homepage": "https://github.com/olivierdagenais/tampermonkey-copy-url",
     "devDependencies": {
         "@types/jsdom": "^16.2.14",
-        "@types/node": "^16.11.10",
+        "@types/node": "^20.17.10",
         "@types/tampermonkey": "^4.0.5",
         "@types/webpack": "^5.28.0",
         "happy-dom": "^15.10.2",
