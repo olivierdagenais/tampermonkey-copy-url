@@ -166,3 +166,50 @@ test("should parse a ticket page", () => {
         "TCKT000042: This is as close to the title as we'll get"
     );
 });
+
+test("layout as of late 2024", () => {
+    const html = `
+<html>
+    <head>,
+        <title>Organization ServiceNow</title>
+    </head>
+    <body
+        class="firefox ng-scope fixed-header fixed-footer"
+        accessibility="false"
+        >
+        <div
+            class="sp-page-root page flex-column sp-can-animate"
+            style=""
+            >
+            <div
+                class="form-control no-padder no-border no-bg ng-binding"
+                id="data.number.name"
+                >
+                I am the ticket ID
+            </div>
+            <h2
+                class="inline m-n m-r-sm ng-binding"
+                style="word-break: break-word;"
+                id="short-desc"
+                >
+                I am the title/summary
+            </h2>
+        </div>
+    </body>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "https://example.service-now.com/csp/?id=ticket&table=sc_req_item&sys_id=36c7352a9798ed505943fae3a253af5e"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "https://example.service-now.com/csp/?id=ticket&table=sc_req_item&sys_id=36c7352a9798ed505943fae3a253af5e"
+    );
+    assert.equal(
+        actual?.text,
+        "I am the ticket ID: I am the title/summary"
+    );
+});
