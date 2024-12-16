@@ -23,7 +23,8 @@ export class JenkinsNext extends GoToAction {
                     const rebuiltPath = urlParts.join("/");
                     return JenkinsHelpers.buildUrl(urlString, rebuiltPath);
                 } else {
-                    const mostRecentRunSelector = "tr.build-row a.build-link";
+                    const mostRecentRunSelector =
+                        JenkinsHelpers.getMostRecentRunSelector(bodyElement);
                     const anchor = bodyElement.querySelector(
                         mostRecentRunSelector
                     );

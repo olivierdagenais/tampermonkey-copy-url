@@ -11,7 +11,7 @@ function testNavigate(html: string, url: string): string | null {
     return actual;
 }
 
-test("job page", () => {
+test("job page before 2.463", () => {
     const html = `
 <html>
     <head>
@@ -217,6 +217,235 @@ test("job page", () => {
             </table>
         </div>
     </body>
+</html>`;
+
+    const actual = testNavigate(
+        html,
+        "http://localhost:8080/job/Project/job/Repository/job/Branch/"
+    );
+
+    assert.equal(
+        actual,
+        "http://localhost:8080/job/Project/job/Repository/job/Branch/3/"
+    );
+});
+
+test("job page at or after 2.463", () => {
+    const html = `
+<html>
+  <head>
+    <title>Project » Repository » Branch [Jenkins]</title>
+  </head>
+  <body
+    data-model-type="org.jenkinsci.plugins.workflow.job.WorkflowRun"
+    id="jenkins"
+    class="yui-skin-sam two-column jenkins-2.463"
+    data-version="2.463"
+    >
+    <!-- etc., etc... -->
+    <div
+      id="jenkins-build-history"
+      class="app-builds-container__items"
+      >
+      <div
+        data-page-entry-newest="-9223372036854775805"
+        data-page-has-up="false"
+        data-page-has-down="false"
+        data-page-entry-oldest="-9223372036854775807"
+        >
+        <span class="app-builds-container__heading">Today</span>
+        <div
+          page-entry-id="-9223372036854775805"
+          class="app-builds-container__item"
+          >
+          <a
+            data-tooltip-append-to-parent="true"
+            tooltip="In progress"
+            href="/job/Project/job/Repository/job/Branch/3/console"
+            class="app-builds-container__item__icon"
+            title="In progress"
+            >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              viewBox="-256 -256 512 512"
+              >
+              (...)
+            </svg>
+          </a>
+          <div class="app-builds-container__item__inner">
+            <a
+              href="/job/Project/job/Repository/job/Branch/3/"
+              class="app-builds-container__item__inner__link"
+              >
+              #3
+              <span
+                time="1733687566047"
+                class="app-builds-container__item__time"
+                >
+                <div
+                  data-tooltip-append-to-parent="true"
+                  >
+                  7:52 PM
+                </div>
+              </span>
+            </a>
+            <div class="app-builds-container__item__inner__controls">
+              <a
+                class="app-progress-bar app-progress-bar--error"
+                href="/job/Project/job/Repository/job/Branch/3/console"
+                tooltip="Started 30 sec ago
+    Estimated remaining time: N/A"
+                data-tooltip-append-to-parent="true"
+                id=""
+                data-tooltip-template="Started %0 ago
+    Estimated remaining time: %1"
+                title="Started 30 sec ago
+    Estimated remaining time: N/A"
+                >
+                <span style="width: 99%"></span>
+              </a>
+              <a
+                data-tooltip-append-to-parent="true"
+                tooltip="Cancel"
+                data-confirm="Are you sure you want to abort tcu 79 #3?"
+                href="/job/Project/job/Repository/job/Branch/3/stop"
+                class="stop-button-link"
+                title="Cancel"
+                >
+                <span class="jenkins-visually-hidden">Cancel</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                  viewBox="0 0 512 512"
+                  >
+                  (...)
+                </svg>
+              </a>
+            </div>
+          </div>
+          <button
+            class="jenkins-card__reveal jenkins-jumplist-link"
+            data-href="/job/Project/job/Repository/job/Branch/3/"
+            aria-expanded="false"
+            >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              viewBox="0 0 512 512"
+              >
+              (...)
+            </svg>
+          </button>
+        </div>
+        <span class="app-builds-container__heading">December 7, 2024</span>
+        <div
+          page-entry-id="-9223372036854775806"
+          class="app-builds-container__item"
+          >
+          <a
+            data-tooltip-append-to-parent="true"
+            tooltip="Success"
+            href="/job/Project/job/Repository/job/Branch/2/console"
+            class="app-builds-container__item__icon"
+            title="Success"
+            >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              viewBox="0 0 512 512"
+              >
+              (...)
+            </svg
+          >
+          </a>
+          <div class="app-builds-container__item__inner">
+            <a
+              href="/job/Project/job/Repository/job/Branch/2/"
+              class="app-builds-container__item__inner__link"
+              >
+              #2
+              <span
+                time="1733596477775"
+                class="app-builds-container__item__time"
+                >
+                <div
+                  data-tooltip-append-to-parent="true"
+                  tooltip="Took 0.59 sec"
+                  title="Took 0.59 sec"
+                  >
+                  6:34 PM
+                </div>
+              </span>
+            </a>
+            <div class="app-builds-container__item__inner__controls"></div>
+          </div>
+          <button
+            class="jenkins-card__reveal jenkins-jumplist-link"
+            data-href="/job/Project/job/Repository/job/Branch/2/"
+            aria-expanded="false"
+            >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              viewBox="0 0 512 512"
+              >
+              (...)
+            </svg>
+          </button>
+        </div>
+        <div
+          page-entry-id="-9223372036854775807"
+          class="app-builds-container__item"
+          >
+          <a
+            data-tooltip-append-to-parent="true"
+            tooltip="Success"
+            href="/job/Project/job/Repository/job/Branch/1/console"
+            class="app-builds-container__item__icon"
+            title="Success"
+            >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              viewBox="0 0 512 512"
+              >
+            </svg>
+          </a>
+          <div class="app-builds-container__item__inner">
+            <a
+              href="/job/Project/job/Repository/job/Branch/1/"
+              class="app-builds-container__item__inner__link"
+              >
+              #1
+              <span time="1733596470813" class="app-builds-container__item__time">
+                <div
+                  data-tooltip-append-to-parent="true"
+                  tooltip="Took 2.3 sec"
+                  title="Took 2.3 sec"
+                  >
+                  6:34 PM
+                </div>
+              </span>
+            </a>
+            <div class="app-builds-container__item__inner__controls"></div>
+          </div>
+          <button
+            class="jenkins-card__reveal jenkins-jumplist-link"
+            data-href="/job/Project/job/Repository/job/Branch/1/"
+            aria-expanded="false"
+            >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              viewBox="0 0 512 512"
+              >
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>`;
 
     const actual = testNavigate(
