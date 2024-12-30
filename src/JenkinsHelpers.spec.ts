@@ -55,7 +55,7 @@ test("getMostRecentRunSelector at 2.463", () => {
 
     assert.equal(
         actual,
-        "#jenkins-build-history .app-builds-container__item__inner__link"
+        "#jenkins-build-history a.app-builds-container__item__inner__link"
     );
 });
 
@@ -80,7 +80,7 @@ test("getMostRecentRunSelector at 2.479.2", () => {
 
     assert.equal(
         actual,
-        "#jenkins-build-history .app-builds-container__item__inner__link"
+        "#jenkins-build-history a.app-builds-container__item__inner__link"
     );
 });
 
