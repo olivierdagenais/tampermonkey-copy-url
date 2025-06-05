@@ -19,10 +19,21 @@ export class GitHub extends AbstractParser {
                 if (blobTitleMatch && blobTitleMatch.groups) {
                     const blobTitleGroups = blobTitleMatch.groups;
                     const refSpec = blobTitleGroups.refSpec;
-                    const path = refSpecAndPath.substring(
+                    const pathAndMaybeLine = refSpecAndPath.substring(
                         refSpec.length + 1 /* the slash */
                     );
-                    titleString = `${path} at ${refSpec} in ${blobUrlGroups.userOrOrg}/${blobUrlGroups.repo}`;
+                    // TODO: sometimes there's also #L498-L506
+                    const indexOfHash = pathAndMaybeLine.indexOf("#L");
+                    let path : string = "";
+                    let prefix : string = "";
+                    if (indexOfHash > -1) {
+                        path = pathAndMaybeLine.substring(0, indexOfHash);
+                        prefix = "line " + pathAndMaybeLine.substring(indexOfHash + 2) + " of ";
+                    }
+                    else {
+                        path = pathAndMaybeLine;
+                    }
+                    titleString = `${prefix}${path} at ${refSpec} in ${blobUrlGroups.userOrOrg}/${blobUrlGroups.repo}`;
                 }
             } else {
                 const numberedUrlRegex =
