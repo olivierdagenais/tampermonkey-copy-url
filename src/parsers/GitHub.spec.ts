@@ -183,3 +183,26 @@ test("should parse a GitHub source code link page with refSpec containing a slas
         "src/index.ts at release/1.1 in olivierdagenais/tampermonkey-copy-url"
     );
 });
+test("should parse a GitHub link to a line", () => {
+    const html = `
+<html>
+    <head>
+        <title>workflow-durable-task-step-plugin/src/main/java/org/jenkinsci/plugins/workflow/steps/durable_task/DurableTaskStep.java at 1317.v5337e0c1fe28 · jenkinsci/workflow-durable-task-step-plugin</title>
+    </head>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "https://github.com/jenkinsci/workflow-durable-task-step-plugin/blob/1317.v5337e0c1fe28/src/main/java/org/jenkinsci/plugins/workflow/steps/durable_task/DurableTaskStep.java#L498"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "https://github.com/jenkinsci/workflow-durable-task-step-plugin/blob/1317.v5337e0c1fe28/src/main/java/org/jenkinsci/plugins/workflow/steps/durable_task/DurableTaskStep.java#L498"
+    );
+    assert.equal(
+        actual?.text,
+        "line 498 of src/main/java/org/jenkinsci/plugins/workflow/steps/durable_task/DurableTaskStep.java at 1317.v5337e0c1fe28 in jenkinsci/workflow-durable-task-step-plugin"
+    );
+});
