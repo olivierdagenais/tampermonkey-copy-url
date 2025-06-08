@@ -62,6 +62,7 @@ export function generateHeader() {
     // Userscript's header.
     const headers = [
         "// ==UserScript==",
+        "// coding: utf-8",
     ];
 
     /**
