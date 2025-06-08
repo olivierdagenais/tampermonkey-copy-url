@@ -60,7 +60,9 @@ export function generateHeader() {
     // The regular expression used to remove the dependency version string prefix.
     const dependencyVersionRegExp = /^[\^~]/;
     // Userscript's header.
-    const headers = ["// ==UserScript=="];
+    const headers = [
+        "// ==UserScript==",
+    ];
 
     /**
      * Add userscript header's name.
