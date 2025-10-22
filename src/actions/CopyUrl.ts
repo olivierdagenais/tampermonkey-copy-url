@@ -4,6 +4,7 @@ import {Clipboard} from "../Clipboard";
 import {Confluence} from "../parsers/Confluence";
 import {Default} from "../parsers/Default";
 import {GitHub} from "../parsers/GitHub";
+import {GitLab} from "../parsers/GitLab";
 import {Jenkins} from "../parsers/Jenkins";
 import {Jira} from "../parsers/Jira";
 import {Link} from "../Link";
@@ -17,6 +18,7 @@ import {Zabbix} from "../parsers/Zabbix";
 const parsers: Parser[] = [
     new Confluence(),
     new GitHub(),
+    new GitLab(),
     new Bitbucket(),
     new Jira(),
     new Jenkins(),
