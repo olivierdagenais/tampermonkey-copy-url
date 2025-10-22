@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# https://hub.docker.com/layers/library/node/20-alpine/images/sha256-be8d32d651b3e0c9c2b28fdc1d3888408125d703232013cff955344d052027e5
 podman run \
     --user="$(id -u)" \
     --userns=keep-id \
@@ -7,5 +8,5 @@ podman run \
     --name node20 \
     --volume "${PWD}:/usr/src/app:rw,z" \
     --workdir "/usr/src/app" \
-    docker.io/node:20 \
+    docker.io/node@sha256:6178e78b972f79c335df281f4b7674a2d85071aae2af020ffa39f0a770265435 \
     $@
