@@ -18,7 +18,10 @@ export class GitLab extends AbstractParser {
             case "projects:show":
                 linkText = `${data.projectFullPath}: ${data.description}`;
                 break;
-            // TODO: implement issues, pull requests, wiki pages, etc.
+            case "projects:issues:show":
+                linkText
+                    = `${data.projectFullPath}${data.typeId}: ${data.title}`;
+                break;
             default:
                 linkText = data.page;
                 break;
