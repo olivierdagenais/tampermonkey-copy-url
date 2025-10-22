@@ -31,10 +31,15 @@ export class GitLabData {
             ?? "(no title)";
         const rawTypeId
             = bodyElement?.getAttribute("data-page-type-id");
+        const anchorElement = doc.querySelector(".router-link-exact-active");
+        const fallbackTypeId = anchorElement?.textContent?.trim();
         let typeId: string = "(no type ID)";
         switch (this.page) {
             case "projects:issues:show":
                 typeId = `#${rawTypeId}`;
+                break;
+            case "projects:work_items:show":
+                typeId = `${fallbackTypeId}`;
                 break;
         }
         this.typeId = typeId;

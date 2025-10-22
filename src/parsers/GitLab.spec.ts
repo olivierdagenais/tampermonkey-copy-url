@@ -111,3 +111,55 @@ test("link to issue, has page-type-id", () => {
             "Room name & topic are not accessible"
     );
 });
+
+test("link to issue, no page-type-id", () => {
+    // it looks like page-type-id wasn't part of version 18.1
+    const html: string = `
+<html>
+<head>
+    <meta content="GitLab" property="og:site_name">
+    <meta content="Some other project" property="og:description">
+    <meta content="Wash the dishes (#1) · Issues · internal-projects / demo · GitLab" property="og:title">
+</head>
+<body
+    data-group="internal-projects"
+    data-group-full-path="internal-projects"
+    data-namespace-id="14"
+    data-page="projects:work_items:show"
+    data-project="demo"
+    data-project-full-path="internal-projects/demo"
+    data-project-id="33"
+    >
+    <a
+        href="/internal-projects/demo/-/issues/1"
+        aria-current="page"
+        class="router-link-exact-active router-link-active"
+        >
+        <!---->
+        <span class="gl-align-middle">#1</span>
+    </a>
+    <h1
+        data-testid="work-item-title"
+        class="gl-heading-1 !gl-m-0 gl-w-full gl-wrap-anywhere"
+        >
+        <span>Wash the dishes</span>
+    </h1>
+</body>
+</html>
+`;
+    const actual = testParseLink(
+        html,
+        "http://example.com/internal-projects/demo/-/issues/1"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "http://example.com/internal-projects/demo/-/issues/1"
+    );
+    assert.equal(
+        actual?.text,
+        "internal-projects/demo#1: " +
+            "Wash the dishes"
+    );
+});
