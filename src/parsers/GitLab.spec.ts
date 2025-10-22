@@ -235,3 +235,53 @@ test("link to merge request, with page-type-id", () => {
             "Fix #686: Room name & topic are not accessible"
     );
 });
+
+test("link to merge request, no page-type-id", () => {
+    const html: string = `
+<html>
+<head>
+    <meta content="GitLab" property="og:site_name">
+    <meta content="GitLab Enterprise Edition" name="description">
+</head>
+<body
+    class="tab-width-4 gl-browser-firefox gl-platform-windows body-fixed-scrollbar page-initialised" 
+    data-group="internal-projects"
+    data-group-full-path="internal-projects"
+    data-namespace-id="14"
+    data-page="projects:merge_requests:show"
+    data-page-type-id="1"
+    data-project="demo"
+    data-project-full-path="internal-projects/demo"
+    data-project-id="33"
+    >
+    <a
+        href="/internal-projects/demo/-/merge_requests/1"
+        aria-current="page"
+        class="">
+        <!---->
+        <span class="gl-align-middle">!1</span>
+    </a>
+    <h1
+        class="title gl-heading-1 gl-self-center gl-mb-0 gl-flex-1"
+        data-testid="title-content"
+        >
+        doc: radically simplify README
+    </h1>
+</body>
+</html>
+`;
+    const actual = testParseLink(
+        html,
+        "http://hostname/internal-projects/demo/-/merge_requests/1"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "http://hostname/internal-projects/demo/-/merge_requests/1"
+    );
+    assert.equal(
+        actual?.text,
+        "internal-projects/demo!1: doc: radically simplify README"
+    );
+});
