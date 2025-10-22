@@ -1,0 +1,11 @@
+#!/bin/sh
+
+podman run \
+    --user="$(id -u)" \
+    --userns=keep-id \
+    --rm \
+    --name node20 \
+    --volume "${PWD}:/usr/src/app:rw,z" \
+    --workdir "/usr/src/app" \
+    node:20 \
+    $@
