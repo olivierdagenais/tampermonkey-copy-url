@@ -26,6 +26,7 @@ export class GitLabData {
         const titleSelectors = [
             "[data-testid='work-item-title']",
             "[data-testid='title-content']",
+            "[data-testid='page-heading']",
         ];
         const titleSelector = titleSelectors.join(", ");
         const element = doc.querySelector(titleSelector);

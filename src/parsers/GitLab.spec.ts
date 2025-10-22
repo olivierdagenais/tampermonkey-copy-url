@@ -285,3 +285,58 @@ test("link to merge request, no page-type-id", () => {
         "internal-projects/demo!1: doc: radically simplify README"
     );
 });
+
+test("link to wiki page, with page-type-id", () => {
+    const html: string = `
+<html>
+<head>
+    <meta content="GitLab" property="og:site_name">
+    <meta content="GitLab Enterprise Edition" name="description">
+</head>
+<body
+    class="tab-width-4 body-fixed-scrollbar page-initialised" 
+    data-group="internal-projects"
+    data-group-full-path="internal-projects"
+    data-namespace-id="14"
+    data-page="projects:wikis:show"
+    data-page-type-id="Electric-Sunlight-Orchestra"
+    data-project="demo"
+    data-project-full-path="internal-projects/demo"
+    data-project-id="33"
+    >
+    <a
+        href="/internal-projects/demo/-/wikis/Electric-Sunlight-Orchestra"
+        aria-current="page"
+        class=""
+        >
+        <!---->
+        <span
+            class="gl-align-middle"
+            >
+            Electric-Sunlight-Orchestra
+        </span>
+    </a>
+    <h1
+        data-testid="page-heading"
+        class="gl-heading-1 !gl-m-0"
+        >
+        Electric Sunlight Orchestra
+    </h1>
+</body>
+</html>
+`;
+    const actual = testParseLink(
+        html,
+        "http://host/internal-projects/demo/-/wikis/Electric-Sunlight-Orchestra"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "http://host/internal-projects/demo/-/wikis/Electric-Sunlight-Orchestra"
+    );
+    assert.equal(
+        actual?.text,
+        "internal-projects/demo: Electric Sunlight Orchestra"
+    );
+});
