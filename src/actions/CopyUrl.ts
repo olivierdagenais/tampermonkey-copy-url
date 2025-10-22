@@ -1,17 +1,17 @@
-import { Action } from "../Action";
-import { Bitbucket } from "../parsers/Bitbucket";
-import { Clipboard } from "../Clipboard";
-import { Confluence } from "../parsers/Confluence";
-import { Default } from "../parsers/Default";
-import { GitHub } from "../parsers/GitHub";
-import { Jenkins } from "../parsers/Jenkins";
-import { Jira } from "../parsers/Jira";
-import { Link } from "../Link";
-import { Parser } from "../Parser";
-import { Renderer } from "../Renderer";
-import { ServiceDesk } from "../parsers/ServiceDesk";
-import { ServiceNow } from "../parsers/ServiceNow";
-import { Zabbix } from "../parsers/Zabbix";
+import {Action} from "../Action";
+import {Bitbucket} from "../parsers/Bitbucket";
+import {Clipboard} from "../Clipboard";
+import {Confluence} from "../parsers/Confluence";
+import {Default} from "../parsers/Default";
+import {GitHub} from "../parsers/GitHub";
+import {Jenkins} from "../parsers/Jenkins";
+import {Jira} from "../parsers/Jira";
+import {Link} from "../Link";
+import {Parser} from "../Parser";
+import {Renderer} from "../Renderer";
+import {ServiceDesk} from "../parsers/ServiceDesk";
+import {ServiceNow} from "../parsers/ServiceNow";
+import {Zabbix} from "../parsers/Zabbix";
 
 // parsers will be attempted in the order defined here
 const parsers: Parser[] = [
@@ -72,7 +72,8 @@ export class CopyUrl implements Action {
         if (result == null) {
             const successHtml = `${status}<br />Success!`;
             this.showStatusPopup(successHtml);
-        } else {
+        }
+        else {
             const failureHtml =
                 `${status}<br />` +
                 `<span style="color:darkred">Failure: ${result}</span>`;
@@ -84,18 +85,20 @@ export class CopyUrl implements Action {
     async copyWithGreaseMonkeyClipboardApi(clipboard: Clipboard): Promise<any> {
         if (clipboard.html !== null) {
             GM_setClipboard(clipboard.html, "html");
-        } else {
+        }
+        else {
             GM_setClipboard(clipboard.text, "text");
         }
         return null;
     }
 
     /**
-     * Attempts to copy the specified data to the clipboard using the standardized (async)
-     * Clipboard API as per https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API
+     * Attempts to copy the specified data to the clipboard using the
+     * standardized (async) Clipboard API as per
+     * https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API
      *
-     * Restrictions: only works when the page is served over a secure channel (or via localhost)
-     * as per https://stackoverflow.com/a/65996386/98903
+     * Restrictions: only works when the page is served over a secure channel
+     * (or via localhost) as per https://stackoverflow.com/a/65996386/98903
      *
      * @param clipboard an instance of Clipboard with the data to copy
      */
@@ -115,7 +118,8 @@ export class CopyUrl implements Action {
             const data = [clipboardItem];
             await navigator.clipboard.write(data);
             return null;
-        } catch (error) {
+        }
+        catch (error) {
             console.log(error);
             return error;
         }
@@ -125,7 +129,10 @@ export class CopyUrl implements Action {
         // TODO: fade in?
         this.statusPopup.innerHTML = innerHTML;
         this.statusPopup.style.display = "block";
-        window.setTimeout(() => this.statusPopup.style.display = "none", 5000 /*ms*/);
+        window.setTimeout(
+            () => this.statusPopup.style.display = "none",
+            5000 /*ms*/
+        );
         console.log(innerHTML);
     }
 }
