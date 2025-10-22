@@ -5,6 +5,7 @@ podman run \
     --user="$(id -u)" \
     --userns=keep-id \
     --rm \
+    -it \
     --name node20 \
     --volume "${PWD}:/usr/src/app:rw,z" \
     --workdir "/usr/src/app" \
