@@ -31,7 +31,7 @@ Clipboard support can be enabled by following these steps:
 
 ### Using the [Node.js container](https://github.com/nodejs/docker-node/blob/main/README.md)
 
-To avoid having to install anything (except the Docker Engine CLI!), just prefix any `node` or `npm` command with `./docker_node`. For example: `./docker_node npm install`
+To avoid having to install anything (except Podman!), just prefix any `node` or `npm` command with `./podman_node`. For example: `./podman_node npm install`
 
 ### Debug
 
