@@ -20,6 +20,7 @@ export class GitLab extends AbstractParser {
                 break;
             case "projects:issues:show":
             case "projects:work_items:show":
+            case "projects:merge_requests:show":
                 linkText
                     = `${data.projectFullPath}${data.typeId}: ${data.title}`;
                 break;

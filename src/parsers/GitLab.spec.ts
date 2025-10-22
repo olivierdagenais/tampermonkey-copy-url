@@ -163,3 +163,75 @@ test("link to issue, no page-type-id", () => {
             "Wash the dishes"
     );
 });
+
+test("link to merge request, with page-type-id", () => {
+    const html: string = `
+<html>
+<head>
+    <meta content="GitLab" property="og:site_name">
+    <meta content="Fix #686: Room name &amp; topic are not accessible (!672) · Merge requests · connect2x / Trixnity Messenger / Trixnity Messenger · GitLab" property="og:title">
+    <meta content=" Developer:    CLA signed (only needed when external..." property="og:description">
+</head>
+<body
+    class="tab-width-8 gl-browser-firefox gl-platform-windows body-fixed-scrollbar page-initialised" 
+    data-group="trixnity-messenger"
+    data-group-full-path="connect2x/trixnity-messenger"
+    data-namespace-id="76644306"
+    data-page="projects:merge_requests:show"
+    data-page-type-id="672"
+    data-project="trixnity-messenger"
+    data-project-full-path="connect2x/trixnity-messenger/trixnity-messenger"
+    data-project-id="47538655"
+    data-project-studio-available="false"
+    data-project-studio-enabled="false">
+    <li class="gl-breadcrumb-item gl-breadcrumb-item-sm">
+        <a
+            href="/connect2x/trixnity-messenger/trixnity-messenger/-/merge_requests/672"
+            aria-current="page"
+            class=""
+            >
+            <!---->
+            <span class="gl-align-middle">!672</span>
+        </a>
+    </li>
+    <h1
+        class="title gl-heading-1 gl-self-center gl-mb-0 gl-flex-1 gl-wrap-anywhere"
+        data-testid="title-content"
+        >
+        Fix <a
+                href="/connect2x/trixnity-messenger/trixnity-messenger/-/issues/686"
+                title="Room name &amp; topic are not accessible"
+                class="gfm gfm-issue"
+                data-original="#686"
+                data-link="false"
+                data-link-reference="false"
+                data-issue="175697525"
+                data-project="47538655"
+                data-iid="686"
+                data-namespace-path="connect2x/trixnity-messenger/trixnity-messenger"
+                data-project-path="connect2x/trixnity-messenger/trixnity-messenger"
+                data-issue-type="issue"
+                data-container="body"
+                data-placement="top"
+                data-reference-type="issue"
+                >#686</a>: Room name &amp; topic are not accessible
+    </h1>
+</body>
+</html>
+`;
+    const actual = testParseLink(
+        html,
+        "https://gitlab.com/connect2x/trixnity-messenger/trixnity-messenger/-/merge_requests/672"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "https://gitlab.com/connect2x/trixnity-messenger/trixnity-messenger/-/merge_requests/672"
+    );
+    assert.equal(
+        actual?.text,
+        "connect2x/trixnity-messenger/trixnity-messenger!672: " +
+            "Fix #686: Room name & topic are not accessible"
+    );
+});
