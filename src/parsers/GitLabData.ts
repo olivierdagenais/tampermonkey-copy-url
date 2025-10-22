@@ -23,8 +23,11 @@ export class GitLabData {
         this.projectFullPath
             = bodyElement?.getAttribute("data-project-full-path")
             ?? "(no path)";
-        // TODO: this is specific to issues!
-        const titleSelector = "[data-testid='work-item-title']";
+        const titleSelectors = [
+            "[data-testid='work-item-title']",
+            "[data-testid='title-content']",
+        ];
+        const titleSelector = titleSelectors.join(", ");
         const element = doc.querySelector(titleSelector);
         this.title
             = element?.textContent?.trim()
@@ -37,6 +40,9 @@ export class GitLabData {
         switch (this.page) {
             case "projects:issues:show":
                 typeId = `#${rawTypeId}`;
+                break;
+            case "projects:merge_requests:show":
+                typeId = `!${rawTypeId}`;
                 break;
             case "projects:work_items:show":
                 typeId = `${fallbackTypeId}`;
