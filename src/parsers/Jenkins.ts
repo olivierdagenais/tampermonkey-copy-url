@@ -4,6 +4,7 @@ import { Link } from "../Link";
 
 // Right-Pointing Double Angle Quotation Mark
 const chevron = "\u00BB";
+
 export class Jenkins extends AbstractParser {
     parseLink(doc: Document, url: string): Link | null {
         const bodyElement = JenkinsHelpers.getBodyElement(doc);
@@ -39,7 +40,8 @@ export class Jenkins extends AbstractParser {
                     if (key > 1) {
                         if (isUrlToRun) {
                             linkText += ` `;
-                        } else {
+                        }
+                        else {
                             linkText += ` ${chevron} `;
                         }
                     }

@@ -22,7 +22,8 @@ export class JenkinsNext extends GoToAction {
                     urlParts[index] = nextRun.toString();
                     const rebuiltPath = urlParts.join("/");
                     return JenkinsHelpers.buildUrl(urlString, rebuiltPath);
-                } else {
+                }
+                else {
                     const mostRecentRunSelector =
                         JenkinsHelpers.getMostRecentRunSelector(bodyElement);
                     const anchor = bodyElement.querySelector(

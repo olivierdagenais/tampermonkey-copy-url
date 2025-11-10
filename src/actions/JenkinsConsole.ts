@@ -30,7 +30,8 @@ export class JenkinsConsole extends GoToAction {
                     }
                 }
                 return null;
-            } else {
+            }
+            else {
                 const mostRecentRunSelector =
                     JenkinsHelpers.getMostRecentRunSelector(bodyElement);
                 const anchor = bodyElement.querySelector(mostRecentRunSelector);

@@ -36,11 +36,12 @@ export class JenkinsUp extends GoToAction {
                 }
                 return null;
             }
-            const specialCases = new Set<string>([
-                "configure",
-                "consoleFull",
-                "console",
-            ]);
+            const specialCases = new Set<string>(
+                [
+                    "configure",
+                    "consoleFull",
+                    "console",
+                ]);
             if (specialCases.has(lastPart)) {
                 offset = 1;
             }
