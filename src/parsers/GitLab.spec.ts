@@ -1,8 +1,8 @@
-import {assert, test} from "vitest";
-import {JSDOM} from "jsdom";
-import {Link} from "../Link";
-import {Parser} from "../Parser";
-import {GitLab} from "./GitLab";
+import { assert, test } from "vitest";
+import { JSDOM } from "jsdom";
+import { Link } from "../Link";
+import { Parser } from "../Parser";
+import { GitLab } from "./GitLab";
 
 function testParseLink(html: string, url: string): Link | null {
     const dom: JSDOM = new JSDOM(html);
