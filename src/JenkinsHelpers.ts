@@ -40,7 +40,8 @@ export class JenkinsHelpers {
             throw new Error("I can't determine the Jenkins version!");
         }
         const jenkinsSemVer = SemVer.parse(jenkinsVersion);
-        // jenkinsci/jenkins#9148: Rewrite the build history widget by janfaracik
+        // jenkinsci/jenkins#9148: Rewrite the build history widget by
+        // janfaracik
         // https://github.com/jenkinsci/jenkins/pull/9148
         if (jenkins2_463.compareTo(jenkinsSemVer) <= 0) {
             return "#jenkins-build-history a.app-builds-container__item__inner__link";
