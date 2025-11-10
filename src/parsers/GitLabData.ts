@@ -45,6 +45,7 @@ export class GitLabData {
             case "projects:merge_requests:show":
                 typeId = `!${rawTypeId}`;
                 break;
+            case "projects:issues:new":
             case "projects:work_items:show":
                 typeId = `${fallbackTypeId}`;
                 break;

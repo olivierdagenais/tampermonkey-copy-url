@@ -18,6 +18,7 @@ export class GitLab extends AbstractParser {
             case "projects:show":
                 linkText = `${data.projectFullPath}: ${data.description}`;
                 break;
+            case "projects:issues:new":
             case "projects:issues:show":
             case "projects:work_items:show":
             case "projects:merge_requests:show":
