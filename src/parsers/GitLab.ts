@@ -1,6 +1,6 @@
-import {AbstractParser} from "./AbstractParser";
-import {Link} from "../Link";
-import {GitLabData} from "./GitLabData";
+import { AbstractParser } from "./AbstractParser";
+import { Link } from "../Link";
+import { GitLabData } from "./GitLabData";
 
 export class GitLab extends AbstractParser {
 
