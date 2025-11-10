@@ -45,10 +45,21 @@ export class JenkinsUp extends GoToAction {
             if (specialCases.has(lastPart)) {
                 offset = 1;
             }
-            const penultimateItem = breadCrumbListItems.item(
-                breadCrumbListItems.length - offset
-            );
-            const anchor = penultimateItem.querySelector("a");
+            for (let i = breadCrumbListItems.length - offset; i >= 0; i--) {
+                const item = breadCrumbListItems.item(i);
+                const anchor = item.querySelector("a");
+                if (anchor) {
+                    const path = anchor.getAttribute("href");
+                    if (path) {
+                        return JenkinsHelpers.buildUrl(urlString, path);
+                    }
+                }
+            }
+        }
+
+        if (breadCrumbListItems) {
+            const firstItem = breadCrumbListItems.item(0);
+            const anchor = firstItem.querySelector("a");
             if (anchor) {
                 const path = anchor.getAttribute("href");
                 if (path) {
@@ -56,6 +67,7 @@ export class JenkinsUp extends GoToAction {
                 }
             }
         }
+
         return null;
     }
 }

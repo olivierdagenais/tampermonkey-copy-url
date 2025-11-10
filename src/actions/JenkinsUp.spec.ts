@@ -198,6 +198,101 @@ test("job's configure page", () => {
     );
 });
 
+test("job's configure page, v2.516.3", () => {
+    const html = `
+<html>
+    <head>
+        <title>charlie Config - Jenkins</title>
+    </head>
+    <body
+        data-model-type="org.jenkinsci.plugins.workflow.job.WorkflowJob"
+        id="jenkins"
+        data-search-url="/search/suggest"
+        data-search-help-url="https://www.jenkins.io/redirect/search-box"
+        class="two-column jenkins-2.516.3"
+        data-version="2.516.3"
+        >
+        <!-- etc., etc... -->
+        <div class="jenkins-header__main">
+            <div class="jenkins-header__navigation">
+                <a href="/" class="app-jenkins-logo">
+                    <img
+                        src="/static/2ca8485b/images/svgs/logo.svg"
+                        aria-hidden="true"
+                        id="jenkins-head-icon"
+                    >
+                    <span class="jenkins-mobile-hide">Jenkins</span>
+                </a>
+                <div
+                    id="breadcrumbBar"
+                    class="jenkins-breadcrumbs"
+                    aria-label="breadcrumb"
+                    >
+                    <ol class="jenkins-breadcrumbs__list" id="breadcrumbs">
+                        <li
+                            data-type="breadcrumb-item"
+                            class="jenkins-breadcrumbs__list-item"
+                            data-has-menu="true"
+                            >
+                            <a
+                                href="/job/ALPHA/"
+                                class="hoverable-model-link hoverable-children-model-link"
+                                aria-expanded="false"
+                                >
+                                ALPHA
+                            </a>
+                        </li>
+                        <li
+                            data-type="breadcrumb-item"
+                            class="jenkins-breadcrumbs__list-item"
+                            data-has-menu="true"
+                            >
+                            <a
+                                href="/job/ALPHA/job/bravo/"
+                                class="hoverable-model-link hoverable-children-model-link"
+                                aria-expanded="false"
+                                >
+                                bravo
+                            </a>
+                        </li>
+                        <li
+                            data-type="breadcrumb-item"
+                            class="jenkins-breadcrumbs__list-item"
+                            data-has-menu="true"
+                            >
+                            <a
+                                href="/job/ALPHA/job/bravo/job/charlie/"
+                                class="hoverable-model-link hoverable-children-model-link"
+                                aria-expanded="false"
+                                >
+                                charlie
+                            </a>
+                        </li>
+                        <li
+                            aria-current="page"
+                            data-type="breadcrumb-item"
+                            class="jenkins-breadcrumbs__list-item"
+                            >
+                            <span class="">Configuration</span>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>`;
+
+    const actual = testNavigate(
+        html,
+        "http://localhost:8080/job/ALPHA/job/bravo/job/charlie/configure"
+    );
+
+    assert.equal(
+        actual,
+        "http://localhost:8080/job/ALPHA/job/bravo/job/charlie/"
+    );
+});
+
 test("run page", () => {
     const html = `
 <html>
@@ -449,5 +544,62 @@ test("dashboard page", () => {
 
     const actual = testNavigate(html, "http://localhost:8080");
 
-    assert.equal(actual, null);
+    assert.equal(actual, "http://localhost:8080/");
+});
+
+test("system configuration page, v2.516.3", () => {
+    const html = `
+<html>
+    <head>
+        <title>System - Jenkins</title>
+    </head>
+    <body
+        data-model-type="org.jenkinsci.plugins.workflow.job.WorkflowJob"
+        id="jenkins"
+        data-search-url="/search/suggest"
+        data-search-help-url="https://www.jenkins.io/redirect/search-box"
+        class="two-column jenkins-2.516.3"
+        data-version="2.516.3"
+        >
+        <!-- etc., etc... -->
+        <div class="jenkins-header__main">
+            <div class="jenkins-header__navigation">
+                <a href="/" class="app-jenkins-logo">
+                    <img
+                        src="/static/2ca8485b/images/svgs/logo.svg"
+                        aria-hidden="true"
+                        id="jenkins-head-icon"
+                    >
+                    <span class="jenkins-mobile-hide">Jenkins</span>
+                </a>
+                <div
+                    id="breadcrumbBar"
+                    class="jenkins-breadcrumbs"
+                    aria-label="breadcrumb"
+                    >
+                    <ol class="jenkins-breadcrumbs__list" id="breadcrumbs">
+                        <li
+                            aria-current="page"
+                            id="inpage-nav"
+                            data-type="breadcrumb-item"
+                            class="jenkins-breadcrumbs__list-item"
+                            data-has-menu="true"
+                            >
+                            <span
+                                class="hoverable-model-link"
+                                aria-expanded="false"
+                                >
+                                System
+                            </span>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>`;
+
+    const actual = testNavigate(html, "http://localhost:8080/configure");
+
+    assert.equal(actual, "http://localhost:8080/");
 });
