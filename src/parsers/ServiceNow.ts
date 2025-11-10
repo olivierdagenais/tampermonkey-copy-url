@@ -3,11 +3,12 @@ import { Link } from "../Link";
 
 export class ServiceNow extends AbstractParser {
     parseLink(doc: Document, url: string): Link | null {
-        const ticketNumberSelectors = [
+        const ticketNumberSelectorList = [
             "#data\\.number\\.name",
             "h2.ticket-number",
         ];
-        const ticketNumberElement = doc.querySelector(ticketNumberSelectors.join(", "));
+        const ticketNumberSelector = ticketNumberSelectorList.join(", ");
+        const ticketNumberElement = doc.querySelector(ticketNumberSelector);
         if (ticketNumberElement) {
             var linkText = ``;
             const ticketNumber = ticketNumberElement.textContent;
@@ -32,14 +33,16 @@ export class ServiceNow extends AbstractParser {
                         }
                     }
                 }
-                // only consider these as a last resort, because sometimes they contain
-                // useless text and the real subject/summary was in the "variables-toggle" element
+                // only consider these as a last resort, because sometimes they
+                // contain useless text and the real subject/summary was in the
+                // "variables-toggle" element
                 if (!subject) {
-                    const subjectSelectors = [
+                    const subjectSelectorList = [
                         "#short-desc",
                         "p.ticket-desc",
                     ];
-                    const subjectElement = doc.querySelector(subjectSelectors.join(", "));
+                    const subjectSelectors = subjectSelectorList.join(", ");
+                    const subjectElement = doc.querySelector(subjectSelectors);
                     if (subjectElement) {
                         subject = subjectElement.textContent;
                     }
