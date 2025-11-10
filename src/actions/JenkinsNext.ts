@@ -9,8 +9,8 @@ export class JenkinsNext extends GoToAction {
         }
 
         const selector = JenkinsHelpers.getBreadcrumbItemSelector(bodyElement);
-        const breaCrumbListItems = doc.querySelectorAll(selector);
-        if (breaCrumbListItems) {
+        const breadCrumbListItems = doc.querySelectorAll(selector);
+        if (breadCrumbListItems) {
             var urlParts = JenkinsHelpers.splitUrlPath(urlString);
             for (var index = urlParts.length - 1; index >= 2; index--) {
                 const lastPart = urlParts[index];

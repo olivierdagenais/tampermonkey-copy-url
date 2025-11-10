@@ -9,15 +9,15 @@ export class JenkinsConsole extends GoToAction {
         }
 
         const selector = JenkinsHelpers.getBreadcrumbItemSelector(bodyElement);
-        const breaCrumbListItems = doc.querySelectorAll(selector);
-        if (breaCrumbListItems) {
+        const breadCrumbListItems = doc.querySelectorAll(selector);
+        if (breadCrumbListItems) {
             const urlParts = JenkinsHelpers.splitUrlPath(urlString);
             const isUrlToRun =
                 "job" === urlParts[urlParts.length - 3] &&
                 JenkinsHelpers.isInteger(urlParts[urlParts.length - 1]);
             if (isUrlToRun) {
-                const lastItem = breaCrumbListItems.item(
-                    breaCrumbListItems.length - 1
+                const lastItem = breadCrumbListItems.item(
+                    breadCrumbListItems.length - 1
                 );
                 const anchor = lastItem.querySelector("a");
                 if (anchor) {

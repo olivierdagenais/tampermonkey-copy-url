@@ -9,8 +9,8 @@ export class JenkinsUp extends GoToAction {
         }
 
         const selector = JenkinsHelpers.getBreadcrumbItemSelector(bodyElement);
-        const breaCrumbListItems = doc.querySelectorAll(selector);
-        if (breaCrumbListItems && breaCrumbListItems.length > 1) {
+        const breadCrumbListItems = doc.querySelectorAll(selector);
+        if (breadCrumbListItems && breadCrumbListItems.length > 1) {
             var offset = 2;
             const urlParts = JenkinsHelpers.splitUrlPath(urlString);
             const lastPart = urlParts[urlParts.length - 1];
@@ -21,8 +21,8 @@ export class JenkinsUp extends GoToAction {
                 "node" == urlParts[urlParts.length - 2] &&
                 "execution" == urlParts[urlParts.length - 3]
             ) {
-                const penultimateItem = breaCrumbListItems.item(
-                    breaCrumbListItems.length - 2
+                const penultimateItem = breadCrumbListItems.item(
+                    breadCrumbListItems.length - 2
                 );
                 const anchor = penultimateItem.querySelector("a");
                 if (anchor) {
@@ -45,8 +45,8 @@ export class JenkinsUp extends GoToAction {
             if (specialCases.has(lastPart)) {
                 offset = 1;
             }
-            const penultimateItem = breaCrumbListItems.item(
-                breaCrumbListItems.length - offset
+            const penultimateItem = breadCrumbListItems.item(
+                breadCrumbListItems.length - offset
             );
             const anchor = penultimateItem.querySelector("a");
             if (anchor) {
