@@ -10,9 +10,9 @@ export class JenkinsDashboard extends GoToAction {
 
         const selector = JenkinsHelpers.getBreadcrumbItemSelector(bodyElement);
 
-        const breaCrumbListItem = doc.querySelector(selector);
-        if (breaCrumbListItem) {
-            const anchor = breaCrumbListItem.querySelector("a");
+        const breadCrumbListItem = doc.querySelector(selector);
+        if (breadCrumbListItem) {
+            const anchor = breadCrumbListItem.querySelector("a");
             if (anchor) {
                 const path = anchor.getAttribute("href");
                 if (path) {
