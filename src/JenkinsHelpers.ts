@@ -25,6 +25,7 @@ export class JenkinsHelpers {
 
     static getBreadcrumbItemSelector(bodyElement: HTMLElement): string {
         const anchorContainers = [
+            ".ch-section-1",
             ".jenkins-header__navigation",
             ".jenkins-breadcrumbs__list-item",
         ];
