@@ -24,7 +24,11 @@ export class JenkinsHelpers {
     }
 
     static getBreadcrumbItemSelector(bodyElement: HTMLElement): string {
-        var selector = ".jenkins-header__navigation, .jenkins-breadcrumbs__list-item";
+        const anchorContainers = [
+            ".jenkins-header__navigation",
+            ".jenkins-breadcrumbs__list-item",
+        ];
+        let selector = anchorContainers.join(", ");
         const jenkinsVersion = bodyElement.getAttribute("data-version");
         switch (jenkinsVersion) {
             case "2.361.4":
