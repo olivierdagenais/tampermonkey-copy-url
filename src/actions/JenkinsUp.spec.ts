@@ -135,6 +135,70 @@ test("job page, v2.516.3 (issue #115)", () => {
     );
 });
 
+test("org. folder page, v2.528.3, customized header (issue #119)", () => {
+    const html = `
+<html>
+    <head>
+        <title>Repositories (6) [org-name] - Jenkins</title>
+    </head>
+    <body
+        data-model-type="jenkins.branch.OrganizationFolderViewHolder$ViewImpl"
+        id="jenkins"
+        data-search-url="/search/suggest"
+        data-search-help-url="https://www.jenkins.io/redirect/search-box"
+        class="two-column jenkins-2.528.3"
+        data-version="2.528.3"
+        >
+        <!-- etc., etc... -->
+        <header id="page-header" class="custom-header jenkins-header">
+            <div class="ch-section-1">
+                <a href="/" class="app-jenkins-logo">
+                    <img
+                        src="/avatar-cache/d6971caab514f694ff9ebacde0afdd2c.png?size=32x32"
+                        alt="[Jenkins]"
+                        class="custom-header__image"
+                        />
+                    <div class="custom-header__text">Jenkins name</div>
+                </a>
+            </div>
+            <div class="ch-section-2 jenkins-header__main">
+                <div class="jenkins-header__navigation">
+                    <div
+                        id="breadcrumbBar"
+                        class="jenkins-breadcrumbs"
+                        aria-label="breadcrumb"
+                        >
+                        <ol class="jenkins-breadcrumbs__list" id="breadcrumbs">
+                            <li
+                                aria-current="page"
+                                data-type="breadcrumb-item"
+                                class="jenkins-breadcrumbs__list-item"
+                                data-has-menu="true"
+                                >
+                                <span>org-name</span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="jenkins-header__actions">
+                    <!-- We're keeping this here just to show it exists -->
+                </div>
+            </div>
+        </header>
+    </body>
+</html>`;
+
+    const actual = testNavigate(
+        html,
+        "http://localhost:8080/job/org-name/"
+    );
+
+    assert.equal(
+        actual,
+        "http://localhost:8080/"
+    );
+});
+
 test("job's configure page", () => {
     const html = `
 <html>
