@@ -1,6 +1,9 @@
 import { SemVer } from "./SemVer";
+import {Crumb} from "./Crumb";
+import {JenkinsPage} from "./JenkinsPage";
 
 const jenkins2_463 = SemVer.parse("2.463");
+const DashboardCrumb = new Crumb("Dashboard", "/");
 
 export class JenkinsHelpers {
     static buildUrl(
@@ -37,6 +40,53 @@ export class JenkinsHelpers {
                 break;
         }
         return selector;
+    }
+
+    static parsePage(
+        bodyElement: HTMLElement,
+        urlString: string
+    ) : JenkinsPage {
+        const selector = this.getBreadcrumbItemSelector(bodyElement);
+        const doc = bodyElement.ownerDocument;
+        const anchorContainers = doc.querySelectorAll(selector);
+        if (anchorContainers) {
+            const crumbs: Crumb[] = [];
+            for (let i = 0; i < anchorContainers.length; i++) {
+                const anchorContainer = anchorContainers[i];
+                const anchor = anchorContainer.querySelector("a");
+                if (anchor) {
+                    const path = anchor.getAttribute("href");
+                    if (path) {
+                        const crumb1 = new Crumb(
+                            anchorContainer.textContent,
+                            path
+                        );
+                        crumbs.push(crumb1);
+                    }
+                    // I don't know what to do if we have an "a" without "href"
+                }
+                else {
+                    // Jenkins around 2.528.3 stopped including an anchor
+                    // for the last item in the breadcrumb, so use current path.
+                    if (i == anchorContainers.length - 1) {
+                        const url = new URL(urlString);
+                        const crumb = new Crumb(
+                            anchorContainer.textContent,
+                            url.pathname
+                        );
+                        crumbs.push(crumb);
+                    }
+                }
+            }
+            return new JenkinsPage(
+                urlString,
+                crumbs
+            );
+        }
+        return new JenkinsPage(
+            urlString,
+            [DashboardCrumb]
+        );
     }
 
     static getMostRecentRunSelector(bodyElement: HTMLElement): string {
