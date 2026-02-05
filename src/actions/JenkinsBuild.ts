@@ -94,7 +94,7 @@ export class JenkinsBuild implements Action {
         }
         else {
             let result : Request | null = null;
-            jenkinsPage.reverseCrumb((crumb: Crumb, key?: number) => {
+            jenkinsPage.reverseCrumb((crumb: Crumb) => {
                 const hrefParts = JenkinsHelpers.splitPath(crumb.href);
                 if ("job" == hrefParts[hrefParts.length - 2]) {
                     const destinationUrl = JenkinsHelpers.buildUrl(
