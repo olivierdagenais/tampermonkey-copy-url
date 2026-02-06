@@ -24,7 +24,7 @@ export class JenkinsPage {
     }
 
     eachCrumb(callback: (value: Crumb, key: number) => boolean): void {
-        for (let key = 0; key < this.crumbs.length - 1; key++) {
+        for (let key = 0; key < this.crumbs.length; key++) {
             const keepGoing = callback(this.crumbs[key], key);
             if (!keepGoing) {
                 break;
