@@ -1,5 +1,6 @@
 import { JenkinsHelpers } from "../JenkinsHelpers";
 import { GoToAction } from "./GoToAction";
+import { Crumb } from "../Crumb";
 
 export class JenkinsCredentials extends GoToAction {
     navigate(doc: Document, url: string): string | null {
@@ -10,26 +11,21 @@ export class JenkinsCredentials extends GoToAction {
 
         /* <a> elements with an href ending in "credentials" */
         const selector = "a[href$='/credentials']";
-        const crumbSelector =
-            JenkinsHelpers.getBreadcrumbItemSelector(bodyElement);
-        const crumbListItems = doc.querySelectorAll(crumbSelector);
-        var index = -1;
-        if (1 == crumbListItems.length) {
-            index = 0;
-        } else if (bodyElement.querySelector(selector)) {
-            index = crumbListItems.length - 1;
+        const jenkinsPage = JenkinsHelpers.parsePage(
+            bodyElement,
+            url
+        );
+        let crumb: Crumb | undefined = undefined;
+        if (1 == jenkinsPage.crumbs.length) {
+            crumb = jenkinsPage.firstCrumb();
         }
-        if (index >= 0) {
-            const listItem = crumbListItems.item(index);
-            const anchor = listItem.querySelector("a");
-            if (anchor) {
-                const path = anchor.getAttribute("href");
-                if (path) {
-                    return JenkinsHelpers.buildUrl(url, path + "credentials");
-                }
-            }
+        else if (bodyElement.querySelector(selector)) {
+            crumb = jenkinsPage.lastCrumb()
         }
-
+        if (crumb) {
+            const path = crumb.href;
+            return jenkinsPage.buildUrl(path + "credentials");
+        }
         return null;
     }
 }
