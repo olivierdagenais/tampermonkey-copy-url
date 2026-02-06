@@ -8,18 +8,13 @@ export class JenkinsDashboard extends GoToAction {
             return null;
         }
 
-        const selector = JenkinsHelpers.getBreadcrumbItemSelector(bodyElement);
-
-        const breadCrumbListItem = doc.querySelector(selector);
-        if (breadCrumbListItem) {
-            const anchor = breadCrumbListItem.querySelector("a");
-            if (anchor) {
-                const path = anchor.getAttribute("href");
-                if (path) {
-                    return JenkinsHelpers.buildUrl(urlString, path);
-                }
-            }
-        }
-        return null;
+        const jenkinsPage = JenkinsHelpers.parsePage(
+            bodyElement,
+            urlString
+        );
+        const firstCrumb = jenkinsPage.crumbs[0];
+        return jenkinsPage.buildUrl(
+            firstCrumb.href
+        );
     }
 }
