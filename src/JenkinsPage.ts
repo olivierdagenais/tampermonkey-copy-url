@@ -32,8 +32,16 @@ export class JenkinsPage {
         }
     }
 
+    firstCrumb(): Crumb {
+        return this.crumbs[0];
+    }
+
     lastCrumb(): Crumb {
         return this.crumbs[this.crumbs.length - 1];
+    }
+
+    penultimateCrumb() : Crumb {
+        return this.crumbs[this.crumbs.length - 2];
     }
 
     reverseCrumb(callback: (value: Crumb, key: number) => boolean): void {

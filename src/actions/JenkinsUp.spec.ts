@@ -246,6 +246,9 @@ test("job's configure page", () => {
                     </a>
                 </li>
                 <li href="/job/Project/job/Repository/job/Branch/" class="children"></li>
+                <li aria-current="page" class="jenkins-breadcrumbs__list-item">
+                    Configuration
+                </li>
             </ol>
         </div>
     </body>
@@ -481,6 +484,9 @@ test("run console page", () => {
                     </a>
                 </li>
                 <li class="separator"></li>
+                <li aria-current="page" class="jenkins-breadcrumbs__list-item">
+                    Console Output
+                </li>
             </ol>
         </div>
     </body>
