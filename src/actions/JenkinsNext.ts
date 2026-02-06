@@ -8,32 +8,32 @@ export class JenkinsNext extends GoToAction {
             return null;
         }
 
-        const selector = JenkinsHelpers.getBreadcrumbItemSelector(bodyElement);
-        const breadCrumbListItems = doc.querySelectorAll(selector);
-        if (breadCrumbListItems) {
-            var urlParts = JenkinsHelpers.splitUrlPath(urlString);
-            for (var index = urlParts.length - 1; index >= 2; index--) {
-                const lastPart = urlParts[index];
-                const isUrlToRun =
-                    "job" === urlParts[index - 2] &&
-                    JenkinsHelpers.isInteger(lastPart);
-                if (isUrlToRun) {
-                    const nextRun = Number.parseInt(lastPart, 10) + 1;
-                    urlParts[index] = nextRun.toString();
-                    const rebuiltPath = urlParts.join("/");
-                    return JenkinsHelpers.buildUrl(urlString, rebuiltPath);
-                }
-                else {
-                    const mostRecentRunSelector =
-                        JenkinsHelpers.getMostRecentRunSelector(bodyElement);
-                    const anchor = bodyElement.querySelector(
-                        mostRecentRunSelector
-                    );
-                    if (anchor) {
-                        const path = anchor.getAttribute("href");
-                        if (path) {
-                            return JenkinsHelpers.buildUrl(urlString, path);
-                        }
+        const jenkinsPage = JenkinsHelpers.parsePage(
+            bodyElement,
+            urlString
+        );
+        let urlParts = jenkinsPage.urlParts;
+        for (let index = urlParts.length - 1; index >= 2; index--) {
+            const lastPart = urlParts[index];
+            const isUrlToRun =
+                "job" === urlParts[index - 2] &&
+                JenkinsHelpers.isInteger(lastPart);
+            if (isUrlToRun) {
+                const nextRun = Number.parseInt(lastPart, 10) + 1;
+                urlParts[index] = nextRun.toString();
+                const rebuiltPath = urlParts.join("/");
+                return jenkinsPage.buildUrl(rebuiltPath);
+            }
+            else {
+                const mostRecentRunSelector =
+                    JenkinsHelpers.getMostRecentRunSelector(bodyElement);
+                const anchor = bodyElement.querySelector(
+                    mostRecentRunSelector
+                );
+                if (anchor) {
+                    const path = anchor.getAttribute("href");
+                    if (path) {
+                        return jenkinsPage.buildUrl(path);
                     }
                 }
             }
