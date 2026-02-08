@@ -43,6 +43,25 @@ export class JenkinsPage {
         return this.crumbs[this.crumbs.length - 1];
     }
 
+    pageOrRootAction(
+        action: string,
+    ): string | null {
+        /* <a> elements with an href ending in /${action} */
+        const selector = `a[href$='/${action}']`;
+        let crumb: Crumb | null = null;
+        if (1 == this.crumbs.length) {
+            crumb = this.firstCrumb();
+        }
+        else if (this.bodyElement.querySelector(selector)) {
+            crumb = this.lastCrumb();
+        }
+        if (crumb) {
+            const path = crumb.href;
+            return this.buildUrl(path + action);
+        }
+        return null;
+    }
+
     penultimateCrumb() : Crumb {
         return this.crumbs[this.crumbs.length - 2];
     }
