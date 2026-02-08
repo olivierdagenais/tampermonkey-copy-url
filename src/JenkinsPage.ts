@@ -5,14 +5,17 @@ export class JenkinsPage {
     readonly urlString: string;
     readonly urlParts: string[];
     readonly crumbs: Crumb[];
+    readonly bodyElement: HTMLElement;
 
     constructor(
         urlString: string,
         crumbs: Crumb[],
+        bodyElement: HTMLElement,
     ) {
         this.urlString = urlString;
         this.urlParts = JenkinsHelpers.splitUrlPath(urlString);
         this.crumbs = crumbs;
+        this.bodyElement = bodyElement;
     }
 
     buildUrl(path: string, queryString?: string): string {
