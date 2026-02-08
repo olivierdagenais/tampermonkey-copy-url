@@ -10,12 +10,13 @@ export class JenkinsCredentials extends GoToAction {
         }
 
         /* <a> elements with an href ending in "credentials" */
-        const selector = "a[href$='/credentials']";
         const jenkinsPage = JenkinsHelpers.parsePage(
             bodyElement,
             url
         );
-        let crumb: Crumb | undefined = undefined;
+        const action = "credentials";
+        const selector = `a[href$='/${action}']`;
+        let crumb: Crumb | null = null;
         if (1 == jenkinsPage.crumbs.length) {
             crumb = jenkinsPage.firstCrumb();
         }
@@ -24,7 +25,7 @@ export class JenkinsCredentials extends GoToAction {
         }
         if (crumb) {
             const path = crumb.href;
-            return jenkinsPage.buildUrl(path + "credentials");
+            return jenkinsPage.buildUrl(path + action);
         }
         return null;
     }
