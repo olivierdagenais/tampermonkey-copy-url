@@ -80,12 +80,14 @@ export class JenkinsHelpers {
             }
             return new JenkinsPage(
                 urlString,
-                crumbs
+                crumbs,
+                bodyElement,
             );
         }
         return new JenkinsPage(
             urlString,
-            [DashboardCrumb]
+            [DashboardCrumb],
+            bodyElement,
         );
     }
 
