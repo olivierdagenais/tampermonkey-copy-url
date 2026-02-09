@@ -8,42 +8,17 @@ export class JenkinsConfigure extends GoToAction {
             return null;
         }
 
-        const selector = JenkinsHelpers.getBreadcrumbItemSelector(bodyElement);
-        const breadCrumbListItems = doc.querySelectorAll(selector);
-        if (breadCrumbListItems) {
-            const urlParts = JenkinsHelpers.splitUrlPath(urlString);
-            const isUrlToRun =
-                "job" === urlParts[urlParts.length - 3] &&
-                JenkinsHelpers.isInteger(urlParts[urlParts.length - 1]);
-            if (isUrlToRun) {
-                const penultimateItem = breadCrumbListItems.item(
-                    breadCrumbListItems.length - 2
-                );
-                const anchor = penultimateItem.querySelector("a");
-                if (anchor) {
-                    const path = anchor.getAttribute("href");
-                    if (path) {
-                        return (
-                            JenkinsHelpers.buildUrl(urlString, path) +
-                            "configure"
-                        );
-                    }
-                }
-                return null;
-            }
-            const lastItem = breadCrumbListItems.item(
-                breadCrumbListItems.length - 1
-            );
-            const anchor = lastItem.querySelector("a");
-            if (anchor) {
-                const path = anchor.getAttribute("href");
-                if (path) {
-                    return (
-                        JenkinsHelpers.buildUrl(urlString, path) + "configure"
-                    );
-                }
-            }
+        const jenkinsPage = JenkinsHelpers.parsePage(
+            bodyElement,
+            urlString
+        );
+        const jobCrumb = jenkinsPage.findJobCrumb();
+        if (jobCrumb) {
+            const path = jobCrumb.href;
+            return jenkinsPage.buildUrl(path + "configure");
         }
-        return null;
+        const lastCrumb = jenkinsPage.lastCrumb();
+        const path = lastCrumb.href;
+        return jenkinsPage.buildUrl(path + "configure");
     }
 }
