@@ -35,6 +35,25 @@ export class JenkinsPage {
         }
     }
 
+    findJobCrumb() : Crumb | null {
+        let result: Crumb | null = null;
+        this.reverseCrumb((crumb: Crumb, key: number) => {
+            const urlParts = JenkinsHelpers.splitPath(crumb.href);
+            const numParts = urlParts.length;
+            if (numParts >= 2) {
+                const isUrlToJob =
+                    "job" === urlParts[numParts - 2];
+                if (isUrlToJob) {
+                    result = crumb;
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        });
+        return result;
+    }
+
     firstCrumb(): Crumb {
         return this.crumbs[0];
     }
