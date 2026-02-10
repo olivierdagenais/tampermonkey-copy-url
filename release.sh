@@ -20,7 +20,7 @@ case "$ACTION" in
         git checkout -b "release/${BRANCH_VERSION}" origin/main
 
         echo "Setting version to ${BRANCH_VERSION}.0..."
-        ./podman_node yarn --no-git-tag-version version "${BRANCH_VERSION}.0"
+        ./podman_node yarn --no-git-tag-version version --new-version "${BRANCH_VERSION}.0"
         ;;
 
     createPatch)
@@ -28,7 +28,7 @@ case "$ACTION" in
         git checkout "release/${BRANCH_VERSION}"
 
         echo "Incrementing PATCH portion of ${BRANCH_VERSION}..."
-        ./podman_node yarn --no-git-tag-version version patch
+        ./podman_node yarn --no-git-tag-version version --patch
         ;;
 
     *)
