@@ -17,15 +17,15 @@ git fetch
 case "$ACTION" in
     createBranch)
         echo "Creating release branch for ${BRANCH_VERSION}.x series..."
-        git checkout -b release/${BRANCH_VERSION} origin/main
+        git checkout -b "release/${BRANCH_VERSION}" origin/main
 
         echo "Setting version to ${BRANCH_VERSION}.0..."
-        ./podman_node yarn --no-git-tag-version version ${BRANCH_VERSION}.0
+        ./podman_node yarn --no-git-tag-version version "${BRANCH_VERSION}.0"
         ;;
 
     createPatch)
         # This might be implicit
-        git checkout release/${BRANCH_VERSION}
+        git checkout "release/${BRANCH_VERSION}"
 
         echo "Incrementing PATCH portion of ${BRANCH_VERSION}..."
         ./podman_node yarn --no-git-tag-version version patch
@@ -46,4 +46,4 @@ git add package.json
 ./podman_node yarn run build
 git add userscript/index.user.js -f
 git commit -m "release ${CURRENT_VERSION}"
-git tag v${CURRENT_VERSION}
+git tag "v${CURRENT_VERSION}"
