@@ -28,8 +28,8 @@ export class JenkinsHelpers {
 
     static getBreadcrumbItemSelector(bodyElement: HTMLElement): string {
         const anchorContainers = [
-            ".ch-section-1",
-            ".jenkins-header__navigation",
+            ".ch-section-1:has(> a)",
+            ".jenkins-header__navigation:has(> a)",
             ".jenkins-breadcrumbs__list-item",
         ];
         let selector = anchorContainers.join(", ");
