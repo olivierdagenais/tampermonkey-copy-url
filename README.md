@@ -24,14 +24,14 @@ Clipboard support can be enabled by following these steps:
 
 ## Development
 
-1. Install dependencies with `npm install` or `npm ci`.
-2. Run unit tests with `npm test`.
-3. Generate userscript with `npm run build`.
+1. Install dependencies with `yarn install`.
+2. Run unit tests with `yarn test`.
+3. Generate userscript with `yarn run build`.
 4. Import generated userscript to Tampermonkey by local file URI.
 
 ### Using the [Node.js container](https://github.com/nodejs/docker-node/blob/main/README.md)
 
-To avoid having to install anything (except Podman!), just prefix any `node` or `npm` command with `./podman_node`. For example: `./podman_node npm install`
+To avoid having to install anything (except Podman!), just prefix any `node` or `yarn` command with `./podman_node`. For example: `./podman_node yarn install`
 
 ### Debug
 

@@ -6,10 +6,10 @@
         {
             "label": "Test",
             "type": "shell",
-            "command": "./docker_node npm test",
+            "command": "./podman_node yarn test",
             "windows": {
                 "command": "wsl",
-                "args": ["bash", "-c", "./docker_node npm test"]
+                "args": ["bash", "-c", "./podman_node yarn test"]
             },
             "presentation": {
                 "echo": true,
@@ -28,10 +28,10 @@
         {
             "label": "Live Test",
             "type": "shell",
-            "command": "./docker_node npm run liveTest",
+            "command": "./podman_node yarn run liveTest",
             "windows": {
                 "command": "wsl",
-                "args": ["bash", "-c", "./docker_node npm run liveTest"]
+                "args": ["bash", "-c", "./podman_node yarn run liveTest"]
             },
             "presentation": {
                 "echo": true,
@@ -50,10 +50,10 @@
         {
             "label": "Build",
             "type": "shell",
-            "command": "./docker_node npm run build",
+            "command": "./podman_node yarn run build",
             "windows": {
                 "command": "wsl",
-                "args": ["bash", "-c", "./docker_node npm run build"]
+                "args": ["bash", "-c", "./podman_node yarn run build"]
             },
             "presentation": {
                 "echo": true,

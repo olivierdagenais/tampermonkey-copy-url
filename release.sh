@@ -20,7 +20,7 @@ case "$ACTION" in
         git checkout -b release/${BRANCH_VERSION} origin/main
 
         echo "Setting version to ${BRANCH_VERSION}.0..."
-        ./podman_node npm --no-git-tag-version version ${BRANCH_VERSION}.0
+        ./podman_node yarn --no-git-tag-version version ${BRANCH_VERSION}.0
         ;;
 
     createPatch)
@@ -28,7 +28,7 @@ case "$ACTION" in
         git checkout release/${BRANCH_VERSION}
 
         echo "Incrementing PATCH portion of ${BRANCH_VERSION}..."
-        ./podman_node npm --no-git-tag-version version patch
+        ./podman_node yarn --no-git-tag-version version patch
         ;;
 
     *)
@@ -39,11 +39,11 @@ esac
 
 echo "Performing release..."
 CURRENT_VERSION=$(./podman_node node -pe "require('./package.json').version" | tr -d '[:space:]')
-./podman_node npm install
-./podman_node npm run setUrls "release/${BRANCH_VERSION}"
-git add package-lock.json package.json
-./podman_node npm test
-./podman_node npm run build
+./podman_node yarn install
+./podman_node yarn run setUrls "release/${BRANCH_VERSION}"
+git add package.json
+./podman_node yarn test
+./podman_node yarn run build
 git add userscript/index.user.js -f
 git commit -m "release ${CURRENT_VERSION}"
 git tag v${CURRENT_VERSION}

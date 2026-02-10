@@ -17,10 +17,10 @@ git merge -s ours origin/live -m "${MESSAGE}"
 git checkout live
 git merge tmp
 git branch -D tmp
-./podman_node npm install
-./podman_node npm run setUrls "live"
-git add package-lock.json package.json
-./podman_node npm test
-./podman_node npm run build
+./podman_node yarn install
+./podman_node yarn run setUrls "live"
+git add package.json
+./podman_node yarn test
+./podman_node yarn run build
 git add userscript/index.user.js -f
 git commit -m "set URLs for live branch"
