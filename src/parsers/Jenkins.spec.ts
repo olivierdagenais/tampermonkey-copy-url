@@ -168,6 +168,103 @@ test("job page, v2.516.3 (issue #113)", () => {
     assert.equal(actual?.text, "ALPHA » bravo » charlie");
 });
 
+test("job page, v2.528.3 (issue #121)", () => {
+    const html = `
+<html>
+    <head>
+        <title>Branches (1) [ONE » two] - Jenkins</title>
+    </head>
+    <body
+        data-model-type="jenkins.branch.MultiBranchProjectViewHolder$ViewImpl"
+        id="jenkins"
+        data-search-url="/search/suggest"
+        data-search-help-url="https://www.jenkins.io/redirect/search-box"
+        class="two-column jenkins-2.528.3"
+        data-version="2.528.3"
+        >
+        <header
+            id="page-header"
+            class="custom-header jenkins-header"
+            >
+            <div class="ch-section-1">
+                <a href="/" class="app-jenkins-logo">
+                    <img
+                        src="/static/folder.svg"
+                        alt="[Jenkins]"
+                        style="width: 48px; height: 48px; "
+                        class="icon-bitbucket-repo-git icon-xlg custom-header__icon">
+                    <div class="custom-header__text">Jenkins</div>
+                </a>
+            </div>
+            <div class="ch-section-2 jenkins-header__main">
+                <div class="jenkins-header__navigation">
+                    <div
+                        class="custom-header__title jenkins-mobile-hide"
+                        >
+                        Instance
+                    </div>
+                    <div
+                        id="breadcrumbBar"
+                        class="jenkins-breadcrumbs"
+                        aria-label="breadcrumb"
+                        >
+                        <ol
+                            class="jenkins-breadcrumbs__list"
+                            id="breadcrumbs">
+                            <li
+                                data-type="breadcrumb-item"
+                                class="jenkins-breadcrumbs__list-item"
+                                data-has-menu="true"
+                                >
+                                <a href="/job/ONE/">ONE</a>
+                                <div
+                                    data-iscurrent="false"
+                                    data-children="true"
+                                    tabindex="0"
+                                    data-model="true"
+                                    data-base="/job/ONE/job/two/"
+                                    class="dropdown-indicator"
+                                    aria-label="dropdown menu for ONE"
+                                    data-href="/job/ONE/"
+                                    aria-expanded="false">
+                                    <svg
+                                        class="icon-sm jenkins-!-text-color-secondary"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        aria-hidden="true"
+                                        viewBox="0 0 512 512"
+                                    />
+                                </div>
+                            </li>
+                            <li
+                                aria-current="page"
+                                data-type="breadcrumb-item"
+                                class="jenkins-breadcrumbs__list-item"
+                                data-has-menu="true"
+                                >
+                                <span>two</span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="jenkins-header__actions" />
+            </div>
+        </header>
+    </body>
+</html>`;
+
+    const actual = testParseLink(
+        html,
+        "https://jenkins.example.com/job/ONE/job/two/"
+    );
+
+    assert.notEqual(actual, null);
+    assert.equal(
+        actual?.destination,
+        "https://jenkins.example.com/job/ONE/job/two/"
+    );
+    assert.equal(actual?.text, "ONE » two");
+});
+
 test("run page", () => {
     const html = `
 <html>
